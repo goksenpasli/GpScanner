@@ -1,14 +1,14 @@
 ﻿<UserControl x:Class="TwainControl.DrawControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Extension="clr-namespace:Extensions;assembly=Extensions"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:Extension="clr-namespace:Extensions;assembly=Extensions"
     xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
     d:DesignHeight="450"
-    d:DesignWidth="800"
-    mc:Ignorable="d">
+    d:DesignWidth="800">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,6 +17,40 @@
             <Extension:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extension:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
             <Extension:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
+            <Style x:Key="CornerThumb" TargetType="Thumb">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Thumb">
+                            <Grid Background="Transparent" Cursor="Hand">
+                                <Ellipse Width="24"
+                                    Height="24"
+                                    Fill="#40FF0000"
+                                    Stroke="Red"
+                                    StrokeThickness="2" />
+                                <Path Data="M0,12 L24,12 M12,0 L12,24"
+                                    Stroke="Red"
+                                    StrokeThickness="1" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Geometry x:Key="IconPerspectiveFix">
+                M4,6  L8,4  L10,20  L2,18  Z
+                M14,6 L14,10 L12,10 L16,12 L12,14 L14,14 L14,18 L20,12 Z
+                M18,4 L22,4 L22,20 L18,20 Z
+            </Geometry>
+            <Geometry x:Key="IconCornerReset">
+                M4,4 H20 V20 H4 Z
+                M4,4  m-1,0 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0
+                M20,4 m-1,0 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0
+                M4,20 m-1,0 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0
+                M20,20 m-1,0 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0
+                M12,7
+                A5,5 0 1 1 7.5,15.5
+                M12,7 L12,4
+                M12,7 L15,6
+            </Geometry>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -27,95 +61,102 @@
         <ScrollViewer x:Name="Scr"
             HorizontalScrollBarVisibility="Auto"
             VerticalScrollBarVisibility="Auto">
-            <local:ZoomableInkCanvas x:Name="Ink"
-                Width="{Binding ElementName=Img, Path=ImageSource.Width}"
-                Height="{Binding ElementName=Img, Path=ImageSource.Height}"
-                local:Policy.PolicyName="ZoomableInkCanvas"
-                ContextMenuService.IsEnabled="{Binding DrawControlContextMenu, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
-                Cursor="{Binding DrawCursor, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
-                EditingMode="{Binding ElementName=CbEdit, Path=SelectedItem}"
-                IsEnabled="{Binding ElementName=Img, Path=ImageSource, Converter={StaticResource NullableToBooleanConverter}}"
-                PreviewMouseWheel="Ink_PreviewMouseWheel"
-                UseCustomCursor="True">
-                <local:ZoomableInkCanvas.ContextMenu>
-                    <ContextMenu>
-                        <ContextMenu.Template>
-                            <ControlTemplate>
-                                <GroupBox>
-                                    <GroupBox.Header>
-                                        <StackPanel Orientation="Horizontal">
-                                            <ToggleButton VerticalAlignment="Center" IsChecked="{Binding Lock, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
-                                                <Image Width="32" Height="32">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="47" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                            </ToggleButton>
-                                            <StackPanel>
-                                                <Slider Width="256"
-                                                    VerticalAlignment="Center"
-                                                    AutoToolTipPlacement="TopLeft"
-                                                    IsSnapToTickEnabled="True"
-                                                    Maximum="512"
-                                                    Minimum="0.5"
-                                                    Style="{DynamicResource Slider}"
-                                                    Value="{Binding StylusWidth, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
-                                                <Slider Width="256"
-                                                    VerticalAlignment="Center"
-                                                    AutoToolTipPlacement="TopLeft"
-                                                    IsSnapToTickEnabled="True"
-                                                    Maximum="512"
-                                                    Minimum="0.5"
-                                                    Style="{DynamicResource Slider}"
-                                                    Value="{Binding StylusHeight, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+            <Grid>
+                <local:ZoomableInkCanvas x:Name="Ink"
+                    Width="{Binding ElementName=Img, Path=ImageSource.Width}"
+                    Height="{Binding ElementName=Img, Path=ImageSource.Height}"
+                    ContextMenuService.IsEnabled="{Binding DrawControlContextMenu, Converter={StaticResource ReverseBooleanConverter},
+                                                           RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                    Cursor="{Binding DrawCursor, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                    EditingMode="{Binding ElementName=CbEdit, Path=SelectedItem}"
+                    IsEnabled="{Binding ElementName=Img, Path=ImageSource,
+                                        Converter={StaticResource NullableToBooleanConverter}}"
+                    local:Policy.PolicyName="ZoomableInkCanvas"
+                    PreviewMouseWheel="Ink_PreviewMouseWheel"
+                    UseCustomCursor="True">
+                    <local:ZoomableInkCanvas.ContextMenu>
+                        <ContextMenu>
+                            <ContextMenu.Template>
+                                <ControlTemplate>
+                                    <GroupBox>
+                                        <GroupBox.Header>
+                                            <StackPanel Orientation="Horizontal">
+                                                <ToggleButton VerticalAlignment="Center" IsChecked="{Binding Lock, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                                                    <Image Width="32" Height="32">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="47" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </ToggleButton>
+                                                <StackPanel>
+                                                    <Slider Width="256"
+                                                        VerticalAlignment="Center"
+                                                        Value="{Binding StylusWidth, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                                                        AutoToolTipPlacement="TopLeft"
+                                                        IsSnapToTickEnabled="True"
+                                                        Maximum="512"
+                                                        Minimum="0.5"
+                                                        Style="{DynamicResource Slider}" />
+                                                    <Slider Width="256"
+                                                        VerticalAlignment="Center"
+                                                        Value="{Binding StylusHeight, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                                                        AutoToolTipPlacement="TopLeft"
+                                                        IsSnapToTickEnabled="True"
+                                                        Maximum="512"
+                                                        Minimum="0.5"
+                                                        Style="{DynamicResource Slider}" />
+                                                </StackPanel>
                                             </StackPanel>
+                                        </GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Width="{Binding Ellipse.Width, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                                                Height="{Binding Ellipse.Height, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                                                Fill="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                                                <Ellipse.Style>
+                                                    <Style TargetType="Ellipse">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Value="{x:Static StylusTip.Ellipse}" Binding="{Binding SelectedStylus, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Ellipse.Style>
+                                            </Ellipse>
+                                            <Rectangle Width="{Binding Rectangle.Width, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                                                Height="{Binding Rectangle.Height, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                                                Fill="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                                                <Rectangle.Style>
+                                                    <Style TargetType="Rectangle">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Value="{x:Static StylusTip.Rectangle}" Binding="{Binding SelectedStylus, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Rectangle.Style>
+                                            </Rectangle>
                                         </StackPanel>
-                                    </GroupBox.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Ellipse Width="{Binding Ellipse.Width, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
-                                            Height="{Binding Ellipse.Height, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
-                                            Fill="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
-                                            <Ellipse.Style>
-                                                <Style TargetType="Ellipse">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding SelectedStylus, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" Value="{x:Static StylusTip.Ellipse}">
-                                                            <Setter Property="Visibility" Value="Visible" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Ellipse.Style>
-                                        </Ellipse>
-                                        <Rectangle Width="{Binding Rectangle.Width, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
-                                            Height="{Binding Rectangle.Height, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
-                                            Fill="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
-                                            <Rectangle.Style>
-                                                <Style TargetType="Rectangle">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding SelectedStylus, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" Value="{x:Static StylusTip.Rectangle}">
-                                                            <Setter Property="Visibility" Value="Visible" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Rectangle.Style>
-                                        </Rectangle>
-                                    </StackPanel>
-                                </GroupBox>
-                            </ControlTemplate>
-                        </ContextMenu.Template>
-                    </ContextMenu>
-                </local:ZoomableInkCanvas.ContextMenu>
-                <local:ZoomableInkCanvas.DefaultDrawingAttributes>
-                    <DrawingAttributes x:Name="DrawingAttribute" />
-                </local:ZoomableInkCanvas.DefaultDrawingAttributes>
-                <local:ZoomableInkCanvas.Background>
-                    <ImageBrush x:Name="Img" ImageSource="{Binding TemporaryImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
-                </local:ZoomableInkCanvas.Background>
-            </local:ZoomableInkCanvas>
+                                    </GroupBox>
+                                </ControlTemplate>
+                            </ContextMenu.Template>
+                        </ContextMenu>
+                    </local:ZoomableInkCanvas.ContextMenu>
+                    <local:ZoomableInkCanvas.DefaultDrawingAttributes>
+                        <DrawingAttributes x:Name="DrawingAttribute" />
+                    </local:ZoomableInkCanvas.DefaultDrawingAttributes>
+                    <local:ZoomableInkCanvas.Background>
+                        <ImageBrush x:Name="Img" ImageSource="{Binding TemporaryImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+                    </local:ZoomableInkCanvas.Background>
+                </local:ZoomableInkCanvas>
+                <Canvas Background="Transparent"
+                    MouseLeftButtonDown="OverlayCanvas_MouseClick"
+                    Name="OverlayCanvas" />
+            </Grid>
         </ScrollViewer>
         <ScrollViewer Grid.Row="1"
             HorizontalScrollBarVisibility="Auto"
@@ -130,6 +171,7 @@
                     VerticalContentAlignment="Center"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource StylusTip}}"
                     SelectedItem="{Binding SelectedStylus, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                 <ToggleButton IsChecked="{Binding Highlighter, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
                     <Image Width="24" Height="24">
                         <Image.Source>
@@ -160,9 +202,10 @@
                         </Image.Source>
                     </Image>
                 </ToggleButton>
-                <Extension:NumericUpDown Interval="1"
-                    Minimum="0.5"
-                    Value="{Binding StylusWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+                <Extension:NumericUpDown Value="{Binding StylusWidth, Mode=TwoWay,
+                                                         UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                    Interval="1"
+                    Minimum="0.5" />
                 <ToggleButton IsChecked="{Binding Lock, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
                     <Image Width="24" Height="24">
                         <Image.Source>
@@ -173,9 +216,10 @@
                         </Image.Source>
                     </Image>
                 </ToggleButton>
-                <Extension:NumericUpDown Interval="1"
-                    Minimum="0.5"
-                    Value="{Binding StylusHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+                <Extension:NumericUpDown Value="{Binding StylusHeight, Mode=TwoWay,
+                                                         UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                    Interval="1"
+                    Minimum="0.5" />
                 <Button Command="{Binding CopyBitmapFile, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
                     <Image Width="24" Height="24">
                         <Image.Source>
@@ -186,16 +230,17 @@
                         </Image.Source>
                     </Image>
                 </Button>
-                <Button local:Policy.PolicyName="SaveEditedImage"
-                    Command="{Binding SaveEditedImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
-                    CommandParameter="{Binding SeçiliResim}">
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Button Command="{Binding SaveEditedImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                    CommandParameter="{Binding SeçiliResim}"
+                    local:Policy.PolicyName="SaveEditedImage">
                     <Image Width="24"
                         Height="24"
                         Source="/TwainControl;component/Icons/save.png" />
                 </Button>
-                <Button local:Policy.PolicyName="SaveAllEditedImage"
-                    Command="{Binding SaveAllEditedImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
-                    CommandParameter="{Binding Scanner.Resimler}">
+                <Button Command="{Binding SaveAllEditedImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                    CommandParameter="{Binding Scanner.Resimler}"
+                    local:Policy.PolicyName="SaveAllEditedImage">
                     <Image Width="24" Height="24">
                         <Image.Source>
                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -205,6 +250,7 @@
                         </Image.Source>
                     </Image>
                 </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                 <Button Command="{Binding FitImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" CommandParameter="{Binding SeçiliResim}">
                     <Image Width="24" Height="24">
                         <Image.Source>
@@ -217,20 +263,21 @@
                 </Button>
                 <Slider Width="100"
                     VerticalAlignment="Center"
+                    Value="{Binding ElementName=Ink, Path=CurrentZoom}"
                     AutoToolTipPlacement="TopLeft"
                     AutoToolTipPrecision="2"
                     Maximum="{Binding ElementName=Ink, Path=MaxZoom}"
                     Minimum="{Binding ElementName=Ink, Path=MinZoom}"
-                    Style="{DynamicResource Slider}"
-                    Value="{Binding ElementName=Ink, Path=CurrentZoom}" />
-                <Extension:ContentToggleButton Padding="2" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                    Style="{DynamicResource Slider}" />
+                <Extension:ContentToggleButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:DrawControl}}" Padding="2">
                     <Rectangle Width="24"
                         Height="24"
                         d:Fill="Black"
                         Fill="{Binding SelectedBrush}" />
                     <Extension:ContentToggleButton.OverContent>
                         <Border BorderThickness="1">
-                            <Extension:ColorPicker HexCode="{Binding SelectedColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            <Extension:ColorPicker HexCode="{Binding SelectedColor, Mode=TwoWay,
+                                                                     UpdateSourceTrigger=PropertyChanged}"
                                 HexCodeVisibility="Collapsed"
                                 PredefinedColorVisibility="Visible"
                                 SliderVisibility="Collapsed" />
@@ -241,6 +288,23 @@
                     <Image Width="24"
                         Height="24"
                         Source="/TwainControl;component/Icons/delete.png" />
+                </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Button Command="{Binding FlattenImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                    CommandParameter="{Binding SeçiliResim}"
+                    local:Policy.PolicyName="FlattenImage">
+                    <Path Width="24"
+                        Height="24"
+                        Data="{StaticResource IconPerspectiveFix}"
+                        Fill="Black"
+                        Stretch="Uniform" />
+                </Button>
+                <Button Command="{Binding ResetThumbs, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" local:Policy.PolicyName="ResetThumbs">
+                    <Path Width="24"
+                        Height="24"
+                        Data="{StaticResource IconCornerReset}"
+                        Fill="Black"
+                        Stretch="Uniform" />
                 </Button>
             </StackPanel>
         </ScrollViewer>

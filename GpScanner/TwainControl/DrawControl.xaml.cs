@@ -1,12 +1,15 @@
 ﻿using Extensions;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -16,6 +19,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using Color = System.Windows.Media.Color;
 using ColorConverter = System.Windows.Media.ColorConverter;
+using Point = System.Windows.Point;
 using Rectangle = System.Windows.Shapes.Rectangle;
 using Size = System.Windows.Size;
 
@@ -24,6 +28,7 @@ namespace TwainControl;
 public partial class DrawControl : UserControl, INotifyPropertyChanged
 {
     public static readonly DependencyProperty TemporaryImageProperty = DependencyProperty.Register("TemporaryImage", typeof(ImageSource), typeof(DrawControl), new PropertyMetadata(null));
+    private readonly List<Thumb> _corners = [];
     private double stylusWidth = 3d;
 
     public DrawControl()
@@ -105,9 +110,61 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
             },
             parameter => TemporaryImage is not null);
 
+        FlattenImage = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is not ScannedImage scannedImage)
+                {
+                    return;
+                }
+
+                if (TemporaryImage == null)
+                {
+                    return;
+                }
+
+                BitmapSource rawBmp = (BitmapSource)TemporaryImage;
+                FormatConvertedBitmap srcBmp = new(rawBmp, PixelFormats.Bgra32, null, 0);
+
+                double scaleX = srcBmp.PixelWidth / OverlayCanvas.ActualWidth;
+                double scaleY = srcBmp.PixelHeight / OverlayCanvas.ActualHeight;
+
+                List<Point> points = _corners.ConvertAll(t => new Point((Canvas.GetLeft(t) + 12) * scaleX, (Canvas.GetTop(t) + 12) * scaleY));
+
+                points = SortPoints(points);
+
+                double w1 = PointDist(points[0], points[1]);
+                double w2 = PointDist(points[3], points[2]);
+                double h1 = PointDist(points[0], points[3]);
+                double h2 = PointDist(points[1], points[2]);
+
+                int finalW = (int)Math.Max(w1, w2);
+                int finalH = (int)Math.Max(h1, h2);
+
+                try
+                {
+                    WriteableBitmap result = PerspectiveWarpBilinear(srcBmp, points, finalW, finalH);
+                    result.Freeze();
+                    scannedImage.Resim = BitmapFrame.Create(result);
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.Message);
+                }
+            },
+            parameter => TemporaryImage is not null && _corners?.Count == 4);
+
+        ResetThumbs = new RelayCommand<object>(
+            parameter =>
+            {
+                OverlayCanvas.Children.Clear();
+                _corners.Clear();
+            },
+            parameter => _corners?.Any() == true);
+
         CopyBitmapFile = new RelayCommand<object>(async parameter => Clipboard.SetImage(await SaveInkCanvasToImage(TemporaryImage, Ink)), parameter => TemporaryImage is not null);
 
-        FitImage = new RelayCommand<object>(parameter => Ink.CurrentZoom = ActualHeight / TemporaryImage?.Height ?? 1, parameter => TemporaryImage is not null);
+        FitImage = new RelayCommand<object>(parameter => Ink.CurrentZoom = (ActualHeight / TemporaryImage?.Height) ?? 1, parameter => TemporaryImage is not null);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -159,6 +216,8 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
     } = new();
 
     public RelayCommand<object> FitImage { get; }
+
+    public RelayCommand<object> FlattenImage { get; }
 
     public bool Highlighter
     {
@@ -215,6 +274,8 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
             }
         }
     } = new();
+
+    public RelayCommand<object> ResetThumbs { get; }
 
     public RelayCommand<object> SaveAllEditedImage { get; }
 
@@ -366,6 +427,24 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         }
     }
 
+    private void AddCorner(Point p)
+    {
+        Thumb t = new() { Style = (Style)TryFindResource("CornerThumb") };
+
+        t.DragDelta += (s, e) =>
+                       {
+                           double left = Canvas.GetLeft(t) + e.HorizontalChange;
+                           double top = Canvas.GetTop(t) + e.VerticalChange;
+                           Canvas.SetLeft(t, left);
+                           Canvas.SetTop(t, top);
+                       };
+
+        Canvas.SetLeft(t, p.X - 12);
+        Canvas.SetTop(t, p.Y - 12);
+        _corners.Add(t);
+        _ = OverlayCanvas.Children.Add(t);
+    }
+
     private void DrawControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "SelectedStylus")
@@ -406,6 +485,59 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         }
     }
 
+    private double[] FindHomography(List<Point> p1, List<Point> p2)
+    {
+        double[][] system = new double[8][];
+        for (int i = 0; i < 4; i++)
+        {
+            double x = p1[i].X, y = p1[i].Y;
+            double u = p2[i].X, v = p2[i].Y;
+            system[2 * i] = [ x, y, 1, 0, 0, 0, -x * u, -y * u, u ];
+            system[(2 * i) + 1] = [ 0, 0, 0, x, y, 1, -x * v, -y * v, v ];
+        }
+
+        double[] s = GaussianElimination(system);
+        return[ s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7], 1.0 ];
+    }
+
+    private double[] GaussianElimination(double[][] A)
+    {
+        const int n = 8;
+        for (int i = 0; i < n; i++)
+        {
+            int max = i;
+            for (int k = i + 1; k < n; k++)
+            {
+                if (Math.Abs(A[k][i]) > Math.Abs(A[max][i]))
+                {
+                    max = k;
+                }
+            }
+
+            (A[max], A[i]) = (A[i], A[max]);
+            for (int k = i + 1; k < n; k++)
+            {
+                double t = A[k][i] / A[i][i];
+                for (int j = i; j <= n; j++)
+                {
+                    A[k][j] -= t * A[i][j];
+                }
+            }
+        }
+        double[] x = new double[n];
+        for (int i = n - 1; i >= 0; i--)
+        {
+            double sum = 0;
+            for (int j = i + 1; j < n; j++)
+            {
+                sum += A[i][j] * x[j];
+            }
+
+            x[i] = (A[i][n] - sum) / A[i][i];
+        }
+        return x;
+    }
+
     private void GenerateCustomCursor()
     {
         PresentationSource source = PresentationSource.FromVisual(this);
@@ -430,7 +562,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
             DrawControlContextMenu = Keyboard.Modifiers == ModifierKeys.Shift;
             if (DrawControlContextMenu)
             {
-                System.Windows.Point mousemovecoord = e.GetPosition(Scr);
+                Point mousemovecoord = e.GetPosition(Scr);
                 mousemovecoord.X += Scr.HorizontalOffset;
                 mousemovecoord.Y += Scr.VerticalOffset;
                 double widthmultiply = ((BitmapSource)Img.ImageSource).PixelWidth / Scr.ExtentWidth;
@@ -464,7 +596,94 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    private void OnZoomChanged(object sender, EventArgs e) => GenerateCustomCursor();
+    private void OnZoomChanged(object sender, EventArgs e) { GenerateCustomCursor(); }
+
+    private void OverlayCanvas_MouseClick(object sender, MouseButtonEventArgs e)
+    {
+
+        if (TemporaryImage == null)
+        {
+            return;
+        }
+
+        if (_corners.Count >= 4)
+        {
+            return;
+        }
+        if (Keyboard.Modifiers == ModifierKeys.Control)
+        {
+            Point clickPoint = e.GetPosition(OverlayCanvas);
+            AddCorner(clickPoint);
+        }
+    }
+
+    private WriteableBitmap PerspectiveWarpBilinear(BitmapSource src, List<Point> srcPts, int w, int h)
+    {
+        List<Point> dstPts = [ new Point(0, 0), new Point(w, 0), new Point(w, h), new Point(0, h) ];
+
+        double[] M = FindHomography(dstPts, srcPts);
+
+        WriteableBitmap wb = new(w, h, 96, 96, PixelFormats.Bgra32, null);
+
+        int srcW = src.PixelWidth;
+        int srcH = src.PixelHeight;
+        int srcStride = srcW * 4;
+        byte[] srcPixels = new byte[srcH * srcStride];
+        src.CopyPixels(srcPixels, srcStride, 0);
+
+        int dstStride = w * 4;
+        byte[] dstPixels = new byte[h * dstStride];
+
+        unsafe
+        {
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    double div = (M[6] * x) + (M[7] * y) + 1;
+                    if (Math.Abs(div) < 1e-9)
+                    {
+                        continue;
+                    }
+
+                    double srcX = ((M[0] * x) + (M[1] * y) + M[2]) / div;
+                    double srcY = ((M[3] * x) + (M[4] * y) + M[5]) / div;
+
+                    if (srcX >= 0 && srcX < srcW - 1 && srcY >= 0 && srcY < srcH - 1)
+                    {
+                        int x0 = (int)srcX;
+                        int y0 = (int)srcY;
+                        int x1 = x0 + 1;
+                        int y1 = y0 + 1;
+
+                        double dx = srcX - x0;
+                        double dy = srcY - y0;
+                        double w00 = (1 - dx) * (1 - dy);
+                        double w10 = dx * (1 - dy);
+                        double w01 = (1 - dx) * dy;
+                        double w11 = dx * dy;
+
+                        int i00 = (y0 * srcStride) + (x0 * 4);
+                        int i10 = (y0 * srcStride) + (x1 * 4);
+                        int i01 = (y1 * srcStride) + (x0 * 4);
+                        int i11 = (y1 * srcStride) + (x1 * 4);
+
+                        for (int c = 0; c < 3; c++)
+                        {
+                            double val = (srcPixels[i00 + c] * w00) + (srcPixels[i10 + c] * w10) + (srcPixels[i01 + c] * w01) + (srcPixels[i11 + c] * w11);
+                            dstPixels[(y * dstStride) + (x * 4) + c] = (byte)val;
+                        }
+                        dstPixels[(y * dstStride) + (x * 4) + 3] = 255;
+                    }
+                }
+            }
+        }
+
+        wb.WritePixels(new Int32Rect(0, 0, w, h), dstPixels, dstStride, 0);
+        return wb;
+    }
+
+    private double PointDist(Point a, Point b) { return Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2)); }
 
     private Task<BitmapFrame> SaveInkCanvasToImage(ImageSource imageSource, Visual visual)
     {
@@ -486,5 +705,14 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
                     image?.Freeze();
                     return image;
                 }));
+    }
+
+    private List<Point> SortPoints(List<Point> pts)
+    {
+        List<Point> sortedY = [.. pts.OrderBy(p => p.Y)];
+        List<Point> top = [.. sortedY.Take(2).OrderBy(p => p.X)];
+        List<Point> bottom = [.. sortedY.Skip(2).OrderBy(p => p.X)];
+
+        return[ top[0], top[1], bottom[1], bottom[0] ];
     }
 }
