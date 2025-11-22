@@ -1904,31 +1904,6 @@
                                                                                             </MenuItem.Icon>
                                                                                         </MenuItem>
                                                                                         <Separator />
-                                                                                        <MenuItem Command="{Binding Data.CopyCurrentImageToClipBoard, Source={StaticResource Proxy}}" Header="{local:Loc COPY}">
-                                                                                            <MenuItem.Icon>
-                                                                                                <Image Width="16" Height="16">
-                                                                                                    <Image.Source>
-                                                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                                            <Binding Source="Shell32.dll" />
-                                                                                                            <Binding Source="134" />
-                                                                                                        </MultiBinding>
-                                                                                                    </Image.Source>
-                                                                                                </Image>
-                                                                                            </MenuItem.Icon>
-                                                                                        </MenuItem>
-                                                                                        <MenuItem Command="{Binding Data.CopyCurrentImageToImageEditor, Source={StaticResource Proxy}}" Header="{local:Loc GRAPH}">
-                                                                                            <MenuItem.Icon>
-                                                                                                <Image Width="16" Height="16">
-                                                                                                    <Image.Source>
-                                                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                                            <Binding Source="pifmgr.dll" />
-                                                                                                            <Binding Source="16" />
-                                                                                                        </MultiBinding>
-                                                                                                    </Image.Source>
-                                                                                                </Image>
-                                                                                            </MenuItem.Icon>
-                                                                                        </MenuItem>
-                                                                                        <Separator />
                                                                                         <Expander Header="{local:Loc DESKEW}">
                                                                                             <StackPanel>
                                                                                                 <Button local:Policy.PolicyName="AutoDeskewImage"
@@ -1978,7 +1953,24 @@
                                                                         FontWeight="Bold"
                                                                         Foreground="Cyan"
                                                                         MouseLeftButtonDown="Run_MouseLeftButtonDown"
-                                                                        Text="B" /><Hyperlink local:Policy.PolicyName="ReplaceSelectedImage"
+                                                                        Text="B" /><Hyperlink local:Policy.PolicyName="CopyCurrentImageToClipBoard"
+                                                                        BaselineAlignment="Center"
+                                                                        Command="{Binding DataContext.CopyCurrentImageToClipBoard, ElementName=UserControl}"
+                                                                        CommandParameter="{Binding Mode=OneWay}"
+                                                                        FontFamily="Segoe UI Black"
+                                                                        TextDecorations="None">
+                                                                        <InlineUIContainer>
+                                                                            <Image Width="24" Height="24">
+                                                                                <Image.Source>
+                                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                        <Binding Source="Shell32.dll" />
+                                                                                        <Binding Source="134" />
+                                                                                    </MultiBinding>
+                                                                                </Image.Source>
+                                                                            </Image>
+                                                                        </InlineUIContainer>
+                                                                    </Hyperlink>
+                                                                    <Hyperlink local:Policy.PolicyName="ReplaceSelectedImage"
                                                                         BaselineAlignment="Center"
                                                                         Command="{Binding DataContext.ReplaceSelectedImage, ElementName=UserControl}"
                                                                         CommandParameter="{Binding Mode=OneWay}"
@@ -1995,6 +1987,22 @@
                                                                                     </Image.Source>
                                                                                 </Image>
                                                                             </Border>
+                                                                        </InlineUIContainer>
+                                                                    </Hyperlink><LineBreak /><Hyperlink local:Policy.PolicyName="CopyCurrentImageToImageEditor"
+                                                                        BaselineAlignment="Center"
+                                                                        Command="{Binding DataContext.CopyCurrentImageToImageEditor, ElementName=UserControl}"
+                                                                        CommandParameter="{Binding Mode=OneWay}"
+                                                                        FontFamily="Segoe UI Black"
+                                                                        TextDecorations="None">
+                                                                        <InlineUIContainer>
+                                                                            <Image Width="24" Height="24">
+                                                                                <Image.Source>
+                                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                        <Binding Source="pifmgr.dll" />
+                                                                                        <Binding Source="16" />
+                                                                                    </MultiBinding>
+                                                                                </Image.Source>
+                                                                            </Image>
                                                                         </InlineUIContainer>
                                                                     </Hyperlink><Hyperlink local:Policy.PolicyName="ResimSil"
                                                                         BaselineAlignment="Center"
