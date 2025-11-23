@@ -505,12 +505,12 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         {
             double x = p1[i].X, y = p1[i].Y;
             double u = p2[i].X, v = p2[i].Y;
-            system[2 * i] = [ x, y, 1, 0, 0, 0, -x * u, -y * u, u ];
-            system[(2 * i) + 1] = [ 0, 0, 0, x, y, 1, -x * v, -y * v, v ];
+            system[2 * i] = [x, y, 1, 0, 0, 0, -x * u, -y * u, u];
+            system[(2 * i) + 1] = [0, 0, 0, x, y, 1, -x * v, -y * v, v];
         }
 
         double[] s = GaussianElimination(system);
-        return[ s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7], 1.0 ];
+        return [s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7], 1.0];
     }
 
     private double[] GaussianElimination(double[][] A)
@@ -609,7 +609,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    private void OnZoomChanged(object sender, EventArgs e) { GenerateCustomCursor(); }
+    private void OnZoomChanged(object sender, EventArgs e) => GenerateCustomCursor();
 
     private void OverlayCanvas_MouseClick(object sender, MouseButtonEventArgs e)
     {
@@ -628,7 +628,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     private WriteableBitmap PerspectiveWarpBilinear(BitmapSource src, List<Point> srcPts, int w, int h)
     {
-        List<Point> dstPts = [ new Point(0, 0), new Point(w, 0), new Point(w, h), new Point(0, h) ];
+        List<Point> dstPts = [new Point(0, 0), new Point(w, 0), new Point(w, h), new Point(0, h)];
 
         double[] M = FindHomography(dstPts, srcPts);
 
@@ -692,7 +692,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         return wb;
     }
 
-    private double PointDist(Point a, Point b) { return Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2)); }
+    private double PointDist(Point a, Point b) => Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
 
     private Task<BitmapFrame> SaveInkCanvasToImage(ImageSource imageSource, Visual visual)
     {
@@ -718,10 +718,10 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     private List<Point> SortPoints(List<Point> pts)
     {
-        List<Point> sortedY = [ .. pts.OrderBy(p => p.Y) ];
-        List<Point> top = [ .. sortedY.Take(2).OrderBy(p => p.X) ];
-        List<Point> bottom = [ .. sortedY.Skip(2).OrderBy(p => p.X) ];
+        List<Point> sortedY = [.. pts.OrderBy(p => p.Y)];
+        List<Point> top = [.. sortedY.Take(2).OrderBy(p => p.X)];
+        List<Point> bottom = [.. sortedY.Skip(2).OrderBy(p => p.X)];
 
-        return[ top[0], top[1], bottom[1], bottom[0] ];
+        return [top[0], top[1], bottom[1], bottom[0]];
     }
 }

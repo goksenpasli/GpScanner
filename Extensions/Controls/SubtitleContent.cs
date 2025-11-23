@@ -5,9 +5,6 @@ namespace Extensions.Controls;
 
 public class SubtitleContent : InpcBase
 {
-    private TimeSpan endTime;
-    private TimeSpan startTime;
-
     public SolidColorBrush BackgroundColor
     {
         get;
@@ -24,13 +21,13 @@ public class SubtitleContent : InpcBase
 
     public TimeSpan EndTime
     {
-        get => endTime;
+        get;
 
         set
         {
-            if (endTime != value)
+            if (field != value)
             {
-                endTime = value;
+                field = value;
                 OnPropertyChanged(nameof(EndTime));
             }
         }
@@ -51,13 +48,13 @@ public class SubtitleContent : InpcBase
 
     public TimeSpan StartTime
     {
-        get => startTime;
+        get;
 
         set
         {
-            if (startTime != value)
+            if (field != value)
             {
-                startTime = value;
+                field = value;
                 OnPropertyChanged(nameof(StartTime));
             }
         }

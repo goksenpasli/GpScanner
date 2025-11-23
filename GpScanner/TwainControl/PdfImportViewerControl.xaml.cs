@@ -36,10 +36,10 @@ namespace TwainControl;
 /// </summary>
 public partial class PdfImportViewerControl : UserControl, INotifyPropertyChanged
 {
-    private readonly Ellipse ellipseselectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection([ 1 ]), };
-    private readonly Line linebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection([ 1 ]) };
-    private readonly Rectangle rectangleselectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection([ 1 ]) };
-    private readonly Line reverselinebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection([ 1 ]) };
+    private readonly Ellipse ellipseselectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection([1]), };
+    private readonly Line linebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection([1]) };
+    private readonly Rectangle rectangleselectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection([1]) };
+    private readonly Line reverselinebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection([1]) };
     private Brush combinedLinearBrush;
     private bool isDrawMouseDown;
     private bool isMouseDown;
@@ -726,7 +726,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public DoubleCollection OpacityList { get; } = [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 ];
+    public DoubleCollection OpacityList { get; } = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
 
     public RelayCommand<object> OpenPdfHistoryFile { get; }
 

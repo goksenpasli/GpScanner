@@ -273,12 +273,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             async parameter =>
             {
                 if (parameter is ScannedImage item &&
-                MessageBox.Show($"{Translation.GetResStringValue("DESKEW")} {Translation.GetResStringValue("APPLY")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                MessageBox.Show($"{Translation.GetResStringValue("Auto")} {Translation.GetResStringValue("DESKEW")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     double deskewAngle = Deskew.GetDeskewAngle(item.Resim);
                     BitmapFrame bitmapFrame = BitmapFrame.Create(await item.Resim.RotateImageAsync(deskewAngle, Brushes.White));
                     bitmapFrame?.Freeze();
                     item.Resim = bitmapFrame;
+                    item.DeskewAngle = Deskew.GetDeskewAngle(item.Resim) + 90;
                     bitmapFrame = null;
                     GC.Collect();
                 }
@@ -293,6 +294,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     BitmapFrame bitmapFrame = BitmapFrame.Create(await item.Resim.RotateImageAsync(CustomDeskewAngle, Brushes.White));
                     bitmapFrame?.Freeze();
                     item.Resim = bitmapFrame;
+                    double deskewAngle = Deskew.GetDeskewAngle(item.Resim);
+                    item.DeskewAngle = deskewAngle + 90;
                     bitmapFrame = null;
                     GC.Collect();
                 }
@@ -377,12 +380,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     if (EncodeAsJb2)
                     {
-                        List<ScannedImage> image = [scannedImage];
+                        List<ScannedImage> image = [ scannedImage ];
                         File.WriteAllBytes(saveFileDialog.FileName, image.CreateMultipagePdfWithJbig2Images().AddPdfPassword_PdfSharp().ToArray());
                     }
                     else
                     {
-                        await SavePdfImageAsync([scannedImage], saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true, Settings.Default.ImgLoadResolution);
+                        await SavePdfImageAsync([ scannedImage ], saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true, Settings.Default.ImgLoadResolution);
                     }
                     Scanner.SaveFileFullPath = saveFileDialog.FileName;
                     OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
@@ -4428,11 +4431,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     break;
 
                 case XpsFileHandler:
-                    await HandleTifXpsFileAsync(fileHandler.LoadXpsPagesAsync, filename, i, totalPageCount);
+                    await HandleTifXpsFileAsync(fileHandler.LoadXpsPagesAsync, filename, totalPageCount);
                     return;
 
                 case TiffFileHandler:
-                    await HandleTifXpsFileAsync(fileHandler.LoadTiffPagesAsync, filename, i, totalPageCount);
+                    await HandleTifXpsFileAsync(fileHandler.LoadTiffPagesAsync, filename, totalPageCount);
                     return;
 
                 default:
@@ -4441,10 +4444,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
 
             bitmapFrame.Freeze();
+            double deskewAngle = Deskew.GetDeskewAngle(bitmapFrame) + 90;
             await Dispatcher.InvokeAsync(
                 () =>
                 {
-                    Scanner?.Resimler.Add(new ScannedImage { GetPdfCharacterInformations = fileHandler.GetPdfCharacters(), Resim = bitmapFrame, FilePath = filename });
+                    ScannedImage item = new() { GetPdfCharacterInformations = fileHandler.GetPdfCharacters(), Resim = bitmapFrame, FilePath = filename, DeskewAngle = deskewAngle };
+                    Scanner?.Resimler.Add(item);
                     PdfLoadProgressValue = (double)i / totalPageCount;
                 });
             bitmapFrame = null;
@@ -4866,17 +4871,21 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         return MixLists([ .. splitLists ]);
     }
 
-    private async Task HandleTifXpsFileAsync(Func<string, Task<IEnumerable<BitmapFrame>>> loadPagesAsync, string filename, int i, int totalPageCount)
+    private async Task HandleTifXpsFileAsync(Func<string, Task<IEnumerable<BitmapFrame>>> loadPagesAsync, string filename, int totalPageCount)
     {
         IEnumerable<BitmapFrame> frames = await loadPagesAsync(filename);
-        foreach (BitmapFrame frame in frames)
+        List<BitmapFrame> list = [ .. frames ];
+        for (int i = 0; i < list.Count; i++)
         {
+            BitmapFrame frame = list[i];
             frame.Freeze();
+            double deskewAngle = Deskew.GetDeskewAngle(frame) + 90;
             await Dispatcher.InvokeAsync(
                 () =>
                 {
-                    Scanner?.Resimler.Add(new ScannedImage { Resim = frame, FilePath = filename });
-                    PdfLoadProgressValue = (double)i / totalPageCount;
+                    ScannedImage item = new() { DeskewAngle = deskewAngle, Resim = frame, FilePath = filename };
+                    Scanner?.Resimler.Add(item);
+                    PdfLoadProgressValue = (i + 1) / (double)totalPageCount;
                 });
         }
         _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
@@ -5738,9 +5747,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         for (int i = collection.Count - 1; i > 0; i--)
         {
             int j = random.Next(0, i + 1);
-            T temp = collection[i];
-            collection[i] = collection[j];
-            collection[j] = temp;
+            (collection[j], collection[i]) = (collection[i], collection[j]);
         }
         return[ .. collection ];
     }
@@ -5827,6 +5834,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         bitmapFrame.Freeze();
         evrak = null;
         ScannedImage item = new() { Resim = bitmapFrame, RotationAngle = (double)SelectedRotation, FlipAngle = (double)SelectedFlip };
+        item.DeskewAngle = Deskew.GetDeskewAngle(item.Resim) + 90;
         if (Settings.Default.AutoRotateBasedText && TesseractOrientationFileExists)
         {
             _ = AutoRotateBasedTextOrientation([ item ], 1).ConfigureAwait(true).GetAwaiter();

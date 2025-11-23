@@ -16,7 +16,7 @@ namespace TwainControl
     {
         public int GetPageCount(string filename)
         {
-            string[] cbzfilext = [ ".jpg", ".png", ".gif" ];
+            string[] cbzfilext = [".jpg", ".png", ".gif"];
             using ArchiveFile archiveFile = new(filename);
             return archiveFile?.Entries?.Count(z => z.Size > 0 && cbzfilext.Contains(Path.GetExtension(z.FileName.ToLowerInvariant()))) ?? 0;
         }

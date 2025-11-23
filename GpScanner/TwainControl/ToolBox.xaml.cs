@@ -183,7 +183,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 await Task.Run(
                     () =>
                     {
-                        listcroppedimages = [ .. Scanner.Resimler.Where(z => z.Seçili) ];
+                        listcroppedimages = [.. Scanner.Resimler.Where(z => z.Seçili)];
                         File.WriteAllBytes(path, listcroppedimages.CombineImages(orientation).ToTiffJpegByteArray(Format.Jpg));
                     });
                 WebAdreseGit.Execute(savefolder);
@@ -200,7 +200,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             {
                 PageOrientation pageOrientation = Keyboard.Modifiers == ModifierKeys.Alt ? PageOrientation.Portrait : PageOrientation.Landscape;
                 string savefolder = CreateSaveFolder("MERGE");
-                List<ScannedImage> seçiliresimler = [ .. Scanner.Resimler.Where(z => z.Seçili) ];
+                List<ScannedImage> seçiliresimler = [.. Scanner.Resimler.Where(z => z.Seçili)];
                 PdfDocument pdfdocument = new();
                 PdfPage page = null;
                 int imageindex = 0;

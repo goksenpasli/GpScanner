@@ -68,9 +68,7 @@ public class GridViewSort
 
             if (direction == ListSortDirection.Ascending)
             {
-                int tmp = y1;
-                y1 = y2;
-                y2 = tmp;
+                (y2, y1) = (y1, y2);
             }
 
             PathSegmentCollection pathSegmentCollection = [ new LineSegment(new Point(x2, y1), true), new LineSegment(new Point(x3, y2), true) ];

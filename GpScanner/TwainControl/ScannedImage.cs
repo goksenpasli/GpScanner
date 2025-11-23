@@ -13,6 +13,7 @@ namespace TwainControl;
 
 public class ScannedImage : InpcBase
 {
+    private bool ısDeskewedImage;
     private bool pdfHasText;
 
     public ScannedImage() { PropertyChanged += ScannedImage_PropertyChangedAsync; }
@@ -27,6 +28,20 @@ public class ScannedImage : InpcBase
             {
                 field = value;
                 OnPropertyChanged(nameof(Animate));
+            }
+        }
+    }
+
+    public double DeskewAngle
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(DeskewAngle));
+                OnPropertyChanged(nameof(IsDeskewedImage));
             }
         }
     }
@@ -98,6 +113,19 @@ public class ScannedImage : InpcBase
 
             field = value;
             OnPropertyChanged(nameof(Index));
+        }
+    }
+
+    public bool IsDeskewedImage
+    {
+        get => Math.Round(DeskewAngle) != 90.0;
+        set
+        {
+            if (ısDeskewedImage != value)
+            {
+                ısDeskewedImage = value;
+                OnPropertyChanged(nameof(IsDeskewedImage));
+            }
         }
     }
 

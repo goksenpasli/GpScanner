@@ -519,7 +519,7 @@ namespace DvdBurner
             return listdrives;
         }
 
-        private long GetTotalFileSizeMB(string[] files) => files?.Aggregate(0L, (accumulator, item) => accumulator += new FileInfo(item).Length) / 1024 / 1024 ?? 0;
+        private long GetTotalFileSizeMB(string[] files) => (files?.Aggregate(0L, (accumulator, item) => accumulator += new FileInfo(item).Length) / 1024 / 1024) ?? 0;
 
         private void UpdateProgressFileSize(string[] files)
         {

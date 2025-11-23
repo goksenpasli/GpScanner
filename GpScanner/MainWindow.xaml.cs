@@ -16,7 +16,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
 using TwainControl;
 using static Extensions.ExtensionMethods;
 using static GpScanner.ViewModel.GpScannerViewModel;

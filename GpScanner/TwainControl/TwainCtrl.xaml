@@ -1662,9 +1662,17 @@
                                         <Button local:Policy.PolicyName="TümünüOtomatikDöndür"
                                             Command="{Binding TümünüOtomatikDöndür}"
                                             RenderTransformOrigin="0.5,0.5"
-                                            ToolTip="{local:Loc TESSERACTORIENTATIONFILEWARNING}"
                                             ToolTipService.IsEnabled="{Binding IsEnabled, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource Mode=Self}}"
                                             ToolTipService.ShowOnDisabled="True">
+                                            <Button.ToolTip>
+                                                <TextBlock>
+                                                    <Run Text="{local:Loc Rotate90}" />
+                                                    <Run Text="{local:Loc Rotate180}" />
+                                                    <Run Text="{local:Loc Rotate270}" />
+                                                    <LineBreak />
+                                                    <Run Text="{local:Loc TESSERACTORIENTATIONFILEWARNING}" />
+                                                </TextBlock>
+                                            </Button.ToolTip>
                                             <Canvas Width="24" Height="24">
                                                 <Image Width="24"
                                                     Height="24"
@@ -2055,8 +2063,13 @@
                                                                     <TextBlock Canvas.Left="2"
                                                                         Canvas.Top="0"
                                                                         FontFamily="Webdings"
-                                                                        FontSize="20"
-                                                                        Text="N">
+                                                                        FontSize="20"><Run Text="N" /><LineBreak />
+                                                                        <InlineUIContainer BaselineAlignment="Center">
+                                                                            <Extensions:AngleGauge Width="16"
+                                                                                Height="16"
+                                                                                Angle="90"
+                                                                                Visibility="{Binding IsDeskewedImage, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                                        </InlineUIContainer>
                                                                         <TextBlock.Style>
                                                                             <Style TargetType="TextBlock">
                                                                                 <Setter Property="Foreground" Value="Green" />
@@ -2079,9 +2092,16 @@
                                                                                         <RotateTransform Angle="-90" />
                                                                                     </TextBlock.LayoutTransform>
                                                                                 </TextBlock>
-                                                                                <Image Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, ConverterParameter=3, Converter={StaticResource DivideConverter}}"
-                                                                                    Height="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, ConverterParameter=3, Converter={StaticResource DivideConverter}}"
-                                                                                    Source="{Binding Resim, Mode=OneWay, Converter={StaticResource BitmapFrameToBitmapFrameThumbConverter}}" />
+                                                                                <Grid>
+                                                                                    <Image Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, ConverterParameter=3, Converter={StaticResource DivideConverter}}"
+                                                                                        Height="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, ConverterParameter=3, Converter={StaticResource DivideConverter}}"
+                                                                                        Source="{Binding Resim, Mode=OneWay, Converter={StaticResource BitmapFrameToBitmapFrameThumbConverter}}" />
+                                                                                    <Extensions:AngleGauge Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, ConverterParameter=8, Converter={StaticResource DivideConverter}}"
+                                                                                        Height="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, ConverterParameter=8, Converter={StaticResource DivideConverter}}"
+                                                                                        HorizontalAlignment="Right"
+                                                                                        VerticalAlignment="Bottom"
+                                                                                        Angle="{Binding DeskewAngle, Mode=OneWay}" />
+                                                                                </Grid>
                                                                             </DockPanel>
                                                                         </TextBlock.ToolTip>
                                                                     </TextBlock>

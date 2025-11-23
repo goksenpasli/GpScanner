@@ -1,4 +1,12 @@
-﻿using System;
+﻿using Extensions;
+using GpScanner.Properties;
+using Microsoft.SharePoint.Client;
+using Microsoft.Win32;
+using Ocr;
+using PdfCompressor;
+using PdfSharp.Pdf;
+using SevenZipExtractor;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,14 +37,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shell;
 using System.Windows.Threading;
 using System.Xml.Linq;
-using Extensions;
-using GpScanner.Properties;
-using Microsoft.SharePoint.Client;
-using Microsoft.Win32;
-using Ocr;
-using PdfCompressor;
-using PdfSharp.Pdf;
-using SevenZipExtractor;
 using TwainControl;
 using WebPWrapper;
 using Xceed.Words.NET;
@@ -819,7 +819,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                             string file = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
                                             BatchFolderProcessedFileList.Add(new TessFiles() { Name = file });
                                         });
-                                        scanner.PdfSaveProgressValue = BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count ?? 0;
+                                        scanner.PdfSaveProgressValue = (BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count) ?? 0;
                                     }
                                 }
                                 catch (Exception ex)
@@ -899,7 +899,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                         string content = string.Join(" ", image.GetOcrData(Settings.Default.DefaultTtsLang).Select(z => z.Text));
                                         File.WriteAllText(txtfile, content);
                                         batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
-                                        scanner.PdfSaveProgressValue = BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count ?? 0;
+                                        scanner.PdfSaveProgressValue = (BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count) ?? 0;
                                         batchTxtOcr.FilePath = Path.GetFileName(image);
                                     }
                                 }
@@ -1478,9 +1478,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> IgnoreUnindexedFileError { get; }
 
-    public bool AllItemChecked {
+    public bool AllItemChecked
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1489,10 +1491,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     } = true;
 
-    public int AllPdfPage {
+    public int AllPdfPage
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1507,10 +1511,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> ApplyCustomSize { get; }
 
-    public string AramaMetni {
+    public string AramaMetni
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1521,17 +1527,21 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ICommand AssociateExtension { get; }
 
-    public IEnumerable<string> AudioFiles {
-        get {
+    public IEnumerable<string> AudioFiles
+    {
+        get
+        {
             string folder = $"{Environment.GetFolderPath(Environment.SpecialFolder.Windows)}\\Media";
             return Directory.Exists(folder) ? Directory.EnumerateFiles(folder, "*.wav", SearchOption.TopDirectoryOnly) : null;
         }
     }
 
-    public ObservableCollection<string> BarcodeList {
+    public ObservableCollection<string> BarcodeList
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1540,9 +1550,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     } = [];
 
-    public DateTime BaşlangıçTarihi {
+    public DateTime BaşlangıçTarihi
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1551,10 +1563,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public bool BatchDialogOpen {
+    public bool BatchDialogOpen
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1563,10 +1577,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public string BatchFolder {
+    public string BatchFolder
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1575,9 +1591,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public ObservableCollection<TessFiles> BatchFolderProcessedFileList {
+    public ObservableCollection<TessFiles> BatchFolderProcessedFileList
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1594,9 +1612,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> BatchFolderTümünüSil { get; }
 
-    public ObservableCollection<TessFiles> BatchImageFileExtensions {
+    public ObservableCollection<TessFiles> BatchImageFileExtensions
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1615,10 +1635,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> BatchMergeSelectedFiles { get; }
 
-    public ObservableCollection<BatchTxtOcr> BatchTxtOcrs {
+    public ObservableCollection<BatchTxtOcr> BatchTxtOcrs
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1627,9 +1649,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public DateTime BitişTarihi {
+    public DateTime BitişTarihi
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1638,9 +1662,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public ObservableCollection<string> BurnFiles {
+    public ObservableCollection<string> BurnFiles
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1649,9 +1675,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     } = [];
 
-    public string CalendarDesc {
+    public string CalendarDesc
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1660,10 +1688,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public XmlLanguage CalendarLang {
+    public XmlLanguage CalendarLang
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1672,9 +1702,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public bool CalendarPanelIsExpanded {
+    public bool CalendarPanelIsExpanded
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1695,10 +1727,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> CheckCapabilitiesData { get; }
 
-    public int CheckedPdfCount {
+    public int CheckedPdfCount
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1715,10 +1749,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> CloseApp { get; }
 
-    public ObservableCollection<BatchPdfData> CompressedFiles {
+    public ObservableCollection<BatchPdfData> CompressedFiles
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1729,9 +1765,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public List<Size> CompressorList { get; } = new List<Size>() { { new Size(72, 80) }, { new Size(96, 75) }, { new Size(120, 70) }, { new Size(150, 65) }, { new Size(200, 60) }, };
 
-    public ObservableCollection<ContributionData> ContributionData {
+    public ObservableCollection<ContributionData> ContributionData
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1740,10 +1778,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public int ContributionDocumentCount {
+    public int ContributionDocumentCount
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1752,9 +1792,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public int ContributionMonthYear {
+    public int ContributionMonthYear
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1763,9 +1805,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     } = DateTime.Now.Year;
 
-    public double ContributionPreviewSize {
+    public double ContributionPreviewSize
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1780,10 +1824,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ICommand DateForward { get; }
 
-    public bool DetectBarCode {
+    public bool DetectBarCode
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1792,10 +1838,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     } = true;
 
-    public bool DocumentPanelIsExpanded {
+    public bool DocumentPanelIsExpanded
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1804,10 +1852,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public ObservableCollection<Scanner> Dosyalar {
+    public ObservableCollection<Scanner> Dosyalar
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1824,9 +1874,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public string Error => string.Empty;
 
-    public string ErrorLogPath {
+    public string ErrorLogPath
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1835,9 +1887,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public string EsclPort {
+    public string EsclPort
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1846,9 +1900,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public string EsclUrl {
+    public string EsclUrl
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1859,10 +1915,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ICommand ExploreFile { get; }
 
-    public double FileLoadProgress {
+    public double FileLoadProgress
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1871,9 +1929,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public ObservableCollection<Chart> FilesChartList {
+    public ObservableCollection<Chart> FilesChartList
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1882,9 +1942,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public ObservableCollection<string> FileSystemWatcherProcessedFileList {
+    public ObservableCollection<string> FileSystemWatcherProcessedFileList
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1895,9 +1957,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<CheckBoxItem> FilterTypes { get; set; } = [];
 
-    public int FlagProgress {
+    public int FlagProgress
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1908,10 +1972,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> FocusControl { get; }
 
-    public double Fold {
+    public double Fold
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1924,9 +1990,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> GridSplitterMouseRightButtonDown { get; }
 
-    public ObservableCollection<string> HistoryList {
+    public ObservableCollection<string> HistoryList
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1937,10 +2005,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<string> HistorySaveList { get; set; } = [];
 
-    public int IndexedFileCount {
+    public int IndexedFileCount
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1951,14 +2021,17 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> InstallPortablePackage { get; }
 
-    public bool IsAdministrator {
-        get {
+    public bool IsAdministrator
+    {
+        get
+        {
             using WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new(identity);
             field = principal.IsInRole(WindowsBuiltInRole.Administrator);
             return field;
         }
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1967,9 +2040,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public bool IsSqlQuery {
+    public bool IsSqlQuery
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1978,9 +2053,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     } = true;
 
-    public FlowDirection LangFlowDirection {
+    public FlowDirection LangFlowDirection
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -1989,10 +2066,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     } = FlowDirection.LeftToRight;
 
-    public bool ListBoxBorderAnimation {
+    public bool ListBoxBorderAnimation
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2015,10 +2094,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> LoadUnindexedFiles { get; }
 
-    public GridLength MainWindowDocumentGuiControlLength {
+    public GridLength MainWindowDocumentGuiControlLength
+    {
         get => mainWindowDocumentGuiControlLength;
 
-        set {
+        set
+        {
             if (mainWindowDocumentGuiControlLength != value)
             {
                 mainWindowDocumentGuiControlLength = value;
@@ -2027,10 +2108,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public GridLength MainWindowGuiControlLength {
+    public GridLength MainWindowGuiControlLength
+    {
         get => mainWindowGuiControlLength;
 
-        set {
+        set
+        {
             if (mainWindowGuiControlLength != value)
             {
                 mainWindowGuiControlLength = value;
@@ -2039,9 +2122,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public double Mirror {
+    public double Mirror
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2054,16 +2139,20 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> MonthZipFile { get; }
 
-    public bool NetFxVersionSupported {
-        get {
+    public bool NetFxVersionSupported
+    {
+        get
+        {
             using RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full");
             return (int?)(ndpKey?.GetValue("Release")) > NetFxMinVersion;
         }
     }
 
-    public DateTime NotifyDate {
+    public DateTime NotifyDate
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2072,9 +2161,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     } = DateTime.Today;
 
-    public bool OcrAllPdfPages {
+    public bool OcrAllPdfPages
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2083,9 +2174,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public double OcrAllPdfPagesProgress {
+    public double OcrAllPdfPagesProgress
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2094,10 +2187,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public bool OcrIsBusy {
+    public bool OcrIsBusy
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2108,10 +2203,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ICommand OcrPage { get; }
 
-    public double OcrPageCount {
+    public double OcrPageCount
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2126,10 +2223,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> OpenSettings { get; }
 
-    public string PatchFileName {
+    public string PatchFileName
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2138,10 +2237,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public string PatchProfileName {
+    public string PatchProfileName
+    {
         get => field?.Split('|')[0];
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2150,10 +2251,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public string PatchTag {
+    public string PatchTag
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2162,9 +2265,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public PdfViewer.FitImageOrientation PdfAllPageOrientation {
+    public PdfViewer.FitImageOrientation PdfAllPageOrientation
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2173,10 +2278,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     } = PdfViewer.FitImageOrientation.Width;
 
-    public bool PdfBatchRunning {
+    public bool PdfBatchRunning
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2187,9 +2294,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ICommand PdfBirleştir { get; }
 
-    public bool PdfCompressorItemToggle {
+    public bool PdfCompressorItemToggle
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2198,10 +2307,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public double PdfMergeProgressValue {
+    public double PdfMergeProgressValue
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2218,10 +2329,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ICommand PrintImage { get; }
 
-    public Brush ProgressBarForegroundBrush {
+    public Brush ProgressBarForegroundBrush
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2246,9 +2359,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> ResetThemeColor { get; }
 
-    public double Ripple {
+    public double Ripple
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2269,10 +2384,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> SaveZipErrorEvents { get; }
 
-    public ObservableCollection<OcrData> ScannedText {
+    public ObservableCollection<OcrData> ScannedText
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2287,9 +2404,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> SearchDocument { get; }
 
-    public bool SearchDocumentFilterDialogIsOpen {
+    public bool SearchDocumentFilterDialogIsOpen
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2298,9 +2417,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public bool SearchProgressIndeterminate {
+    public bool SearchProgressIndeterminate
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2309,10 +2430,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public string SeçiliDil {
+    public string SeçiliDil
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2321,9 +2444,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public TessFiles SelectedBatchFile {
+    public TessFiles SelectedBatchFile
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2332,9 +2457,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public Size SelectedCompressorProfile {
+    public Size SelectedCompressorProfile
+    {
         get => selectedCompressorProfile;
-        set {
+        set
+        {
             if (selectedCompressorProfile != value)
             {
                 selectedCompressorProfile = value;
@@ -2343,9 +2470,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public ContributionData SelectedContribution {
+    public ContributionData SelectedContribution
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2354,9 +2483,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public int SelectedContributionYear {
+    public int SelectedContributionYear
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2365,9 +2496,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     } = DateTime.Now.Year;
 
-    public ReminderData SelectedReminder {
+    public ReminderData SelectedReminder
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2376,10 +2509,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public Size SelectedSize {
+    public Size SelectedSize
+    {
         get => selectedSize;
 
-        set {
+        set
+        {
             if (selectedSize != value)
             {
                 selectedSize = value;
@@ -2404,10 +2539,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public int[] SettingsPagePictureResizeList { get; } = [.. Enumerable.Range(5, 100).Where(z => z % 5 == 0)];
 
-    public bool ShowUnindexedFileWarn {
+    public bool ShowUnindexedFileWarn
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2416,10 +2553,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public bool Shutdown {
+    public bool Shutdown
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2428,10 +2567,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public List<Data> SqlQueryData {
+    public List<Data> SqlQueryData
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2440,10 +2581,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public string SqlText {
+    public string SqlText
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2470,10 +2613,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public bool TesseractOrientationLanguageAvailable => TesseractViewModel?.TesseractFiles?.Any(z => z.Name == "osd") == true;
 
-    public TesseractViewModel TesseractViewModel {
+    public TesseractViewModel TesseractViewModel
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2484,9 +2629,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public bool TesseractVisualCRuntimeInstalled => CheckFileVersion($@"{Environment.SystemDirectory}\msvcp140.dll") > new Version(MinimumVcVersion);
 
-    public long TotalFileSize {
+    public long TotalFileSize
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2495,10 +2642,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public TranslateViewModel TranslateViewModel {
+    public TranslateViewModel TranslateViewModel
+    {
         get;
 
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2515,9 +2664,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> UndoApplyCalendarData { get; }
 
-    public ObservableCollection<UnindexedData> UnIndexedFiles {
+    public ObservableCollection<UnindexedData> UnIndexedFiles
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2530,9 +2681,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> UnindexedFileOcr { get; }
 
-    public int UnIndexedPdfOcrDpi {
+    public int UnIndexedPdfOcrDpi
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2545,9 +2698,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> UploadSharePoint { get; }
 
-    public bool UseLzma {
+    public bool UseLzma
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2560,9 +2715,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> WordOcrPdfThumbnailPage { get; }
 
-    public IEnumerable<IGrouping<int, ContributionData>> YearlyGroupData {
+    public IEnumerable<IGrouping<int, ContributionData>> YearlyGroupData
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -2573,9 +2730,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public IEnumerable<int> Years { get; } = Enumerable.Range(DateTime.Now.Year - 10, 11);
 
-    public double ZipProgress {
+    public double ZipProgress
+    {
         get;
-        set {
+        set
+        {
             if (field != value)
             {
                 field = value;
@@ -3196,7 +3355,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             _ => Tuple.Create(XmlLanguage.GetLanguage("en-US"), "English")
         };
     }
-    private long GetTotalFileSizeMB(string[] files) => files?.Aggregate(0L, (accumulator, item) => accumulator += new FileInfo(item).Length) / 1024 / 1024 ?? 0;
+    private long GetTotalFileSizeMB(string[] files) => (files?.Aggregate(0L, (accumulator, item) => accumulator += new FileInfo(item).Length) / 1024 / 1024) ?? 0;
 
     private async Task<ObservableCollection<UnindexedData>> GetUnindexedFileData()
     {

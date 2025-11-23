@@ -4,73 +4,97 @@ using System.Windows.Media.Imaging;
 
 namespace TwainControl;
 
-public abstract class Deskew()
+public abstract class Deskew
 {
     public static double GetDeskewAngle(BitmapSource image)
     {
-        BitmapSource grayscaleImage = ConvertToGrayscale(image);
-        ImageMoments moments = CalculateImageMoments(grayscaleImage);
-        return CalculateSkewAngle(moments);
+        double scale = Math.Min(1.0, 600.0 / Math.Max(image.PixelWidth, image.PixelHeight));
+        TransformedBitmap bmp = new(image, new ScaleTransform(scale, scale));
+        FormatConvertedBitmap gray = new(bmp, PixelFormats.Gray8, null, 0);
+        gray.Freeze();
+
+        int w = gray.PixelWidth, h = gray.PixelHeight;
+        int stride = w;
+        byte[] pixels = new byte[h * stride];
+        gray.CopyPixels(pixels, stride, 0);
+
+        double angle1 = Search(pixels, w, h, -10, 10, 0.8, out _);
+
+        return Search(pixels, w, h, angle1 - 1.5, angle1 + 1.5, 0.1, out _);
     }
 
-    private static ImageMoments CalculateImageMoments(BitmapSource image)
+    private static double Search(byte[] pixels, int w, int h, double from, double to, double step, out double bestScore)
     {
-        int width = image.PixelWidth;
-        int height = image.PixelHeight;
-        double m00 = 0, m10 = 0, m01 = 0;
+        double cx = w / 2.0, cy = h / 2.0;
+        bestScore = double.NegativeInfinity;
+        double bestAngle = 0;
 
-        byte[] pixels = new byte[width * height];
-        image.CopyPixels(pixels, width, 0);
-
-        for (int y = 0; y < height; y++)
+        int avg = 0;
+        for (int i = 0; i < pixels.Length; i += 5000)
         {
-            for (int x = 0; x < width; x++)
-            {
-                byte grayValue = pixels[(y * width) + x];
+            avg += pixels[i];
+        }
 
-                m00 += grayValue;
-                m10 += x * grayValue;
-                m01 += y * grayValue;
+        avg /= Math.Max(1, pixels.Length / 5000);
+        int threshold = 255 - avg;
+
+        for (double a = from; a <= to + 1e-6; a += step)
+        {
+            double rad = a * Math.PI / 180.0;
+            double sin = Math.Sin(rad), cos = Math.Cos(rad);
+            long[] projection = new long[h];
+
+            for (int y = 0; y < h; y += 2)
+            {
+                int yw = y * w;
+                for (int x = 0; x < w; x += 2)
+                {
+                    int intensity = 255 - pixels[yw + x];
+                    if (intensity < threshold)
+                    {
+                        continue;
+                    }
+
+                    double dx = x - cx;
+                    double dy = y - cy;
+
+                    int row = (int)Math.Round((dx * sin) + (dy * cos) + cy);
+
+                    if ((uint)row < (uint)h)
+                    {
+                        projection[row] += intensity;
+                    }
+                }
+            }
+
+            long sum = 0, sumSq = 0;
+            int cnt = 0;
+            for (int i = 0; i < h; i++)
+            {
+                long v = projection[i];
+                if (v > 0)
+                {
+                    sum += v;
+                    sumSq += v * v;
+                    cnt++;
+                }
+            }
+
+            if (cnt == 0)
+            {
+                continue;
+            }
+
+            double mean = (double)sum / cnt;
+            double score = (sumSq / (double)cnt) - (mean * mean);
+
+            if (score > bestScore)
+            {
+                bestScore = score;
+                bestAngle = a;
             }
         }
 
-        double xCenter = m10 / m00;
-        double yCenter = m01 / m00;
-
-        double mu20 = 0, mu02 = 0, mu11 = 0;
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                byte grayValue = pixels[(y * width) + x];
-
-                double xShift = x - xCenter;
-                double yShift = y - yCenter;
-
-                mu20 += xShift * xShift * grayValue;
-                mu02 += yShift * yShift * grayValue;
-                mu11 += xShift * yShift * grayValue;
-            }
-        }
-
-        return new ImageMoments(mu20 / m00, mu02 / m00, mu11 / m00);
-    }
-
-    private static double CalculateSkewAngle(ImageMoments moments)
-    {
-        double skewAngleRad = Math.Atan2(2 * moments.Mu11, moments.Mu20 - moments.Mu02) / 2;
-        double skewAngleDeg = skewAngleRad * (180 / Math.PI);
-        return skewAngleDeg > 0 ? 90 - skewAngleDeg : -(90 + skewAngleDeg);
-    }
-
-    private static BitmapSource ConvertToGrayscale(BitmapSource image) => new FormatConvertedBitmap(image, PixelFormats.Gray8, null, 0);
-
-    public class ImageMoments(double mu20, double mu02, double mu11)
-    {
-        public double Mu02 { get; } = mu02;
-
-        public double Mu11 { get; } = mu11;
-
-        public double Mu20 { get; } = mu20;
+        return bestAngle;
     }
 }

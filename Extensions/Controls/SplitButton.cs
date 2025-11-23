@@ -63,7 +63,7 @@ public class SplitButton : ButtonBase
     protected override void OnClick()
     {
         Point mousePosition = Mouse.GetPosition(this);
-        Rect mainbuttonrect = new(0, 0, ActualWidth - _toggleButton?.ActualWidth ?? 0, ActualHeight);
+        Rect mainbuttonrect = new(0, 0, (ActualWidth - _toggleButton?.ActualWidth) ?? 0, ActualHeight);
         if (mainbuttonrect.Contains(mousePosition))
         {
             base.OnClick();

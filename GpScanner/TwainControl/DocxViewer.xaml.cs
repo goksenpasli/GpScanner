@@ -113,7 +113,7 @@ namespace TwainControl
         {
             Run inline = new(formattedText.text)
             {
-                FontSize = formattedText.formatting?.Size * 4 / 3 ?? 16,
+                FontSize = (formattedText.formatting?.Size * 4 / 3) ?? 16,
                 FontFamily = formattedText.formatting?.FontFamily is null ? new System.Windows.Media.FontFamily("Times New Roman") : new System.Windows.Media.FontFamily(formattedText.formatting?.FontFamily.Name)
             };
             if (formattedText?.formatting is not null)

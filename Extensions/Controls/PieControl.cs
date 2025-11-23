@@ -61,7 +61,7 @@ public class PieControl : GraphControl
         figure.Segments.Add(new LineSegment(startPoint, true));
         figure.Segments.Add(new ArcSegment(endPoint, new Size(radius, radius), 0, isLargeArc, SweepDirection.Clockwise, true));
         figure.Freeze();
-        PathGeometry geometry = new([ figure ]);
+        PathGeometry geometry = new([figure]);
         geometry.Freeze();
         context.DrawGeometry(brush, null, geometry);
     }
