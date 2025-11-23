@@ -1607,14 +1607,17 @@
                                             </Extensions:SplitButton.InternalContent>
                                         </Extensions:SplitButton>
                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        <Button local:Policy.PolicyName="CycleSelectedDocuments"
-                                            Command="{Binding CycleSelectedDocuments}"
+                                        <Extensions:NumericUpDown Maximum="{Binding ElementName=Lb, Path=Items.Count, Mode=OneWay}"
+                                            Minimum="1"
+                                            Value="{Binding PageIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <Button local:Policy.PolicyName="GotoDocumentIndex"
+                                            Command="{Binding GotoDocumentIndex}"
                                             CommandParameter="{Binding ElementName=Lb}">
                                             <Image Width="24" Height="24">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                         <Binding Source="Shell32.dll" />
-                                                        <Binding Source="22" />
+                                                        <Binding Source="55" />
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
@@ -1735,6 +1738,18 @@
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                         <Binding Source="Shell32.dll" />
                                                         <Binding Source="245" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Button>
+                                        <Button local:Policy.PolicyName="CycleSelectedDocuments"
+                                            Command="{Binding CycleSelectedDocuments}"
+                                            CommandParameter="{Binding ElementName=Lb}">
+                                            <Image Width="24" Height="24">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="22" />
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>

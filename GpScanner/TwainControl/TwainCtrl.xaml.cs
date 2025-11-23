@@ -1318,6 +1318,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => GetSelectedImagesCount() > 0);
 
+        GotoDocumentIndex = new RelayCommand<object>(
+            async parameter =>
+            {
+                ScannedImage scannedImage = Scanner?.Resimler?.FirstOrDefault(z => z.Index == PageIndex);
+                if (parameter is ListBox listBox && scannedImage is not null)
+                {
+                    listBox.ScrollIntoView(scannedImage);
+                    scannedImage.Animate = true;
+                    await Task.Delay(500);
+                    scannedImage.Animate = false;
+                }
+            },
+            parameter => AnyImageExist());
+
         PdfWaterMark = new RelayCommand<object>(
             async parameter =>
             {
@@ -2932,6 +2946,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> FlipPdfPage { get; }
 
+    public RelayCommand<object> GotoDocumentIndex { get; }
+
     public RelayCommand<object> GridSplitterMouseDoubleClick { get; }
 
     public RelayCommand<object> GridSplitterMouseRightButtonDown { get; }
@@ -3129,6 +3145,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     }
+
+    public int PageIndex
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(PageIndex));
+            }
+        }
+    } = 1;
 
     public int PageWidth
     {
