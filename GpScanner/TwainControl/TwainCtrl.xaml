@@ -1929,14 +1929,6 @@
                                                                                         <Separator />
                                                                                         <Expander Header="{local:Loc DESKEW}">
                                                                                             <StackPanel>
-                                                                                                <Button local:Policy.PolicyName="AutoDeskewImage"
-                                                                                                    Command="{Binding Data.AutoDeskewImage, Source={StaticResource Proxy}}"
-                                                                                                    CommandParameter="{Binding Mode=OneWay}">
-                                                                                                    <TextBlock FontFamily="Wingdings 3"
-                                                                                                        FontSize="22"
-                                                                                                        Foreground="Black"
-                                                                                                        Text="R" />
-                                                                                                </Button>
                                                                                                 <UniformGrid Columns="2">
                                                                                                     <Button local:Policy.PolicyName="ResimSilGeriAl"
                                                                                                         Command="{Binding Data.UndoInvertImage, Source={StaticResource Proxy}}"
@@ -2027,6 +2019,15 @@
                                                                                 </Image.Source>
                                                                             </Image>
                                                                         </InlineUIContainer>
+                                                                    </Hyperlink><Hyperlink local:Policy.PolicyName="AutoDeskewImage"
+                                                                        BaselineAlignment="Center"
+                                                                        Command="{Binding DataContext.AutoDeskewImage, ElementName=UserControl}"
+                                                                        CommandParameter="{Binding Mode=OneWay}"
+                                                                        FontFamily="Wingdings 3"
+                                                                        FontSize="22"
+                                                                        Foreground="Black"
+                                                                        TextDecorations="None">
+                                                                        <System:String>R</System:String>
                                                                     </Hyperlink><Hyperlink local:Policy.PolicyName="ResimSil"
                                                                         BaselineAlignment="Center"
                                                                         Command="{Binding DataContext.ResimSil, ElementName=UserControl}"

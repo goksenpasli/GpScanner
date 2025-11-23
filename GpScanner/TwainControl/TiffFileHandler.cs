@@ -59,7 +59,7 @@ namespace TwainControl
                         });
                     frames.Add(bitmapFrame);
                 }
-                catch (Exception)
+                catch
                 {
                 }
             }

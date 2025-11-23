@@ -516,7 +516,7 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     {
                         CharacterInformations = pdfDoc.GetCharacterInformation(page - 1);
                     }
-                    catch (Exception)
+                    catch
                     {
                     }
                     return bitmapImage;

@@ -309,7 +309,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                     eypPdfViewer.PdfFilePath = eypfile;
                 }
             }
-            catch (Exception)
+            catch
             {
             }
         }

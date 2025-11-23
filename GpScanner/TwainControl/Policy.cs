@@ -27,7 +27,7 @@ public class Policy : DependencyObject
                 return true;
             }
         }
-        catch (Exception)
+        catch
         {
         }
 
@@ -58,7 +58,7 @@ public class Policy : DependencyObject
             using RegistryKey currentUserKey = Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner");
             return CheckKeyPolicy(policyname, localMachineKey) && CheckKeyPolicy(policyname, currentUserKey);
         }
-        catch (Exception)
+        catch
         {
         }
         return true;

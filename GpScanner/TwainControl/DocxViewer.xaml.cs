@@ -91,7 +91,7 @@ namespace TwainControl
                         }
                     }
                 }
-                catch (Exception)
+                catch
                 {
                 }
             }

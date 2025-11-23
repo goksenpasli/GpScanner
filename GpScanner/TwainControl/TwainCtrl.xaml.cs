@@ -3927,7 +3927,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
             return null;
         }
-        catch (Exception)
+        catch
         {
         }
         return null;
@@ -4224,7 +4224,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
                 });
         }
-        catch (Exception)
+        catch
         {
         }
     }
@@ -4280,10 +4280,21 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         if ((e.Data.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
         {
-            foreach (string folder in from string file in droppedfiles where File.GetAttributes(file).HasFlag(FileAttributes.Directory) select file)
+            foreach (string file in droppedfiles)
             {
-                await Task.Run(() => AddFiles(Directory.GetFiles(folder), DecodeHeight, fileloadcancellationToken));
+                try
+                {
+                    if (File.GetAttributes(file).HasFlag(FileAttributes.Directory))
+                    {
+                        string folder = file;
+                        await Task.Run(() => AddFiles(Directory.GetFiles(folder), DecodeHeight, fileloadcancellationToken));
+                    }
+                }
+                catch
+                {
+                }
             }
+
             await Task.Run(() => AddFiles(droppedfiles, DecodeHeight, fileloadcancellationToken));
         }
     }
@@ -4545,7 +4556,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             _ = Dispatcher.Invoke(() => AllRotateProgressValue = (i + 1) / (double)Scanner.Resimler.Count);
                             i++;
                         }
-                        catch (Exception)
+                        catch
                         {
                         }
                     });
