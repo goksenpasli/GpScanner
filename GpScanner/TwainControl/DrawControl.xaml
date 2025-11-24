@@ -156,7 +156,13 @@
                     Background="Transparent"
                     Cursor="Cross"
                     IsHitTestVisible="{Binding FlatFixMode, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
-                    MouseLeftButtonDown="OverlayCanvas_MouseClick" />
+                    MouseLeftButtonDown="OverlayCanvas_MouseClick">
+                    <Path x:Name="MaskPath"
+                        Fill="Black"
+                        IsHitTestVisible="False"
+                        Opacity="0.45" />
+                    <Canvas x:Name="LineCanvas" IsHitTestVisible="False" />
+                </Canvas>
             </Grid>
         </ScrollViewer>
         <ScrollViewer Grid.Row="1"

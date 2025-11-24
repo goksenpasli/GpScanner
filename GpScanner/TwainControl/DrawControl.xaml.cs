@@ -29,6 +29,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 {
     public static readonly DependencyProperty TemporaryImageProperty = DependencyProperty.Register("TemporaryImage", typeof(ImageSource), typeof(DrawControl), new PropertyMetadata(null));
     private readonly List<Thumb> _corners = [];
+    private readonly Line[] _quadLines = [ new(), new(), new(), new() ];
     private double stylusWidth = 3d;
 
     public DrawControl()
@@ -38,6 +39,14 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         DependencyPropertyDescriptor.FromProperty(ZoomableInkCanvas.CurrentZoomProperty, typeof(ZoomableInkCanvas))?.AddValueChanged(Ink, OnZoomChanged);
         GenerateCustomCursor();
         Ink.PreviewMouseDown += Ink_PreviewMouseDown;
+
+        foreach (Line ln in _quadLines)
+        {
+            ln.Stroke = System.Windows.Media.Brushes.Red;
+            ln.StrokeThickness = 1;
+            ln.SnapsToDevicePixels = true;
+            _ = LineCanvas.Children.Add(ln);
+        }
 
         SaveEditedImage = new RelayCommand<object>(
             async parameter =>
@@ -450,12 +459,14 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
                            double top = Canvas.GetTop(t) + e.VerticalChange;
                            Canvas.SetLeft(t, left);
                            Canvas.SetTop(t, top);
+                           UpdateQuadrilateralLines();
                        };
 
         Canvas.SetLeft(t, p.X - 12);
         Canvas.SetTop(t, p.Y - 12);
         _corners.Add(t);
         _ = OverlayCanvas.Children.Add(t);
+        UpdateQuadrilateralLines();
     }
 
     private void DrawControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -505,12 +516,12 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         {
             double x = p1[i].X, y = p1[i].Y;
             double u = p2[i].X, v = p2[i].Y;
-            system[2 * i] = [x, y, 1, 0, 0, 0, -x * u, -y * u, u];
-            system[(2 * i) + 1] = [0, 0, 0, x, y, 1, -x * v, -y * v, v];
+            system[2 * i] = [ x, y, 1, 0, 0, 0, -x * u, -y * u, u ];
+            system[(2 * i) + 1] = [ 0, 0, 0, x, y, 1, -x * v, -y * v, v ];
         }
 
         double[] s = GaussianElimination(system);
-        return [s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7], 1.0];
+        return[ s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7], 1.0 ];
     }
 
     private double[] GaussianElimination(double[][] A)
@@ -628,7 +639,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     private WriteableBitmap PerspectiveWarpBilinear(BitmapSource src, List<Point> srcPts, int w, int h)
     {
-        List<Point> dstPts = [new Point(0, 0), new Point(w, 0), new Point(w, h), new Point(0, h)];
+        List<Point> dstPts = [ new Point(0, 0), new Point(w, 0), new Point(w, h), new Point(0, h) ];
 
         double[] M = FindHomography(dstPts, srcPts);
 
@@ -716,12 +727,44 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
                 }));
     }
 
+    private void SetLine(Line line, Point p1, Point p2)
+    {
+        line.X1 = p1.X;
+        line.Y1 = p1.Y;
+        line.X2 = p2.X;
+        line.Y2 = p2.Y;
+    }
+
     private List<Point> SortPoints(List<Point> pts)
     {
-        List<Point> sortedY = [.. pts.OrderBy(p => p.Y)];
-        List<Point> top = [.. sortedY.Take(2).OrderBy(p => p.X)];
-        List<Point> bottom = [.. sortedY.Skip(2).OrderBy(p => p.X)];
+        List<Point> sortedY = [ .. pts.OrderBy(p => p.Y) ];
+        List<Point> top = [ .. sortedY.Take(2).OrderBy(p => p.X) ];
+        List<Point> bottom = [ .. sortedY.Skip(2).OrderBy(p => p.X) ];
 
-        return [top[0], top[1], bottom[1], bottom[0]];
+        return[ top[0], top[1], bottom[1], bottom[0] ];
+    }
+
+    private void UpdateQuadrilateralLines()
+    {
+        if (_corners == null || _corners.Count != 4)
+        {
+            return;
+        }
+
+        List<Point> pts = _corners.ConvertAll(c => new Point(Canvas.GetLeft(c) + 12, Canvas.GetTop(c) + 12));
+
+        pts = SortPoints(pts);
+
+        SetLine(_quadLines[0], pts[0], pts[1]);
+        SetLine(_quadLines[1], pts[1], pts[2]);
+        SetLine(_quadLines[2], pts[2], pts[3]);
+        SetLine(_quadLines[3], pts[3], pts[0]);
+
+        Rect canvasRect = new(0, 0, OverlayCanvas.ActualWidth, OverlayCanvas.ActualHeight);
+        RectangleGeometry outer = new(canvasRect);
+        PathFigure fig = new() { StartPoint = pts[0], IsClosed = true, Segments = { new LineSegment(pts[1], true), new LineSegment(pts[2], true), new LineSegment(pts[3], true) } };
+        PathGeometry quadGeo = new();
+        quadGeo.Figures.Add(fig);
+        MaskPath.Data = new CombinedGeometry(GeometryCombineMode.Exclude, outer, quadGeo);
     }
 }
