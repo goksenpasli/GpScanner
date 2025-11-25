@@ -41,11 +41,11 @@
                 <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
             </Style>
             <Style BasedOn="{StaticResource NumericUpDownStyle}" TargetType="Extensions:NumericUpDown" />
-            <DataTemplate x:Key="PdfImage">
-                <Image Width="16"
-                    Height="16"
-                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-            </DataTemplate>
+            <Image x:Key="PdfImage"
+                Width="16"
+                Height="16"
+                x:Shared="false"
+                Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid x:Name="grid" Focusable="True">
@@ -161,11 +161,7 @@
                             <Style TargetType="MenuItem">
                                 <Setter Property="Command" Value="{Binding OpenPdfHistoryFile, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
                                 <Setter Property="CommandParameter" Value="{Binding Mode=OneWay}" />
-                                <Setter Property="Icon">
-                                    <Setter.Value>
-                                        <ContentPresenter ContentTemplate="{StaticResource PdfImage}" />
-                                    </Setter.Value>
-                                </Setter>
+                                <Setter Property="Icon" Value="{StaticResource PdfImage}" />
                             </Style>
                         </MenuItem.ItemContainerStyle>
                     </MenuItem>
