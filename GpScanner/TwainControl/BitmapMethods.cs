@@ -383,6 +383,146 @@ public static class BitmapMethods
         return outputBitmap;
     }
 
+    public static WriteableBitmap RemoveVerticalLines(this WriteableBitmap source, int sensitivity = 6)
+    {
+        WriteableBitmap colorBmp = source.Format != PixelFormats.Bgra32 ? new WriteableBitmap(new FormatConvertedBitmap(source, PixelFormats.Bgra32, null, 0)) : source;
+        int width = colorBmp.PixelWidth;
+        int height = colorBmp.PixelHeight;
+        int cStride = colorBmp.BackBufferStride;
+
+        FormatConvertedBitmap grayBmp = new(colorBmp, PixelFormats.Gray8, null, 0);
+        WriteableBitmap gray = new(grayBmp);
+        int gStride = gray.BackBufferStride;
+
+        long[] columnSums = new long[width];
+        bool[] isLine = new bool[width];
+        const int windowSize = 15;
+
+        gray.Lock();
+        colorBmp.Lock();
+
+        try
+        {
+            unsafe
+            {
+                byte* gPtr = (byte*)gray.BackBuffer;
+                byte* cPtr = (byte*)colorBmp.BackBuffer;
+
+                _ = Parallel.For(
+                    0,
+                    width,
+                    x =>
+                    {
+                        long sum = 0;
+                        for (int y = 0; y < height; y++)
+                        {
+                            sum += gPtr[(y * gStride) + x];
+                        }
+
+                        columnSums[x] = sum / height;
+                    });
+
+                for (int x = 0; x < width; x++)
+                {
+                    long neighborSum = 0;
+                    int count = 0;
+
+                    for (int k = x - windowSize; k <= x + windowSize; k++)
+                    {
+                        if (k >= 0 && k < width && k != x)
+                        {
+                            neighborSum += columnSums[k];
+                            count++;
+                        }
+                    }
+
+                    long avg = (count > 0) ? (neighborSum / count) : columnSums[x];
+
+                    if (columnSums[x] < avg - (sensitivity * 3))
+                    {
+                        isLine[x] = true;
+                    }
+                }
+
+                _ = Parallel.For(
+                    0,
+                    height,
+                    y =>
+                    {
+                        int rowC = y * cStride;
+
+                        for (int x = 0; x < width; x++)
+                        {
+                            if (!isLine[x])
+                            {
+                                continue;
+                            }
+
+                            int lx = x - 1;
+                            while (lx >= 0 && isLine[lx])
+                            {
+                                lx--;
+                            }
+
+                            int rx = x + 1;
+                            while (rx < width && isLine[rx])
+                            {
+                                rx++;
+                            }
+
+                            byte r, g, b, a;
+
+                            if (lx >= 0 && rx < width)
+                            {
+                                byte* left = cPtr + rowC + (lx * 4);
+                                byte* right = cPtr + rowC + (rx * 4);
+
+                                b = (byte)((left[0] + right[0]) / 2);
+                                g = (byte)((left[1] + right[1]) / 2);
+                                r = (byte)((left[2] + right[2]) / 2);
+                                a = (byte)((left[3] + right[3]) / 2);
+                            }
+                            else if (lx >= 0)
+                            {
+                                byte* left = cPtr + rowC + (lx * 4);
+                                b = left[0];
+                                g = left[1];
+                                r = left[2];
+                                a = left[3];
+                            }
+                            else if (rx < width)
+                            {
+                                byte* right = cPtr + rowC + (rx * 4);
+                                b = right[0];
+                                g = right[1];
+                                r = right[2];
+                                a = right[3];
+                            }
+                            else
+                            {
+                                continue;
+                            }
+
+                            byte* dest = cPtr + rowC + (x * 4);
+                            dest[0] = b;
+                            dest[1] = g;
+                            dest[2] = r;
+                            dest[3] = a;
+                        }
+                    });
+            }
+
+            colorBmp.AddDirtyRect(new Int32Rect(0, 0, width, height));
+        }
+        finally
+        {
+            gray.Unlock();
+            colorBmp.Unlock();
+        }
+
+        return colorBmp;
+    }
+
     public static WriteableBitmap ReplaceColor(this BitmapSource source, Color toReplace, Color replacement, int threshold)
     {
         int width = source.PixelWidth;

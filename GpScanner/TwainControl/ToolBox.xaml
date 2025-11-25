@@ -153,7 +153,7 @@
                     <Separator />
                     <UniformGrid Columns="2">
                         <StackPanel>
-                            <UniformGrid Columns="2" IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}">
+                            <UniformGrid Columns="3" IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}">
                                 <Slider VerticalAlignment="Center"
                                     IsSnapToTickEnabled="True"
                                     Maximum="360"
@@ -168,6 +168,26 @@
                                         Maximum="10"
                                         Minimum="0"
                                         Value="{Binding Scanner.MedianValue, Delay=150, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    <Extensions:NumericUpDown Interval="1"
+                                        Maximum="50"
+                                        Minimum="1"
+                                        Value="{Binding Scanner.VerticalLineThreshold, Delay=150, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Button Command="{Binding RemoveVerticalLine, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                                        <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
+                                        <Button.ToolTip>
+                                            <ToolTip>
+                                                <StackPanel>
+                                                    <Viewbox Width="200" Height="100">
+                                                        <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
+                                                    </Viewbox>
+                                                    <TextBlock Text="{local:Loc DELETE}" TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </ToolTip>
+                                        </Button.ToolTip>
+                                    </Button>
                                 </StackPanel>
                             </UniformGrid>
                             <Button local:Policy.PolicyName="InvertImage"

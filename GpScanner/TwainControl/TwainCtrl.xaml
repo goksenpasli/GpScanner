@@ -43,17 +43,16 @@
             <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
             <local:BindingProxy x:Key="Proxy" Data="{Binding}" />
             <Converter:MultiplyConverter x:Key="MultiplyConverter" />
-            <Image x:Key="TimeIcon"
-                Width="16"
-                Height="16"
-                x:Shared="false">
-                <Image.Source>
-                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                        <Binding Source="TimeDate.cpl" />
-                        <Binding Source="0" />
-                    </MultiBinding>
-                </Image.Source>
-            </Image>
+            <DataTemplate x:Key="TimeIcon">
+                <Image Width="16" Height="16">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="TimeDate.cpl" />
+                            <Binding Source="0" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+            </DataTemplate>
             <TextBlock x:Key="bw"
                 Margin="0,1,0,1"
                 VerticalAlignment="Center"
@@ -1318,7 +1317,10 @@
                                                         </Image.Source>
                                                     </Image>
                                                 </MenuItem.Icon>
-                                                <MenuItem CommandParameter="[DATE]-[MONTH]-[YEAR] [HOUR].[MINUTE].[SECOND]" Icon="{StaticResource TimeIcon}">
+                                                <MenuItem CommandParameter="[DATE]-[MONTH]-[YEAR] [HOUR].[MINUTE].[SECOND]">
+                                                    <MenuItem.Icon>
+                                                        <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                    </MenuItem.Icon>
                                                     <MenuItem.Header>
                                                         <TextBlock>
                                                             <Run Text="{local:Loc DAY}" />
@@ -1330,7 +1332,10 @@
                                                         </TextBlock>
                                                     </MenuItem.Header>
                                                 </MenuItem>
-                                                <MenuItem CommandParameter="[DATE]-[MONTH]-[YEAR]" Icon="{StaticResource TimeIcon}">
+                                                <MenuItem CommandParameter="[DATE]-[MONTH]-[YEAR]">
+                                                    <MenuItem.Icon>
+                                                        <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                    </MenuItem.Icon>
                                                     <MenuItem.Header>
                                                         <TextBlock>
                                                             <Run Text="{local:Loc DAY}" />
@@ -1339,7 +1344,10 @@
                                                         </TextBlock>
                                                     </MenuItem.Header>
                                                 </MenuItem>
-                                                <MenuItem CommandParameter="[MONTH]-[DATE]-[YEAR]" Icon="{StaticResource TimeIcon}">
+                                                <MenuItem CommandParameter="[MONTH]-[DATE]-[YEAR]">
+                                                    <MenuItem.Icon>
+                                                        <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                    </MenuItem.Icon>
                                                     <MenuItem.Header>
                                                         <TextBlock>
                                                             <Run Text="{local:Loc MONTH}" />
@@ -1348,7 +1356,10 @@
                                                         </TextBlock>
                                                     </MenuItem.Header>
                                                 </MenuItem>
-                                                <MenuItem CommandParameter="[USERNAME] [RESOLUTION] DPI" Icon="{StaticResource TimeIcon}">
+                                                <MenuItem CommandParameter="[USERNAME] [RESOLUTION] DPI">
+                                                    <MenuItem.Icon>
+                                                        <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                    </MenuItem.Icon>
                                                     <MenuItem.Header>
                                                         <TextBlock>
                                                             <Run Text="{local:Loc USERNAME}" />
@@ -1357,7 +1368,10 @@
                                                         </TextBlock>
                                                     </MenuItem.Header>
                                                 </MenuItem>
-                                                <MenuItem CommandParameter="[COMPUTER] [USERNAME]" Icon="{StaticResource TimeIcon}">
+                                                <MenuItem CommandParameter="[COMPUTER] [USERNAME]">
+                                                    <MenuItem.Icon>
+                                                        <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                    </MenuItem.Icon>
                                                     <MenuItem.Header>
                                                         <TextBlock>
                                                             <Run Text="{local:Loc COMPUTER}" />
@@ -1366,24 +1380,36 @@
                                                     </MenuItem.Header>
                                                 </MenuItem>
                                             </MenuItem>
-                                            <MenuItem CommandParameter="[DATE]"
-                                                Header="{local:Loc DAY}"
-                                                Icon="{StaticResource TimeIcon}" />
-                                            <MenuItem CommandParameter="[MONTH]"
-                                                Header="{local:Loc MONTH}"
-                                                Icon="{StaticResource TimeIcon}" />
-                                            <MenuItem CommandParameter="[YEAR]"
-                                                Header="{local:Loc YEAR}"
-                                                Icon="{StaticResource TimeIcon}" />
-                                            <MenuItem CommandParameter="[HOUR]"
-                                                Header="{local:Loc TIME}"
-                                                Icon="{StaticResource TimeIcon}" />
-                                            <MenuItem CommandParameter="[MINUTE]"
-                                                Header="{local:Loc MINUTE}"
-                                                Icon="{StaticResource TimeIcon}" />
-                                            <MenuItem CommandParameter="[SECOND]"
-                                                Header="{local:Loc SECOND}"
-                                                Icon="{StaticResource TimeIcon}" />
+                                            <MenuItem CommandParameter="[DATE]" Header="{local:Loc DAY}">
+                                                <MenuItem.Icon>
+                                                    <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem CommandParameter="[MONTH]" Header="{local:Loc MONTH}">
+                                                <MenuItem.Icon>
+                                                    <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem CommandParameter="[YEAR]" Header="{local:Loc YEAR}">
+                                                <MenuItem.Icon>
+                                                    <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem CommandParameter="[HOUR]" Header="{local:Loc TIME}">
+                                                <MenuItem.Icon>
+                                                    <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem CommandParameter="[MINUTE]" Header="{local:Loc MINUTE}">
+                                                <MenuItem.Icon>
+                                                    <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem CommandParameter="[SECOND]" Header="{local:Loc SECOND}">
+                                                <MenuItem.Icon>
+                                                    <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
                                             <MenuItem CommandParameter="[GUID]" Header="{local:Loc GUID}">
                                                 <MenuItem.Icon>
                                                     <Image Width="16" Height="16">

@@ -74,6 +74,40 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+    <DataTemplate x:Key="VerticalLines">
+        <Canvas Width="16" Height="16">
+            <Path Data="M3,1 H11 L15,5 V15 H3 Z"
+                Fill="White"
+                SnapsToDevicePixels="True"
+                Stroke="Black"
+                StrokeLineJoin="Round"
+                StrokeThickness="1" />
+            <Path Data="M11,1 L11,5 L15,5"
+                Fill="Transparent"
+                SnapsToDevicePixels="True"
+                Stroke="Black"
+                StrokeLineJoin="Round"
+                StrokeThickness="1" />
+            <Path Data="M5,6 V13"
+                Opacity="0.5"
+                Stroke="Black"
+                StrokeThickness="1" />
+            <Path Data="M7,6 V13"
+                Stroke="Black"
+                StrokeThickness="1" />
+            <Path Data="M9,6 V13"
+                Opacity="0.3"
+                Stroke="Black"
+                StrokeThickness="1" />
+            <Path Data="M11,6 V13"
+                Opacity="0.85"
+                Stroke="Black"
+                StrokeThickness="1" />
+            <Path Data="M13,6 V13"
+                Stroke="Black"
+                StrokeThickness="1" />
+        </Canvas>
+    </DataTemplate>
     <ControlTemplate x:Key="SimpleArchiveViewerTemplate" TargetType="{x:Type local:SimpleArchiveViewer}">
         <ListBox Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"

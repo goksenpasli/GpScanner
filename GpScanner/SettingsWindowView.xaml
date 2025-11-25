@@ -57,18 +57,18 @@
         </Style>
         <Style BasedOn="{StaticResource NumericUpDownStyle}" TargetType="Extensions:NumericUpDown" />
         <viewmodel:RippleEffect x:Key="FlagRippleEffect" Progress="{Binding FlagProgress}" />
-        <Image x:Key="tick"
-            Width="16"
-            Height="16"
-            x:Shared="false"
-            Visibility="{Binding Mode=OneWay, Path=IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Image.Source>
-                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                    <Binding Source="Comres.dll" />
-                    <Binding Source="8" />
-                </MultiBinding>
-            </Image.Source>
-        </Image>
+        <DataTemplate x:Key="tick">
+            <Image Width="16"
+                Height="16"
+                Visibility="{Binding Mode=OneWay, Path=IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Image.Source>
+                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                        <Binding Source="Comres.dll" />
+                        <Binding Source="8" />
+                    </MultiBinding>
+                </Image.Source>
+            </Image>
+        </DataTemplate>
     </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Key="Pause" Command="{Binding StopFlagAnimation}" />
@@ -221,7 +221,7 @@
                                                     HorizontalAlignment="Center"
                                                     FontSize="11"
                                                     Text="{Binding Mode=OneWay, Path=Key}" />
-                                                <ContentPresenter Content="{StaticResource tick}" />
+                                                <ContentPresenter ContentTemplate="{StaticResource tick}" />
                                             </Canvas>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>

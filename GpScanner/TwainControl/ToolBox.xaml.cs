@@ -71,6 +71,14 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
         ResetCroppedImage = new RelayCommand<object>(parameter => ResetCropMargin(), parameter => Scanner?.CroppedImage is not null);
 
+        RemoveVerticalLine = new RelayCommand<object>(
+            parameter =>
+            {
+                WriteableBitmap wbmp = new((BitmapSource)Scanner.CroppedImage);
+                Scanner.CroppedImage = wbmp.RemoveVerticalLines(Scanner.VerticalLineThreshold);
+            },
+            parameter => Scanner?.CroppedImage is not null);
+
         SetWatermark = new RelayCommand<object>(
             parameter => Scanner.CroppedImage =
             Scanner.CroppedImage
@@ -183,7 +191,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 await Task.Run(
                     () =>
                     {
-                        listcroppedimages = [.. Scanner.Resimler.Where(z => z.Seçili)];
+                        listcroppedimages = [ .. Scanner.Resimler.Where(z => z.Seçili) ];
                         File.WriteAllBytes(path, listcroppedimages.CombineImages(orientation).ToTiffJpegByteArray(Format.Jpg));
                     });
                 WebAdreseGit.Execute(savefolder);
@@ -200,7 +208,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             {
                 PageOrientation pageOrientation = Keyboard.Modifiers == ModifierKeys.Alt ? PageOrientation.Portrait : PageOrientation.Landscape;
                 string savefolder = CreateSaveFolder("MERGE");
-                List<ScannedImage> seçiliresimler = [.. Scanner.Resimler.Where(z => z.Seçili)];
+                List<ScannedImage> seçiliresimler = [ .. Scanner.Resimler.Where(z => z.Seçili) ];
                 PdfDocument pdfdocument = new();
                 PdfPage page = null;
                 int imageindex = 0;
@@ -307,6 +315,8 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
     public ICommand MergeHorizontal { get; }
 
     public ICommand PrintCroppedImage { get; }
+
+    public RelayCommand<object> RemoveVerticalLine { get; }
 
     public ICommand ResetCroppedImage { get; }
 

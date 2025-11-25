@@ -1269,6 +1269,19 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     } = Environment.UserName;
 
+    public int VerticalLineThreshold
+    {
+        get ;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(VerticalLineThreshold));
+            }
+        }
+    } = 6;
+
     public string Watermark
     {
         get;
