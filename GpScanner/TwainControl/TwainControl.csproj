@@ -169,6 +169,7 @@
     <Compile Include="PageFlip.cs" />
     <Compile Include="PageRotation.cs" />
     <Compile Include="PdfCharacterInformation.cs" />
+    <Compile Include="PdfCollection.cs" />
     <Compile Include="PdfCompressor.cs" />
     <Compile Include="PdfData.cs" />
     <Compile Include="PdfFileHandler.cs" />

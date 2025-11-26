@@ -3,7 +3,6 @@ using PdfSharp.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -21,14 +20,8 @@ public class Scanner : InpcBase, IDataErrorInfo
 {
     private bool fileisPdfFile;
     private string localizedPath;
-    private ObservableCollection<ExtendedPdfData> mergePdfFiles = [];
 
-    public Scanner()
-    {
-        PropertyChanged += Scanner_PropertyChanged;
-        MergePdfFiles.CollectionChanged -= MergePdfFiles_CollectionChanged;
-        MergePdfFiles.CollectionChanged += MergePdfFiles_CollectionChanged;
-    }
+    public Scanner() { PropertyChanged += Scanner_PropertyChanged; }
 
     public bool AllowCopy
     {
@@ -627,19 +620,18 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
-    public ObservableCollection<ExtendedPdfData> MergePdfFiles
+    public PdfCollection MergePdfFiles
     {
-        get => mergePdfFiles;
-
+        get;
         set
         {
-            if (mergePdfFiles != value)
+            if (field != value)
             {
-                mergePdfFiles = value;
-                OnPropertyChanged(nameof(mergePdfFiles));
+                field = value;
+                OnPropertyChanged(nameof(MergePdfFiles));
             }
         }
-    }
+    } = [];
 
     public bool PaperBackScan
     {
@@ -1269,7 +1261,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public int VerticalLineThreshold
     {
-        get ;
+        get;
         set
         {
             if (field != value)
@@ -1375,19 +1367,6 @@ public class Scanner : InpcBase, IDataErrorInfo
             { "[USERNAME]", Environment.UserName },
             { "[RESOLUTION]", Settings.Default.Çözünürlük.ToString() }
         };
-    }
-
-    private void MergePdfFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-    {
-        if (MergePdfFiles is null)
-        {
-            return;
-        }
-
-        for (int i = 0; i < MergePdfFiles.Count; i++)
-        {
-            MergePdfFiles[i].PageNumber = i + 1;
-        }
     }
 
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)

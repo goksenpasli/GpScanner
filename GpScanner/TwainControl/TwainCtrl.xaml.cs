@@ -1289,10 +1289,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     int page = (Scanner?.MergePdfFiles?.Count ?? 0) + 1;
                     foreach (string file in openFileDialog.FileNames.Where(Viewer.IsValidPdfFile))
                     {
-                        ExtendedPdfData data = new() { FileName = file, PageNumber = page++ };
-                        data.PropertyChanged -= ExtendedPdfData_PropertyChanged;
-                        data.PropertyChanged += ExtendedPdfData_PropertyChanged;
-                        Scanner?.MergePdfFiles?.Add(data);
+                        Scanner?.MergePdfFiles?.Add(new ExtendedPdfData() { FileName = file, PageNumber = page++ });
                     }
                 }
             },
@@ -4485,7 +4482,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 });
             bitmapFrame = null;
         }
-        await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
+        _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
     }
 
     private void AddPendingFileRenameOperation(string sourceFilePath, string targetFilePath)
@@ -4670,16 +4667,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             Settings.Default.AutoRotateBasedText = false;
         }
 
-        if (Settings.Default.ShowFileGroupIndicator)
-        {
-            Scanner.Resimler.CollectionChanged -= Resimler_CollectionChanged;
-            Scanner.Resimler.CollectionChanged += Resimler_CollectionChanged;
-        }
-        else
-        {
-            Scanner.Resimler.CollectionChanged -= Resimler_CollectionChanged;
-        }
-
         if (e.PropertyName is "UsePdfInternalTextData" && Settings.Default.UsePdfInternalTextData)
         {
             Scanner.ApplyPdfSaveOcr = false;
@@ -4758,21 +4745,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
             }
         };
-    }
-
-    private void ExtendedPdfData_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName is "PageNumber")
-        {
-            foreach (ExtendedPdfData page in Scanner?.MergePdfFiles)
-            {
-                page.BorderBrush = null;
-            }
-            foreach (ExtendedPdfData item in Scanner?.MergePdfFiles?.GroupBy(x => x.PageNumber).Where(g => g.Count() > 1).SelectMany(g => g))
-            {
-                item.BorderBrush = Brushes.Red;
-            }
-        }
     }
 
     private async void FastScanComplete(object sender, ScanningCompleteEventArgs e)
@@ -5250,32 +5222,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         GC.Collect();
     }
 
-    private void Resimler_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-    {
-        Dictionary<string, SolidColorBrush> colorMap = [];
-        Random random = new();
-
-        foreach (IGrouping<string, ScannedImage> group in Scanner.Resimler?.GroupBy(z => z.FilePath))
-        {
-            if (group.Key is null)
-            {
-                continue;
-            }
-
-            if (!colorMap.TryGetValue(group.Key, out SolidColorBrush solidColorBrush))
-            {
-                solidColorBrush = new SolidColorBrush(Color.FromArgb(128, (byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256)));
-                solidColorBrush.Freeze();
-                colorMap[group.Key] = solidColorBrush;
-            }
-
-            foreach (ScannedImage image in group)
-            {
-                image.FileGroupColor = solidColorBrush;
-            }
-        }
-    }
-
     private async Task ReverseFileAsync(string loadfilename, string savefilename)
     {
         await Task.Run(
@@ -5310,19 +5256,25 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         if (sender is Run run)
         {
+            TextBlock textBlock = run.Parent as TextBlock;
+            if (textBlock?.Parent is not StackPanel stackPanel)
+            {
+                return;
+            }
+
+            DragMoveStarted = true;
+            using Bitmap img = stackPanel.ToRenderTargetBitmap().BitmapSourceToBitmap();
+            IntPtr hIcon = img.GetHicon();
             try
             {
-                DragMoveStarted = true;
-                StackPanel stackPanel = (run.Parent as TextBlock)?.Parent as StackPanel;
-                using Bitmap img = stackPanel.ToRenderTargetBitmap().BitmapSourceToBitmap();
-                using Icon icon = Icon.FromHandle(img.GetHicon());
+                using Icon icon = Icon.FromHandle(hIcon);
                 DragCursor = CursorInteropHelper.Create(new SafeIconHandle(icon.Handle));
                 _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
-                DragMoveStarted = false;
                 e.Handled = true;
             }
             finally
             {
+                _ = ShellIcon.Win32.DestroyIcon(hIcon);
                 DragMoveStarted = false;
             }
         }

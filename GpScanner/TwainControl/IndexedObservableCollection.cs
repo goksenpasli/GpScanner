@@ -1,10 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Media;
+using TwainControl.Properties;
 
 namespace TwainControl;
 
 public class IndexedObservableCollection<T> : ObservableCollection<T> where T : IIndexable
 {
+    private readonly Dictionary<string, SolidColorBrush> filePathColors = [];
+    private readonly Random random = new();
+
     protected override void InsertItem(int index, T item)
     {
         base.InsertItem(index, item);
@@ -12,6 +19,7 @@ public class IndexedObservableCollection<T> : ObservableCollection<T> where T : 
         {
             this[i].Index = i + 1;
         }
+        SetGroupFileIndicator();
     }
 
     protected override void MoveItem(int oldIndex, int newIndex)
@@ -24,6 +32,7 @@ public class IndexedObservableCollection<T> : ObservableCollection<T> where T : 
         {
             this[i].Index = i + 1;
         }
+        SetGroupFileIndicator();
     }
 
     protected override void RemoveItem(int index)
@@ -33,11 +42,55 @@ public class IndexedObservableCollection<T> : ObservableCollection<T> where T : 
         {
             this[i].Index = i + 1;
         }
+        SetGroupFileIndicator();
     }
 
     protected override void SetItem(int index, T item)
     {
         base.SetItem(index, item);
         this[index].Index = index + 1;
+        SetGroupFileIndicator();
+    }
+
+    private void SetGroupFileIndicator()
+    {
+        if (!Settings.Default.ShowFileGroupIndicator)
+        {
+            return;
+        }
+
+        if (typeof(T) != typeof(ScannedImage))
+        {
+            return;
+        }
+
+        HashSet<string> usedFilePaths = [];
+
+        foreach (ScannedImage image in Items.Cast<ScannedImage>())
+        {
+            if (image.FilePath is null)
+            {
+                continue;
+            }
+
+            _ = usedFilePaths.Add(image.FilePath);
+
+            if (!filePathColors.TryGetValue(image.FilePath, out SolidColorBrush brush))
+            {
+                brush = new SolidColorBrush(Color.FromArgb(128, (byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256)));
+                brush.Freeze();
+                filePathColors[image.FilePath] = brush;
+            }
+
+            if (image.FileGroupColor != brush)
+            {
+                image.FileGroupColor = brush;
+            }
+        }
+
+        foreach (string path in filePathColors.Keys.Except(usedFilePaths).ToList())
+        {
+            _ = filePathColors.Remove(path);
+        }
     }
 }
