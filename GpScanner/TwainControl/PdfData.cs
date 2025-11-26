@@ -3,7 +3,7 @@ using System.Windows.Media;
 
 namespace TwainControl;
 
-public class PdfData : InpcBase
+public class PdfData : InpcBase, IIndexable
 {
     public Brush BorderBrush
     {
@@ -14,6 +14,19 @@ public class PdfData : InpcBase
             {
                 field = value;
                 OnPropertyChanged(nameof(BorderBrush));
+            }
+        }
+    }
+
+    public int Index
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(Index));
             }
         }
     }

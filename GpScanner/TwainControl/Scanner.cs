@@ -26,8 +26,6 @@ public class Scanner : InpcBase, IDataErrorInfo
     public Scanner()
     {
         PropertyChanged += Scanner_PropertyChanged;
-        Resimler.CollectionChanged -= Resimler_CollectionChanged;
-        Resimler.CollectionChanged += Resimler_CollectionChanged;
         MergePdfFiles.CollectionChanged -= MergePdfFiles_CollectionChanged;
         MergePdfFiles.CollectionChanged += MergePdfFiles_CollectionChanged;
     }
@@ -892,7 +890,7 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
-    public ObservableCollection<ScannedImage> Resimler
+    public IndexedObservableCollection<ScannedImage> Resimler
     {
         get;
 
@@ -1379,19 +1377,9 @@ public class Scanner : InpcBase, IDataErrorInfo
         };
     }
 
-    public void RefreshIndexNumbers()
-    {
-        for (int i = 0; i < Resimler.Count; i++)
-        {
-            Resimler[i].Index = i + 1;
-        }
-    }
-
-    public void Resimler_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => RefreshIndexNumbers();
-
     private void MergePdfFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        if (MergePdfFiles == null)
+        if (MergePdfFiles is null)
         {
             return;
         }

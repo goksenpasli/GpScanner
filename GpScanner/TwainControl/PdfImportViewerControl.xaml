@@ -238,9 +238,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <ListBox AllowDrop="True"
-                                Drop="ListBox_Drop"
-                                ItemsSource="{Binding Scanner.MergePdfFiles}"
+                            <ListBox ItemsSource="{Binding Scanner.MergePdfFiles}"
                                 VirtualizingPanel.CacheLengthUnit="Pixel"
                                 VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                 VirtualizingPanel.ScrollUnit="Pixel"

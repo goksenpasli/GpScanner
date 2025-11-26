@@ -152,9 +152,11 @@
     <Compile Include="ExtendedArchiveData.cs" />
     <Compile Include="ExtendedPdfData.cs" />
     <Compile Include="EypPdfViewer.cs" />
+    <Compile Include="IIndexable.cs" />
     <Compile Include="ILoadFileHandler.cs" />
     <Compile Include="ImageFileHandler.cs" />
     <Compile Include="ImageWidthHeightComparer.cs" />
+    <Compile Include="IndexedObservableCollection.cs" />
     <Compile Include="Jb2FileHandler.cs" />
     <Compile Include="Jb2ZipImageViewer.cs" />
     <Compile Include="JBig2Encoder.cs" />

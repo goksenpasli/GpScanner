@@ -101,6 +101,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                         bitmapFrame.Freeze();
                         ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                         Scanner?.Resimler.Insert(Scanner.CroppedImageIndex, scannedImage);
+                        scannedImage.DeskewAngle = Deskew.GetDeskewAngle(scannedImage.Resim) + 90;
                     }
                     return;
                 }
@@ -136,11 +137,13 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                     BitmapFrame bitmap = BitmapFrame.Create(RenderImageWithGrid(bitmapFrame, Scanner.BoyAdet, Scanner.EnAdet, Brushes.Black).ToBitmapImage());
                     scannedImage = new() { Seçili = false, Resim = bitmap };
                     Scanner?.Resimler.Insert(Scanner.CroppedImageIndex, scannedImage);
+                    scannedImage.DeskewAngle = Deskew.GetDeskewAngle(scannedImage.Resim) + 90;
                     scannedImage = null;
                     return;
                 }
                 scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                 Scanner?.Resimler.Insert(Scanner.CroppedImageIndex, scannedImage);
+                scannedImage.DeskewAngle = Deskew.GetDeskewAngle(scannedImage.Resim) + 90;
                 scannedImage = null;
             },
             parameter => Scanner?.CroppedImage is not null);

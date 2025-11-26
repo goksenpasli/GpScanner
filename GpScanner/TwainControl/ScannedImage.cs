@@ -11,7 +11,7 @@ using TwainControl.Properties;
 
 namespace TwainControl;
 
-public class ScannedImage : InpcBase
+public class ScannedImage : InpcBase, IIndexable
 {
     private bool ısDeskewedImage;
     private bool pdfHasText;

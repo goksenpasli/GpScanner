@@ -142,8 +142,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     Scanner.Resimler = [];
                 }
-                Scanner.Resimler.CollectionChanged -= Scanner.Resimler_CollectionChanged;
-                Scanner.Resimler.CollectionChanged += Scanner.Resimler_CollectionChanged;
                 await DefaultScanAsync();
                 Twain.ScanningComplete += FastScanComplete;
             },
@@ -1196,7 +1194,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         }
                     }
                 }
-                Scanner.RefreshIndexNumbers();
             },
             parameter => true);
 
@@ -1655,7 +1652,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 List<ScannedImage> scannedImages = [ .. Scanner.Resimler.Reverse() ];
                 Scanner.Resimler = [ .. scannedImages ];
-                Scanner.RefreshIndexNumbers();
             },
             parameter => Scanner?.Resimler?.Count > 1);
 
@@ -1664,7 +1660,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 List<ScannedImage> scannedImages = [ .. Scanner.Resimler ];
                 Scanner.Resimler = [ .. GroupByFirstLastList(scannedImages, GroupSplitCount) ];
-                Scanner.RefreshIndexNumbers();
             },
             parameter => Scanner?.Resimler?.Count > 1);
 
@@ -1676,7 +1671,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     Random random = new();
                     Scanner.Resimler = altkeypressed ? Shuffle(GetSelectedImages(), random) : Shuffle(Scanner.Resimler, random);
-                    Scanner.RefreshIndexNumbers();
                 }
             },
             parameter => Scanner?.Resimler?.Count > 1);
@@ -1698,11 +1692,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
                     Scanner.Resimler = FirstLastReverseSequence([ .. Scanner.Resimler ], item => item.Index);
-                    Scanner.RefreshIndexNumbers();
                     return;
                 }
                 Scanner.Resimler = FirstLastSequence(Scanner.Resimler);
-                Scanner.RefreshIndexNumbers();
             },
             parameter => Scanner?.Resimler?.Count > 1);
 
@@ -1716,7 +1708,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     List<ScannedImage> scannedImages = [ .. Scanner.Resimler ];
                     scannedImages.Reverse(start, end - start + 1);
                     Scanner.Resimler = [ .. scannedImages ];
-                    Scanner.RefreshIndexNumbers();
                 }
             },
             parameter =>
@@ -4494,12 +4485,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 });
             bitmapFrame = null;
         }
-        await Dispatcher.InvokeAsync(
-            () =>
-            {
-                Scanner.RefreshIndexNumbers();
-                PdfLoadProgressValue = 0;
-            });
+        await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
     }
 
     private void AddPendingFileRenameOperation(string sourceFilePath, string targetFilePath)
@@ -4841,16 +4827,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    private ObservableCollection<T> FirstLastReverseSequence<T>(List<T> items, Func<T, int> indexSelector)
+    private IndexedObservableCollection<T> FirstLastReverseSequence<T>(List<T> items, Func<T, int> indexSelector) where T : IIndexable
     {
         items.Sort((a, b) => indexSelector(a) % 2 != indexSelector(b) % 2 ? indexSelector(a) % 2 == 1 ? -1 : 1 : indexSelector(a) % 2 == 0 ? indexSelector(b).CompareTo(indexSelector(a)) : indexSelector(a).CompareTo(indexSelector(b)));
 
         return[ .. items ];
     }
 
-    private ObservableCollection<T> FirstLastSequence<T>(ObservableCollection<T> images)
+    private IndexedObservableCollection<T> FirstLastSequence<T>(ObservableCollection<T> images) where T : IIndexable
     {
-        ObservableCollection<T> result = [];
+        IndexedObservableCollection<T> result = [];
         int startIndex = 0;
         int endIndex = images.Count - 1;
 
@@ -5139,26 +5125,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void OrganizeDroppedData(ScannedImage droppedData, ScannedImage target)
     {
-        int removedIdx = Scanner.Resimler.IndexOf(droppedData);
-        int targetIdx = Scanner.Resimler.IndexOf(target);
+        IndexedObservableCollection<ScannedImage> resimler = Scanner.Resimler;
 
-        if (removedIdx < targetIdx)
-        {
-            Scanner.Resimler.Insert(targetIdx + 1, droppedData);
-            Scanner.Resimler.RemoveAt(removedIdx);
-            Scanner.RefreshIndexNumbers();
-            return;
-        }
+        int removedIdx = resimler.IndexOf(droppedData);
+        int targetIdx = resimler.IndexOf(target);
 
-        int remIdx = removedIdx + 1;
-        if (Scanner.Resimler.Count + 1 <= remIdx)
+        if (removedIdx == -1 || targetIdx == -1 || droppedData == target)
         {
             return;
         }
 
-        Scanner.Resimler.Insert(targetIdx, droppedData);
-        Scanner.Resimler.RemoveAt(remIdx);
-        Scanner.RefreshIndexNumbers();
+        resimler.RemoveAt(removedIdx);
+        resimler.Insert(targetIdx, droppedData);
     }
 
     private void PdfData_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -5782,7 +5760,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Settings.Default.Right = PageWidth;
     }
 
-    private ObservableCollection<T> Shuffle<T>(IList<T> collection, Random random)
+    private IndexedObservableCollection<T> Shuffle<T>(IList<T> collection, Random random) where T : IIndexable
     {
         for (int i = collection.Count - 1; i > 0; i--)
         {
