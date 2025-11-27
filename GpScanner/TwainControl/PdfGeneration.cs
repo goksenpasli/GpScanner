@@ -120,7 +120,7 @@ public static class PdfGeneration
     public static MemoryStream CreateMultipagePdfWithJbig2Images(this List<ScannedImage> pages, IProgress<double> progress = null)
     {
         MemoryStream output = new();
-        List<long> offsets = [0];
+        List<long> offsets = [ 0 ];
         int objNum = 1;
 
         Write(output, "%PDF-1.4\n%\u00e2\u00e3\u00cf\u00d3\n");
@@ -237,6 +237,11 @@ public static class PdfGeneration
 
     public static PdfDocument GenerateFromBitmapSourcePdf(this PdfDocument pdfdocument, int sayfa, BitmapSource bitmapSource)
     {
+        if (bitmapSource is null)
+        {
+            return null;
+        }
+
         PdfPage page = pdfdocument.Pages[sayfa];
         using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
         gfx.DrawImage(XImage.FromBitmapSource(bitmapSource), 0, 0, page.Width, page.Height);
@@ -498,13 +503,13 @@ public static class PdfGeneration
     {
         return Scanner.Layout switch
         {
-            PdfPageLayout.Left => [30, 30],
-            PdfPageLayout.Middle => [(page.Width / 2) - (x / 2), 30],
-            PdfPageLayout.Right => [page.Width - x - 30, 30],
-            PdfPageLayout.LeftBottom => [30, page.Height - 30],
-            PdfPageLayout.MiddleBottom => [(page.Width / 2) - (x / 2), page.Height - 30],
-            PdfPageLayout.RightBottom => [page.Width - x - 30, page.Height - 30],
-            _ => [0, 0]
+            PdfPageLayout.Left => [ 30, 30 ],
+            PdfPageLayout.Middle => [ (page.Width / 2) - (x / 2), 30 ],
+            PdfPageLayout.Right => [ page.Width - x - 30, 30 ],
+            PdfPageLayout.LeftBottom => [ 30, page.Height - 30 ],
+            PdfPageLayout.MiddleBottom => [ (page.Width / 2) - (x / 2), page.Height - 30 ],
+            PdfPageLayout.RightBottom => [ page.Width - x - 30, page.Height - 30 ],
+            _ => [ 0, 0 ]
         };
     }
 
@@ -606,7 +611,7 @@ public static class PdfGeneration
                     progresscallback?.Invoke((i + 1) / (double)pdfDoc.PageCount);
                 }
             });
-        return [.. jpgfiles];
+        return[ .. jpgfiles ];
     }
 
     private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust) => new(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust);

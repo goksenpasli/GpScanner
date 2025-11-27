@@ -557,7 +557,7 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 {
                     using MemoryStream ms = new(pdffilestream);
                     using PdfDocument pdfDoc = PdfDocument.Load(ms);
-                    if (pdfDoc is null)
+                    if ((pdfDoc is null) || (page < 1 || page > pdfDoc.PageCount))
                     {
                         return null;
                     }

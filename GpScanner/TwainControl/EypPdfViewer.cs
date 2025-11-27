@@ -54,6 +54,11 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                         PdfFilePath = openFileDialog.FileName;
                         AddToHistoryList(PdfFilePath);
                     }
+
+                    if (DataContext is TwainCtrl twainCtrl)
+                    {
+                        twainCtrl.LoadPdfExtractFile.Execute(this);
+                    }
                 }
             });
 
@@ -66,6 +71,10 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                     using PdfDocument inputDocument = PdfReader.Open(PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
                     if (inputDocument is not null)
                     {
+                        if (sayfa < 1 || sayfa > inputDocument.PageCount)
+                        {
+                            return;
+                        }
                         twainCtrl.PdfToolBarControlIsEnabled = false;
                         TwainCtrl.SavePageRotated(path, inputDocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, sayfa - 1);
                         twainCtrl.PdfToolBarControlIsEnabled = true;
@@ -102,7 +111,11 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                     string oldpdfpath = PdfFilePath;
                     BitmapImage bitmapImage = await ConvertToImgAsync(PdfFilePath, currentpage, Dpi);
                     BitmapImage image = bitmapImage.InvertBitmap().ToBitmapImage();
-                    using PdfDocument pdfdocument = TwainCtrl.RenderPdfPage(this, image);
+                    using PdfDocument pdfdocument = TwainCtrl.RenderPdfPage(this, image, currentpage);
+                    if (pdfdocument is null)
+                    {
+                        return;
+                    }
                     twainCtrl.PdfToolBarControlIsEnabled = false;
                     pdfdocument.Save(PdfFilePath);
                     twainCtrl.PdfToolBarControlIsEnabled = true;
@@ -121,6 +134,10 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                 {
                     byte[] filedata = await ReadAllFileAsync(PdfFilePath);
                     using MemoryStream ms = await ConvertToImgStreamAsync(filedata, sayfa, Settings.Default.ImgLoadResolution);
+                    if (ms is null)
+                    {
+                        return;
+                    }
                     filedata = null;
                     using Image image = Image.FromStream(ms);
                     Clipboard.SetImage(image.ToBitmapImage(ImageFormat.Jpeg));
@@ -134,18 +151,22 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         FlipPdfPage = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is int currentpage && DataContext is TwainCtrl twainCtrl)
+                if (parameter is int currentpage && DataContext is TwainCtrl twainCtrl && Source?.Width < Source?.Height)
                 {
                     try
                     {
                         twainCtrl.PdfToolBarControlIsEnabled = false;
                         string oldpdfpath = PdfFilePath;
                         using PdfDocument document = PdfReader.Open(PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
-                        if (document is null)
+                        if ((document is null) || (currentpage < 1 || currentpage > ToplamSayfa))
                         {
                             return;
                         }
                         BitmapImage bitmapImage = await ConvertToImgAsync(PdfFilePath, currentpage, Dpi);
+                        if ((bitmapImage is null) || (bitmapImage.Width > bitmapImage.Height))
+                        {
+                            return;
+                        }
                         PdfPage page = document.Pages?[currentpage - 1];
                         using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Replace);
                         XPoint center = new(page.Width / 2, page.Height / 2);

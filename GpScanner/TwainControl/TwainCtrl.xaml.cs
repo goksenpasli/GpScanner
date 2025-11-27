@@ -1524,7 +1524,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     return;
                 }
                 using PdfDocument pdfdocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
-                if (pdfdocument is null)
+                if ((pdfdocument is null) || (pdfviewer.Sayfa < 1 || pdfviewer.Sayfa > pdfdocument.PageCount))
                 {
                     return;
                 }
@@ -1721,7 +1721,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
                 {
                     PdfPages = [];
-                    for (int i = 1; i <= pdfViewer.ToplamSayfa; i++)
+                    for (int i = 1; i <= Viewer.PdfPageCount(pdfViewer.PdfFilePath); i++)
                     {
                         PdfData data = new() { PageNumber = i };
                         data.PropertyChanged -= PdfData_PropertyChanged;
@@ -1998,7 +1998,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     PdfToolBarControlIsEnabled = true;
                 }
             },
-            parameter => parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
+            parameter => parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath) && pdfViewer.Source?.Width < pdfViewer.Source?.Height);
 
         BlackAndWhitePdfPage = new RelayCommand<object>(
             async parameter =>
@@ -2008,7 +2008,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     BitmapImage bitmapImage = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
                     using Bitmap img = bitmapImage.BitmapSourceToBitmap();
                     BitmapImage image = img.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Tiff);
-                    using PdfDocument pdfdocument = RenderPdfPage(pdfviewer, image);
+                    using PdfDocument pdfdocument = RenderPdfPage(pdfviewer, image, pdfviewer.Sayfa);
                     PdfToolBarControlIsEnabled = false;
                     pdfdocument.Save(pdfviewer.PdfFilePath);
                     PdfToolBarControlIsEnabled = true;
@@ -2026,7 +2026,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     BitmapImage bitmapImage = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
                     BitmapImage image = bitmapImage.InvertBitmap().ToBitmapImage();
-                    using PdfDocument pdfdocument = RenderPdfPage(pdfviewer, image);
+                    using PdfDocument pdfdocument = RenderPdfPage(pdfviewer, image, pdfviewer.Sayfa);
                     PdfToolBarControlIsEnabled = false;
                     pdfdocument.Save(pdfviewer.PdfFilePath);
                     PdfToolBarControlIsEnabled = true;
@@ -3998,9 +3998,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    public static PdfDocument RenderPdfPage(Viewer pdfviewer, BitmapImage image)
+    public static PdfDocument RenderPdfPage(Viewer pdfviewer, BitmapImage image, int page)
     {
-        PdfDocument document = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider)?.GenerateFromBitmapSourcePdf(pdfviewer.Sayfa - 1, image);
+        PdfDocument document = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider)?.GenerateFromBitmapSourcePdf(page - 1, image);
         document.ApplyDefaultPdfCompression();
         return document;
     }

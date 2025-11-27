@@ -299,6 +299,10 @@ public static class BitmapMethods
 
     public static WriteableBitmap InvertBitmap(this BitmapSource bitmap)
     {
+        if (bitmap is null)
+        {
+            return null;
+        }
         int width = bitmap.PixelWidth;
         int height = bitmap.PixelHeight;
         int stride = ((width * bitmap.Format.BitsPerPixel) + 7) / 8;
