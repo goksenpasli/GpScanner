@@ -1972,26 +1972,31 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     return;
                 }
 
-                int currentpage = pdfviewer.Sayfa;
-                using PdfDocument pdfdocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
-                if (pdfdocument is null)
+                try
                 {
-                    return;
-                }
+                    PdfToolBarControlIsEnabled = false;
+                    int currentpage = pdfviewer.Sayfa;
+                    using PdfDocument pdfdocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
+                    if (pdfdocument is null)
+                    {
+                        return;
+                    }
 
-                PdfPage page = pdfdocument.Pages[currentpage - 1];
-                using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Replace);
-                XPoint center = new(page.Width / 2, page.Height / 2);
-                gfx.ScaleAtTransform(Keyboard.Modifiers == ModifierKeys.Alt ? 1 : -1, Keyboard.Modifiers == ModifierKeys.Alt ? -1 : 1, center);
-                BitmapImage bitmapImage = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, currentpage, pdfviewer.Dpi);
-                XImage image = XImage.FromBitmapSource(bitmapImage);
-                gfx.DrawImage(image, 0, 0);
-                PdfToolBarControlIsEnabled = false;
-                pdfdocument.Save(pdfviewer.PdfFilePath);
-                PdfToolBarControlIsEnabled = true;
-                pdfviewer.Source = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
-                image = null;
-                bitmapImage = null;
+                    BitmapImage bitmapImage = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, currentpage, pdfviewer.Dpi);
+                    PdfPage page = pdfdocument.Pages[currentpage - 1];
+                    using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Replace);
+                    XPoint center = new(page.Width / 2, page.Height / 2);
+                    gfx.ScaleAtTransform(Keyboard.Modifiers == ModifierKeys.Alt ? 1 : -1, Keyboard.Modifiers == ModifierKeys.Alt ? -1 : 1, center);
+                    using XImage image = XImage.FromBitmapSource(bitmapImage);
+                    gfx.DrawImage(image, 0, 0, page.Width, page.Height);
+                    pdfdocument.Save(pdfviewer.PdfFilePath);
+                    pdfviewer.Source = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
+                    bitmapImage = null;
+                }
+                finally
+                {
+                    PdfToolBarControlIsEnabled = true;
+                }
             },
             parameter => parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
 
