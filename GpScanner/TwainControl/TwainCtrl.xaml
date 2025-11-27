@@ -1019,6 +1019,25 @@
                                     Background="{StaticResource BorderBackground}"
                                     Orientation="Horizontal">
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    <Extensions:NumericUpDown Interval="1"
+                                        IsEnabled="{Binding ApplyVerticalLineRemove, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
+                                        Maximum="50"
+                                        Minimum="1"
+                                        Value="{Binding VerticalLineThreshold, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <ToggleButton IsChecked="{Binding ApplyVerticalLineRemove, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                        <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
+                                        <ToggleButton.ToolTip>
+                                            <ToolTip>
+                                                <StackPanel>
+                                                    <Viewbox Width="200" Height="100">
+                                                        <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
+                                                    </Viewbox>
+                                                    <TextBlock Text="{local:Loc DELETE}" TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </ToolTip>
+                                        </ToggleButton.ToolTip>
+                                    </ToggleButton>
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                     <Image Width="16" Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

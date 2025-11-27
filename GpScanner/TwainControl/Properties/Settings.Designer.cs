@@ -782,5 +782,29 @@ namespace TwainControl.Properties {
                 this["PdfOcrProcessorCount"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        public int VerticalLineThreshold {
+            get {
+                return ((int)(this["VerticalLineThreshold"]));
+            }
+            set {
+                this["VerticalLineThreshold"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ApplyVerticalLineRemove {
+            get {
+                return ((bool)(this["ApplyVerticalLineRemove"]));
+            }
+            set {
+                this["ApplyVerticalLineRemove"] = value;
+            }
+        }
     }
 }

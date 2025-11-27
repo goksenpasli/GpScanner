@@ -5799,6 +5799,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             evrak = evrak.InvertBitmap().ToBitmapImage();
         }
 
+        if (Settings.Default.ApplyVerticalLineRemove)
+        {
+            WriteableBitmap wbmp = new(evrak);
+            evrak = wbmp.RemoveVerticalLines(Settings.Default.VerticalLineThreshold);
+        }
+
         evrak.Freeze();
         BitmapFrame bitmapFrame = BitmapFrame.Create(evrak);
         bitmapFrame.Freeze();
