@@ -151,7 +151,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         FlipPdfPage = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is int currentpage && DataContext is TwainCtrl twainCtrl && Source?.Width < Source?.Height)
+                if (parameter is int currentpage && DataContext is TwainCtrl twainCtrl)
                 {
                     try
                     {
