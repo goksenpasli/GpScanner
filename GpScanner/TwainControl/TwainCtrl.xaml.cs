@@ -273,13 +273,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (parameter is ScannedImage item &&
                 MessageBox.Show($"{Translation.GetResStringValue("Auto")} {Translation.GetResStringValue("DESKEW")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
-                    double deskewAngle = Deskew.GetDeskewAngle(item.Resim);
-                    BitmapFrame bitmapFrame = BitmapFrame.Create(await item.Resim.RotateImageAsync(deskewAngle, Brushes.White));
-                    bitmapFrame?.Freeze();
-                    item.Resim = bitmapFrame;
-                    item.DeskewAngle = Deskew.GetDeskewAngle(item.Resim) + 90;
-                    bitmapFrame = null;
-                    GC.Collect();
+                    await CreateDeskewedImage(item);
                 }
             },
             parameter => true);
@@ -303,15 +297,34 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         TümünüOtomatikDöndür = new RelayCommand<object>(
             parameter =>
             {
-                ExtendedMessageBox extendedmessagebox = new() { CustomContentVisible = Visibility.Visible, CustomContentHeight = 20, NoButton = Visibility.Visible, YesButton = Visibility.Visible, };
+                ExtendedMessageBox extendedmessagebox = new()
+                {
+                    CheckDescription = Translation.GetResStringValue("DESKEW"),
+                    CheckVisibility = Visibility.Visible,
+                    CustomContentVisible = Visibility.Visible,
+                    CustomContentHeight = 20,
+                    NoButton = Visibility.Visible,
+                    YesButton = Visibility.Visible,
+                };
                 NumericUpDown numericUpDown = new() { Minimum = 1, Maximum = Environment.ProcessorCount, Value = 4, IsReadOnly = true };
-                int parallelcount = (int)numericUpDown.Value;
+
                 extendedmessagebox.CustomContent = numericUpDown;
                 extendedmessagebox.ShowDialog(
                     Window.GetWindow(this),
                     Translation.GetResStringValue("LONGTIMEJOB"),
                     $"{Translation.GetResStringValue("ALL")} {Translation.GetResStringValue("AUTOROTATE")}",
-                    async () => await AutoRotateBasedTextOrientation(Scanner.Resimler, parallelcount));
+                    async () =>
+                    {
+                        int parallelcount = (int)numericUpDown.Value;
+                        await AutoRotateBasedTextOrientation(Scanner.Resimler, parallelcount);
+                        if (extendedmessagebox.IsChecked)
+                        {
+                            foreach (ScannedImage item in Scanner.Resimler)
+                            {
+                                await CreateDeskewedImage(item);
+                            }
+                        }
+                    });
                 GC.Collect();
             },
             parameter => Scanner?.Resimler?.Any() == true && TesseractOrientationFileExists);
@@ -4344,6 +4357,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             _ = dispatcher?.InvokeAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
         }
+    }
+
+    private static async Task CreateDeskewedImage(ScannedImage item)
+    {
+        double deskewAngle = Deskew.GetDeskewAngle(item.Resim);
+        BitmapFrame bitmapFrame = BitmapFrame.Create(await item.Resim.RotateImageAsync(deskewAngle, Brushes.White));
+        bitmapFrame?.Freeze();
+        item.Resim = bitmapFrame;
+        item.DeskewAngle = Deskew.GetDeskewAngle(item.Resim) + 90;
     }
 
     private static PdfCharacterInformation CreateWordFromCharacters(List<PdfCharacterInformation> characters)

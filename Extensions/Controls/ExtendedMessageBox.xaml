@@ -18,49 +18,49 @@
                         BorderThickness="{TemplateBinding BorderThickness}">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <ContentPresenter Width="{TemplateBinding CustomContentWidth}"
-                                    Height="{TemplateBinding CustomContentHeight}"
+                                <ContentPresenter Width="{Binding CustomContentWidth, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                    Height="{Binding CustomContentHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                     Margin="10"
                                     d:Content="Object"
                                     d:Visibility="Visible"
-                                    Content="{TemplateBinding CustomContent}"
-                                    Visibility="{TemplateBinding CustomContentVisible}" />
+                                    Content="{Binding CustomContent, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                    Visibility="{Binding CustomContentVisible, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
                                 <TextBlock Margin="0,0,5,0"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     TextAlignment="Center">
                                     <Run d:Text="TITLE"
                                         FontSize="18"
-                                        Text="{TemplateBinding Title}" />
+                                        Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
                                     <LineBreak />
                                     <Run d:Text="Message"
                                         FontSize="12"
-                                        Text="{TemplateBinding Message}" />
+                                        Text="{Binding Message, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
                                 </TextBlock>
                             </StackPanel>
                             <CheckBox Margin="5"
                                 d:Content="Checkbox"
                                 d:Visibility="Visible"
-                                Content="{TemplateBinding CheckDescription}"
-                                IsChecked="{TemplateBinding IsChecked}"
-                                Visibility="{TemplateBinding CheckVisibility}" />
+                                Content="{Binding CheckDescription, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                IsChecked="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                Visibility="{Binding CheckVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
                             <ProgressBar Height="16"
                                 Margin="5"
                                 d:Value="40"
                                 d:Visibility="Visible"
-                                IsIndeterminate="{TemplateBinding IsIndeterminate}"
-                                Visibility="{TemplateBinding ProgressBarVisibility}"
-                                Value="{TemplateBinding ProgressValue}" />
+                                IsIndeterminate="{Binding IsIndeterminate, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                Visibility="{Binding ProgressBarVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                Value="{Binding ProgressValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
                             <Expander MaxWidth="300"
                                 Margin="5"
                                 d:Header="HiddenCaption"
                                 d:IsExpanded="True"
                                 d:Visibility="Visible"
-                                Header="{TemplateBinding HiddenCaption}"
-                                IsExpanded="{TemplateBinding HiddenDescriptionExpanded}"
-                                Visibility="{TemplateBinding HiddenDescriptionVisibility}">
+                                Header="{Binding HiddenCaption, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                IsExpanded="{Binding HiddenDescriptionExpanded, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                Visibility="{Binding HiddenDescriptionVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
                                 <TextBlock d:Text="HiddenDescription"
-                                    Text="{TemplateBinding HiddenDescription}"
+                                    Text="{Binding HiddenDescription, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                     TextWrapping="Wrap" />
                             </Expander>
                             <Grid HorizontalAlignment="Center">
@@ -74,14 +74,14 @@
                                     Background="{x:Null}"
                                     BorderBrush="{x:Null}"
                                     IsDefault="True"
-                                    IsEnabled="{TemplateBinding YesEnabled}"
-                                    Visibility="{TemplateBinding YesButton}">
+                                    IsEnabled="{Binding YesEnabled, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                    Visibility="{Binding YesButton, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
                                     <Button.Content>
                                         <Image Width="32" Height="32">
                                             <Image.Style>
                                                 <Style TargetType="Image">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding YesIconType, RelativeSource={RelativeSource AncestorType=local:ExtendedMessageBox}}" Value="{x:Static local:IconType.Default}">
+                                                        <DataTrigger Binding="{Binding YesIconType, RelativeSource={RelativeSource AncestorType=local:ExtendedMessageBox}, Mode=TwoWay}" Value="{x:Static local:IconType.Default}">
                                                             <Setter Property="Source">
                                                                 <Setter.Value>
                                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -91,7 +91,7 @@
                                                                 </Setter.Value>
                                                             </Setter>
                                                         </DataTrigger>
-                                                        <DataTrigger Binding="{Binding YesIconType, RelativeSource={RelativeSource AncestorType=local:ExtendedMessageBox}}" Value="{x:Static local:IconType.Warn}">
+                                                        <DataTrigger Binding="{Binding YesIconType, RelativeSource={RelativeSource AncestorType=local:ExtendedMessageBox}, Mode=TwoWay}" Value="{x:Static local:IconType.Warn}">
                                                             <Setter Property="Source">
                                                                 <Setter.Value>
                                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -101,7 +101,7 @@
                                                                 </Setter.Value>
                                                             </Setter>
                                                         </DataTrigger>
-                                                        <DataTrigger Binding="{Binding YesIconType, RelativeSource={RelativeSource AncestorType=local:ExtendedMessageBox}}" Value="{x:Static local:IconType.Error}">
+                                                        <DataTrigger Binding="{Binding YesIconType, RelativeSource={RelativeSource AncestorType=local:ExtendedMessageBox}, Mode=TwoWay}" Value="{x:Static local:IconType.Error}">
                                                             <Setter Property="Source">
                                                                 <Setter.Value>
                                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -111,7 +111,7 @@
                                                                 </Setter.Value>
                                                             </Setter>
                                                         </DataTrigger>
-                                                        <DataTrigger Binding="{Binding YesIconType, RelativeSource={RelativeSource AncestorType=local:ExtendedMessageBox}}" Value="{x:Static local:IconType.Wait}">
+                                                        <DataTrigger Binding="{Binding YesIconType, RelativeSource={RelativeSource AncestorType=local:ExtendedMessageBox}, Mode=TwoWay}" Value="{x:Static local:IconType.Wait}">
                                                             <Setter Property="Source">
                                                                 <Setter.Value>
                                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -124,7 +124,6 @@
                                                     </Style.Triggers>
                                                 </Style>
                                             </Image.Style>
-
                                         </Image>
                                     </Button.Content>
                                 </Button>
@@ -135,8 +134,8 @@
                                     Background="{x:Null}"
                                     BorderBrush="{x:Null}"
                                     IsCancel="True"
-                                    IsEnabled="{TemplateBinding NoEnabled}"
-                                    Visibility="{TemplateBinding NoButton}">
+                                    IsEnabled="{Binding NoEnabled, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                    Visibility="{Binding NoButton, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
                                     <Button.Content>
                                         <Image Width="32" Height="32">
                                             <Image.Source>
@@ -155,5 +154,4 @@
             </Setter.Value>
         </Setter>
     </Style>
-
 </ResourceDictionary>

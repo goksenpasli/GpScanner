@@ -52,7 +52,6 @@ namespace Extensions
         private bool _isDragging;
         private Button _noButton;
         private Button _yesButton;
-        private ExtendedMessageBox dialog;
 
         static ExtendedMessageBox() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ExtendedMessageBox), new FrameworkPropertyMetadata(typeof(ExtendedMessageBox))); }
 
@@ -131,35 +130,34 @@ namespace Extensions
             {
                 throw new ArgumentNullException(nameof(window), "The window parameter cannot be null.");
             }
-            dialog = new()
-            {
-                CustomContent = CustomContent,
-                CustomContentVisible = CustomContentVisible,
-                HiddenDescription = HiddenDescription,
-                HiddenDescriptionExpanded = HiddenDescriptionExpanded,
-                HiddenDescriptionVisibility = HiddenDescriptionVisibility,
-                HiddenCaption = HiddenCaption,
-                CheckDescription = CheckDescription,
-                CheckVisibility = CheckVisibility,
-                IsChecked = IsChecked,
-                Message = message,
-                Title = title,
-                YesButton = YesButton,
-                NoButton = NoButton,
-                YesEnabled = YesEnabled,
-                NoEnabled = NoEnabled,
-                ProgressBarVisibility = ProgressBarVisibility,
-                ProgressValue = ProgressValue,
-                IsIndeterminate = IsIndeterminate,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                CustomContentHeight = CustomContentHeight,
-                CustomContentWidth = CustomContentWidth,
-                IsDraggable = IsDraggable,
-                YesIconType = YesIconType,
-                OnYesAction = onYesAction,
-                OnNoAction = onNoAction
-            };
+
+            CustomContent = CustomContent;
+            CustomContentVisible = CustomContentVisible;
+            HiddenDescription = HiddenDescription;
+            HiddenDescriptionExpanded = HiddenDescriptionExpanded;
+            HiddenDescriptionVisibility = HiddenDescriptionVisibility;
+            HiddenCaption = HiddenCaption;
+            CheckDescription = CheckDescription;
+            CheckVisibility = CheckVisibility;
+            IsChecked = IsChecked;
+            Message = message;
+            Title = title;
+            YesButton = YesButton;
+            NoButton = NoButton;
+            YesEnabled = YesEnabled;
+            NoEnabled = NoEnabled;
+            ProgressBarVisibility = ProgressBarVisibility;
+            ProgressValue = ProgressValue;
+            IsIndeterminate = IsIndeterminate;
+            HorizontalAlignment = HorizontalAlignment.Center;
+            VerticalAlignment = VerticalAlignment.Center;
+            CustomContentHeight = CustomContentHeight;
+            CustomContentWidth = CustomContentWidth;
+            IsDraggable = IsDraggable;
+            YesIconType = YesIconType;
+            OnYesAction = onYesAction;
+            OnNoAction = onNoAction;
+
             _overlayGrid = window.GetFirstVisualChild<Grid>() ?? throw new InvalidOperationException("The window must contain at least one Grid control.");
             if (blockrectangle is null)
             {
@@ -176,15 +174,15 @@ namespace Extensions
             }
             if (_overlayGrid.ColumnDefinitions.Count > 0)
             {
-                Grid.SetColumnSpan(dialog, _overlayGrid.ColumnDefinitions.Count);
+                Grid.SetColumnSpan(this, _overlayGrid.ColumnDefinitions.Count);
             }
             if (_overlayGrid.RowDefinitions.Count > 0)
             {
-                Grid.SetRowSpan(dialog, _overlayGrid.RowDefinitions.Count);
+                Grid.SetRowSpan(this, _overlayGrid.RowDefinitions.Count);
             }
             window.DisableCloseButton(true);
             KeyboardNavigation.SetTabNavigation(window, KeyboardNavigationMode.None);
-            _ = _overlayGrid.Children.Add(dialog);
+            _ = _overlayGrid.Children.Add(this);
         }
 
         protected override void OnInitialized(EventArgs e)
