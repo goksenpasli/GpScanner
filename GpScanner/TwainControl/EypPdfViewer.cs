@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -63,7 +64,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             });
 
         RotateSelectedPage = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 if (parameter is int sayfa && DataContext is TwainCtrl twainCtrl)
                 {
@@ -76,7 +77,9 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                             return;
                         }
                         twainCtrl.PdfToolBarControlIsEnabled = false;
-                        TwainCtrl.SavePageRotated(path, inputDocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, sayfa - 1);
+                        int angle = Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90;
+                        int index = sayfa - 1;
+                        await Task.Run(() => TwainCtrl.SavePageRotated(path, inputDocument, angle, index));
                         twainCtrl.PdfToolBarControlIsEnabled = true;
                         PdfFilePath = null;
                         PdfFilePath = path;

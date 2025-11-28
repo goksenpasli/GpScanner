@@ -1530,7 +1530,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
                 PdfToolBarControlIsEnabled = false;
                 string path = pdfviewer.PdfFilePath;
-                SavePageRotated(path, pdfdocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, pdfviewer.Sayfa - 1);
+                int angle = Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90;
+                int index = pdfviewer.Sayfa - 1;
+                await Task.Run(() => SavePageRotated(path, pdfdocument, angle, index));
                 PdfToolBarControlIsEnabled = true;
                 pdfviewer.Source = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
             },
@@ -1789,17 +1791,21 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 byte[] filedata = await Viewer.ReadAllFileAsync(pdfViewer.PdfFilePath);
                 using MemoryStream ms = await Viewer.ConvertToImgStreamAsync(filedata, PdfImportViewer.PdfViewer.Sayfa, Settings.Default.ImgLoadResolution);
                 BitmapFrame bitmapFrame = ms.GenerateBitmapFrameFromMemoryStream();
-                filedata = null;
-                using PdfDocument document = bitmapFrame.MedianFilterBitmap(PdfMedianValue).GeneratePdf(null, Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution);
-                SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf", FileName = $"{Translation.GetResStringValue("PAGENUMBER")} {pdfViewer.Sayfa}.pdf" };
-                if (saveFileDialog.ShowDialog() != true)
+                if (bitmapFrame is not null)
                 {
-                    return;
+                    filedata = null;
+                    using PdfDocument document = bitmapFrame.MedianFilterBitmap(PdfMedianValue).GeneratePdf(null, Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution);
+                    SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf", FileName = $"{Translation.GetResStringValue("PAGENUMBER")} {pdfViewer.Sayfa}.pdf" };
+                    if (saveFileDialog.ShowDialog() != true)
+                    {
+                        return;
+                    }
+                    PdfToolBarControlIsEnabled = false;
+                    document.Save(saveFileDialog.FileName);
+
+                    PdfToolBarControlIsEnabled = true;
+                    PdfMedianValue = 0;
                 }
-                PdfToolBarControlIsEnabled = false;
-                document.Save(saveFileDialog.FileName);
-                PdfToolBarControlIsEnabled = true;
-                PdfMedianValue = 0;
             },
             parameter => PdfMedianValue > 0 && parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
 
