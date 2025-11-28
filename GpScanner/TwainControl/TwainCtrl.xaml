@@ -1505,316 +1505,312 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <ScrollViewer Grid.Column="0"
-                                    HorizontalScrollBarVisibility="Auto"
-                                    Template="{DynamicResource HorizontalScrollViewerTemplate}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button local:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl}">
-                                            <Image Width="24"
-                                                Height="24"
-                                                Source="/TwainControl;component/Icons/undo.png" />
-                                        </Button>
-                                        <Button local:Policy.PolicyName="RemoveFiles"
-                                            Command="{Binding SeçiliListeTemizle}"
-                                            IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}">
-                                            <Image Width="24"
-                                                Height="24"
-                                                Source="/TwainControl;component/Icons/delete.png" />
-                                        </Button>
-                                        <Extensions:BadgeControl HorizontalBadgeAlignment="Center" IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}">
-                                            <Extensions:BadgeControl.BadgeContent>
-                                                <TextBlock Margin="0,-2,0,0"
-                                                    d:Text="0"
-                                                    FontSize="10"
-                                                    FontWeight="Bold"
-                                                    Foreground="Red"
-                                                    Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
-                                            </Extensions:BadgeControl.BadgeContent>
-                                            <Extensions:ContentToggleButton>
-                                                <Extensions:ContentToggleButton.OverContent>
-                                                    <Border Background="{StaticResource BorderBackground}"
-                                                        BorderBrush="{StaticResource GroupBoxBackGround}"
-                                                        BorderThickness="1">
-                                                        <StackPanel>
-                                                            <MenuItem Command="{Binding ListeTemizle}">
-                                                                <MenuItem.Icon>
-                                                                    <Image Width="16"
-                                                                        Height="16"
-                                                                        Source="/TwainControl;component/Icons/delete.png" />
-                                                                </MenuItem.Icon>
-                                                                <MenuItem.Header>
-                                                                    <TextBlock VerticalAlignment="Center">
-                                                                        <Run Text="{local:Loc FILE}" />
-                                                                        <Run Text="{local:Loc CLEARLIST}" />
-                                                                    </TextBlock>
-                                                                </MenuItem.Header>
-                                                            </MenuItem>
-                                                            <Separator />
-                                                            <MenuItem IsCheckable="True" IsChecked="{Binding DirectRemoveImage, Source={x:Static properties:Settings.Default}}">
-                                                                <MenuItem.Header>
-                                                                    <TextBlock>
-                                                                        <Run Text="{local:Loc FILE}" />
-                                                                        <Run Text="{local:Loc DELETE}" />
-                                                                    </TextBlock>
-                                                                </MenuItem.Header>
-                                                            </MenuItem>
-                                                            <MenuItem FontWeight="Bold"
-                                                                Foreground="Red"
-                                                                Header="{local:Loc REMOVEPROCESSEDIMAGE}"
-                                                                IsCheckable="True"
-                                                                IsChecked="{Binding RemoveProcessedImage, Source={x:Static properties:Settings.Default}}" />
-                                                        </StackPanel>
-                                                    </Border>
-                                                </Extensions:ContentToggleButton.OverContent>
-                                            </Extensions:ContentToggleButton>
-                                        </Extensions:BadgeControl>
-                                        <Button local:Policy.PolicyName="DuplicateSelectedImage"
-                                            BorderBrush="Cyan"
-                                            Command="{Binding DuplicateSelectedImage}"
-                                            CommandParameter="{Binding SeçiliResim.Resim}">
-                                            <Image Width="24" Height="24">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="134" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
-                                        <Button local:Policy.PolicyName="InsertClipBoardImage"
-                                            BorderBrush="Cyan"
-                                            Command="{Binding InsertClipBoardImage}">
-                                            <Image Width="24" Height="24">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="260" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
-                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        <Button local:Policy.PolicyName="Tümünüİşaretle"
-                                            BorderBrush="Cyan"
-                                            Command="{Binding Tümünüİşaretle}"
-                                            ToolTip="{local:Loc ALL}">
-                                            <Image Width="24"
-                                                Height="24"
-                                                Source="/TwainControl;component/Icons/selectall.png" />
-                                        </Button>
-                                        <Button local:Policy.PolicyName="TümününİşaretiniKaldır"
-                                            Command="{Binding TümününİşaretiniKaldır}"
-                                            ToolTip="{local:Loc NONE}">
-                                            <Image Width="24"
-                                                Height="24"
-                                                Source="/TwainControl;component/Icons/none.png" />
-                                        </Button>
-                                        <Extensions:SplitButton local:Policy.PolicyName="Tersiniİşaretle"
-                                            Command="{Binding Tersiniİşaretle}"
-                                            ToolTip="{local:Loc REVERSE}">
-                                            <Image Width="24"
-                                                Height="24"
-                                                Source="/TwainControl;component/Icons/inverse.png" />
-                                            <Extensions:SplitButton.InternalContent>
+                                <WrapPanel Orientation="Horizontal">
+                                    <Button local:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl}">
+                                        <Image Width="24"
+                                            Height="24"
+                                            Source="/TwainControl;component/Icons/undo.png" />
+                                    </Button>
+                                    <Button local:Policy.PolicyName="RemoveFiles"
+                                        Command="{Binding SeçiliListeTemizle}"
+                                        IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}">
+                                        <Image Width="24"
+                                            Height="24"
+                                            Source="/TwainControl;component/Icons/delete.png" />
+                                    </Button>
+                                    <Extensions:BadgeControl HorizontalBadgeAlignment="Center" IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}">
+                                        <Extensions:BadgeControl.BadgeContent>
+                                            <TextBlock Margin="0,-2,0,0"
+                                                d:Text="0"
+                                                FontSize="10"
+                                                FontWeight="Bold"
+                                                Foreground="Red"
+                                                Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
+                                        </Extensions:BadgeControl.BadgeContent>
+                                        <Extensions:ContentToggleButton>
+                                            <Extensions:ContentToggleButton.OverContent>
                                                 <Border Background="{StaticResource BorderBackground}"
                                                     BorderBrush="{StaticResource GroupBoxBackGround}"
                                                     BorderThickness="1">
-                                                    <UniformGrid Rows="2">
-                                                        <Button local:Policy.PolicyName="TümünüİşaretleDikey" Command="{Binding TümünüİşaretleDikey}">
-                                                            <Image Width="24" Height="24">
-                                                                <Image.Source>
-                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                        <Binding Source="Shell32.dll" />
-                                                                        <Binding Source="1" />
-                                                                    </MultiBinding>
-                                                                </Image.Source>
-                                                            </Image>
-                                                        </Button>
-                                                        <Button local:Policy.PolicyName="TümünüİşaretleYatay" Command="{Binding TümünüİşaretleYatay}">
-                                                            <Image Width="24"
-                                                                Height="24"
-                                                                RenderTransformOrigin="0.5,0.5">
-                                                                <Image.Source>
-                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                        <Binding Source="Shell32.dll" />
-                                                                        <Binding Source="1" />
-                                                                    </MultiBinding>
-                                                                </Image.Source>
-                                                                <Image.RenderTransform>
-                                                                    <TransformGroup>
-                                                                        <RotateTransform Angle="-90" />
-                                                                    </TransformGroup>
-                                                                </Image.RenderTransform>
-                                                            </Image>
-                                                        </Button>
-                                                    </UniformGrid>
+                                                    <StackPanel>
+                                                        <MenuItem Command="{Binding ListeTemizle}">
+                                                            <MenuItem.Icon>
+                                                                <Image Width="16"
+                                                                    Height="16"
+                                                                    Source="/TwainControl;component/Icons/delete.png" />
+                                                            </MenuItem.Icon>
+                                                            <MenuItem.Header>
+                                                                <TextBlock VerticalAlignment="Center">
+                                                                    <Run Text="{local:Loc FILE}" />
+                                                                    <Run Text="{local:Loc CLEARLIST}" />
+                                                                </TextBlock>
+                                                            </MenuItem.Header>
+                                                        </MenuItem>
+                                                        <Separator />
+                                                        <MenuItem IsCheckable="True" IsChecked="{Binding DirectRemoveImage, Source={x:Static properties:Settings.Default}}">
+                                                            <MenuItem.Header>
+                                                                <TextBlock>
+                                                                    <Run Text="{local:Loc FILE}" />
+                                                                    <Run Text="{local:Loc DELETE}" />
+                                                                </TextBlock>
+                                                            </MenuItem.Header>
+                                                        </MenuItem>
+                                                        <MenuItem FontWeight="Bold"
+                                                            Foreground="Red"
+                                                            Header="{local:Loc REMOVEPROCESSEDIMAGE}"
+                                                            IsCheckable="True"
+                                                            IsChecked="{Binding RemoveProcessedImage, Source={x:Static properties:Settings.Default}}" />
+                                                    </StackPanel>
                                                 </Border>
-                                            </Extensions:SplitButton.InternalContent>
-                                        </Extensions:SplitButton>
-                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        <Extensions:NumericUpDown Maximum="{Binding ElementName=Lb, Path=Items.Count, Mode=OneWay}"
-                                            Minimum="1"
-                                            Value="{Binding PageIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <Button local:Policy.PolicyName="GotoDocumentIndex"
-                                            Command="{Binding GotoDocumentIndex}"
-                                            CommandParameter="{Binding ElementName=Lb}">
-                                            <Image Width="24" Height="24">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="55" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
-                                        <Extensions:BadgeControl HorizontalBadgeAlignment="Left">
-                                            <Extensions:BadgeControl.BadgeContent>
-                                                <TextBlock Margin="2,-2,0,0"
-                                                    d:Text="0"
-                                                    FontSize="10"
-                                                    FontWeight="Bold"
-                                                    Foreground="Red"
-                                                    Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
-                                            </Extensions:BadgeControl.BadgeContent>
-                                            <Button local:Policy.PolicyName="DetectEmptyPages" Command="{Binding DetectEmptyPages}">
-                                                <Button.ToolTip>
-                                                    <TextBlock>
-                                                        <Run Text="{local:Loc EMPTYPAGE}" />
-                                                        <Run Text="{local:Loc THRESHOLD}" />
-                                                        <Run Text="{Binding EmptyThreshold, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat=%{0}}" />
-                                                    </TextBlock>
-                                                </Button.ToolTip>
-                                                <Canvas Width="24" Height="24">
-                                                    <Image Width="24" Height="24">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="0" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                    <Image Canvas.Left="4"
-                                                        Canvas.Top="8"
-                                                        Width="16"
-                                                        Height="16">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="32" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                </Canvas>
-                                            </Button>
-                                        </Extensions:BadgeControl>
-                                        <Button local:Policy.PolicyName="TümünüOtomatikDöndür"
-                                            Command="{Binding TümünüOtomatikDöndür}"
-                                            RenderTransformOrigin="0.5,0.5"
-                                            ToolTipService.IsEnabled="{Binding IsEnabled, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource Mode=Self}}"
-                                            ToolTipService.ShowOnDisabled="True">
+                                            </Extensions:ContentToggleButton.OverContent>
+                                        </Extensions:ContentToggleButton>
+                                    </Extensions:BadgeControl>
+                                    <Button local:Policy.PolicyName="DuplicateSelectedImage"
+                                        BorderBrush="Cyan"
+                                        Command="{Binding DuplicateSelectedImage}"
+                                        CommandParameter="{Binding SeçiliResim.Resim}">
+                                        <Image Width="24" Height="24">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="134" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
+                                    <Button local:Policy.PolicyName="InsertClipBoardImage"
+                                        BorderBrush="Cyan"
+                                        Command="{Binding InsertClipBoardImage}">
+                                        <Image Width="24" Height="24">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="260" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    <Button local:Policy.PolicyName="Tümünüİşaretle"
+                                        BorderBrush="Cyan"
+                                        Command="{Binding Tümünüİşaretle}"
+                                        ToolTip="{local:Loc ALL}">
+                                        <Image Width="24"
+                                            Height="24"
+                                            Source="/TwainControl;component/Icons/selectall.png" />
+                                    </Button>
+                                    <Button local:Policy.PolicyName="TümününİşaretiniKaldır"
+                                        Command="{Binding TümününİşaretiniKaldır}"
+                                        ToolTip="{local:Loc NONE}">
+                                        <Image Width="24"
+                                            Height="24"
+                                            Source="/TwainControl;component/Icons/none.png" />
+                                    </Button>
+                                    <Extensions:SplitButton local:Policy.PolicyName="Tersiniİşaretle"
+                                        Command="{Binding Tersiniİşaretle}"
+                                        ToolTip="{local:Loc REVERSE}">
+                                        <Image Width="24"
+                                            Height="24"
+                                            Source="/TwainControl;component/Icons/inverse.png" />
+                                        <Extensions:SplitButton.InternalContent>
+                                            <Border Background="{StaticResource BorderBackground}"
+                                                BorderBrush="{StaticResource GroupBoxBackGround}"
+                                                BorderThickness="1">
+                                                <UniformGrid Rows="2">
+                                                    <Button local:Policy.PolicyName="TümünüİşaretleDikey" Command="{Binding TümünüİşaretleDikey}">
+                                                        <Image Width="24" Height="24">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="1" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </Button>
+                                                    <Button local:Policy.PolicyName="TümünüİşaretleYatay" Command="{Binding TümünüİşaretleYatay}">
+                                                        <Image Width="24"
+                                                            Height="24"
+                                                            RenderTransformOrigin="0.5,0.5">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="1" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                            <Image.RenderTransform>
+                                                                <TransformGroup>
+                                                                    <RotateTransform Angle="-90" />
+                                                                </TransformGroup>
+                                                            </Image.RenderTransform>
+                                                        </Image>
+                                                    </Button>
+                                                </UniformGrid>
+                                            </Border>
+                                        </Extensions:SplitButton.InternalContent>
+                                    </Extensions:SplitButton>
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    <Extensions:NumericUpDown Maximum="{Binding ElementName=Lb, Path=Items.Count, Mode=OneWay}"
+                                        Minimum="1"
+                                        Value="{Binding PageIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Button local:Policy.PolicyName="GotoDocumentIndex"
+                                        Command="{Binding GotoDocumentIndex}"
+                                        CommandParameter="{Binding ElementName=Lb}">
+                                        <Image Width="24" Height="24">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="55" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
+                                    <Extensions:BadgeControl HorizontalBadgeAlignment="Left">
+                                        <Extensions:BadgeControl.BadgeContent>
+                                            <TextBlock Margin="2,-2,0,0"
+                                                d:Text="0"
+                                                FontSize="10"
+                                                FontWeight="Bold"
+                                                Foreground="Red"
+                                                Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
+                                        </Extensions:BadgeControl.BadgeContent>
+                                        <Button local:Policy.PolicyName="DetectEmptyPages" Command="{Binding DetectEmptyPages}">
                                             <Button.ToolTip>
                                                 <TextBlock>
-                                                    <Run Text="{local:Loc Rotate90}" />
-                                                    <Run Text="{local:Loc Rotate180}" />
-                                                    <Run Text="{local:Loc Rotate270}" />
-                                                    <LineBreak />
-                                                    <Run Text="{local:Loc TESSERACTORIENTATIONFILEWARNING}" />
+                                                    <Run Text="{local:Loc EMPTYPAGE}" />
+                                                    <Run Text="{local:Loc THRESHOLD}" />
+                                                    <Run Text="{Binding EmptyThreshold, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat=%{0}}" />
                                                 </TextBlock>
                                             </Button.ToolTip>
                                             <Canvas Width="24" Height="24">
-                                                <Image Width="24"
-                                                    Height="24"
-                                                    RenderTransformOrigin="0.5,0.5">
-                                                    <Image.RenderTransform>
-                                                        <TransformGroup>
-                                                            <RotateTransform Angle="-180" />
-                                                        </TransformGroup>
-                                                    </Image.RenderTransform>
+                                                <Image Width="24" Height="24">
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
-                                                            <Binding Source="1" />
+                                                            <Binding Source="0" />
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
-                                                <Image Width="16" Height="16">
+                                                <Image Canvas.Left="4"
+                                                    Canvas.Top="8"
+                                                    Width="16"
+                                                    Height="16">
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
-                                                            <Binding Source="238" />
+                                                            <Binding Source="32" />
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
                                             </Canvas>
                                         </Button>
-                                        <Extensions:BadgeControl HorizontalBadgeAlignment="Left">
-                                            <Extensions:BadgeControl.BadgeContent>
-                                                <TextBlock Margin="2,-2,0,0"
-                                                    d:Text="0"
-                                                    FontSize="10"
-                                                    FontWeight="Bold"
-                                                    Foreground="Red"
-                                                    Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
-                                            </Extensions:BadgeControl.BadgeContent>
-                                            <Extensions:SplitButton local:Policy.PolicyName="PrintSelectedDocuments" Command="{Binding PrintSelectedDocuments}">
-                                                <Image Width="24" Height="24">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="16" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <Extensions:SplitButton.InternalContent>
-                                                    <ListBox ItemStringFormat="{}{0} Dpi"
-                                                        ItemsSource="{Binding DpiList, Source={x:Reference ImgViewer}}"
-                                                        SelectedItem="{Binding PrintDpi}" />
-                                                </Extensions:SplitButton.InternalContent>
-                                            </Extensions:SplitButton>
-                                        </Extensions:BadgeControl>
-                                        <Button local:Policy.PolicyName="SaveFileList" Command="{Binding SaveFileList}">
+                                    </Extensions:BadgeControl>
+                                    <Button local:Policy.PolicyName="TümünüOtomatikDöndür"
+                                        Command="{Binding TümünüOtomatikDöndür}"
+                                        RenderTransformOrigin="0.5,0.5"
+                                        ToolTipService.IsEnabled="{Binding IsEnabled, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource Mode=Self}}"
+                                        ToolTipService.ShowOnDisabled="True">
+                                        <Button.ToolTip>
+                                            <TextBlock>
+                                                <Run Text="{local:Loc Rotate90}" />
+                                                <Run Text="{local:Loc Rotate180}" />
+                                                <Run Text="{local:Loc Rotate270}" />
+                                                <LineBreak />
+                                                <Run Text="{local:Loc TESSERACTORIENTATIONFILEWARNING}" />
+                                            </TextBlock>
+                                        </Button.ToolTip>
+                                        <Canvas Width="24" Height="24">
                                             <Image Width="24"
                                                 Height="24"
-                                                Source="/TwainControl;component/Icons/save.png" />
-                                        </Button>
-                                        <Button local:Policy.PolicyName="AddActiveVisibleContentImage" Command="{Binding AddActiveVisibleContentImage}">
+                                                RenderTransformOrigin="0.5,0.5">
+                                                <Image.RenderTransform>
+                                                    <TransformGroup>
+                                                        <RotateTransform Angle="-180" />
+                                                    </TransformGroup>
+                                                </Image.RenderTransform>
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="1" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="238" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Canvas>
+                                    </Button>
+                                    <Extensions:BadgeControl HorizontalBadgeAlignment="Left">
+                                        <Extensions:BadgeControl.BadgeContent>
+                                            <TextBlock Margin="2,-2,0,0"
+                                                d:Text="0"
+                                                FontSize="10"
+                                                FontWeight="Bold"
+                                                Foreground="Red"
+                                                Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
+                                        </Extensions:BadgeControl.BadgeContent>
+                                        <Extensions:SplitButton local:Policy.PolicyName="PrintSelectedDocuments" Command="{Binding PrintSelectedDocuments}">
                                             <Image Width="24" Height="24">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                         <Binding Source="Shell32.dll" />
-                                                        <Binding Source="245" />
+                                                        <Binding Source="16" />
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
-                                        </Button>
-                                        <Button local:Policy.PolicyName="CycleSelectedDocuments"
-                                            Command="{Binding CycleSelectedDocuments}"
-                                            CommandParameter="{Binding ElementName=Lb}">
-                                            <Image Width="24" Height="24">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="22" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
-                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        <Button local:Policy.PolicyName="InvertSelectedImage"
-                                            BorderBrush="Cyan"
-                                            Command="{Binding InvertSelectedImage}"
-                                            Content="["
-                                            FontFamily="Wingdings"
-                                            FontSize="20" />
-                                        <Extensions:NumericUpDown BorderBrush="Cyan"
-                                            Interval="1"
-                                            IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}"
-                                            Maximum="1"
-                                            Minimum="-1"
-                                            NumericUpdownTextBoxVisibility="Collapsed"
-                                            Value="{Binding AllImageRotationAngle}" />
-                                    </StackPanel>
-                                </ScrollViewer>
+                                            <Extensions:SplitButton.InternalContent>
+                                                <ListBox ItemStringFormat="{}{0} Dpi"
+                                                    ItemsSource="{Binding DpiList, Source={x:Reference ImgViewer}}"
+                                                    SelectedItem="{Binding PrintDpi}" />
+                                            </Extensions:SplitButton.InternalContent>
+                                        </Extensions:SplitButton>
+                                    </Extensions:BadgeControl>
+                                    <Button local:Policy.PolicyName="SaveFileList" Command="{Binding SaveFileList}">
+                                        <Image Width="24"
+                                            Height="24"
+                                            Source="/TwainControl;component/Icons/save.png" />
+                                    </Button>
+                                    <Button local:Policy.PolicyName="AddActiveVisibleContentImage" Command="{Binding AddActiveVisibleContentImage}">
+                                        <Image Width="24" Height="24">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="245" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
+                                    <Button local:Policy.PolicyName="CycleSelectedDocuments"
+                                        Command="{Binding CycleSelectedDocuments}"
+                                        CommandParameter="{Binding ElementName=Lb}">
+                                        <Image Width="24" Height="24">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="22" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    <Button local:Policy.PolicyName="InvertSelectedImage"
+                                        BorderBrush="Cyan"
+                                        Command="{Binding InvertSelectedImage}"
+                                        Content="["
+                                        FontFamily="Wingdings"
+                                        FontSize="20" />
+                                    <Extensions:NumericUpDown BorderBrush="Cyan"
+                                        Interval="1"
+                                        IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}"
+                                        Maximum="1"
+                                        Minimum="-1"
+                                        NumericUpdownTextBoxVisibility="Collapsed"
+                                        Value="{Binding AllImageRotationAngle}" />
+                                </WrapPanel>
                                 <Separator Grid.Row="1" />
                                 <ListBox x:Name="Lb"
                                     Grid.Row="2"

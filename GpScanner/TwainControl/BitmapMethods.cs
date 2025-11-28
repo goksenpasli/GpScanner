@@ -333,58 +333,87 @@ public static class BitmapMethods
         return invertedBitmap;
     }
 
-    public static WriteableBitmap MedianFilterBitmap(this BitmapSource inputBitmap, int threshold)
+    public static WriteableBitmap MedianFilterBitmap(this BitmapSource inputBitmap, int windowSize)
     {
         int width = inputBitmap.PixelWidth;
         int height = inputBitmap.PixelHeight;
         int bytesPerPixel = (inputBitmap.Format.BitsPerPixel + 7) / 8;
         int stride = width * bytesPerPixel;
-        WriteableBitmap outputBitmap = new(width, height, inputBitmap.DpiX, inputBitmap.DpiY, inputBitmap.Format, null);
+        WriteableBitmap output = new(width, height, inputBitmap.DpiX, inputBitmap.DpiY, inputBitmap.Format, null);
         byte[] inputPixels = new byte[height * stride];
+        byte[] outputPixels = new byte[inputPixels.Length];
+
         inputBitmap.CopyPixels(inputPixels, stride, 0);
 
-        byte[] outputPixels = new byte[inputPixels.Length];
+        int radius = windowSize / 2;
+        _ = new int[256];
+
         _ = Parallel.For(
             0,
             height,
-            y =>
+            () => new int[256],
+            (y, state, localHist) =>
             {
+                int yMin = Math.Max(0, y - radius);
+                int yMax = Math.Min(height - 1, y + radius);
+
                 for (int x = 0; x < width; x++)
                 {
-                    int minX = Math.Max(x - (threshold / 2), 0);
-                    int maxX = Math.Min(x + (threshold / 2), width - 1);
-                    int minY = Math.Max(y - (threshold / 2), 0);
-                    int maxY = Math.Min(y + (threshold / 2), height - 1);
+                    Array.Clear(localHist, 0, 256);
 
-                    List<byte> values = [];
-                    for (int wy = minY; wy <= maxY; wy++)
+                    int xMin = Math.Max(0, x - radius);
+                    int xMax = Math.Min(width - 1, x + radius);
+
+                    for (int yy = yMin; yy <= yMax; yy++)
                     {
-                        for (int wx = minX; wx <= maxX; wx++)
+                        int idx = (yy * stride) + (xMin * bytesPerPixel);
+
+                        for (int xx = xMin; xx <= xMax; xx++)
                         {
-                            int pixelIndex = (wy * stride) + (wx * bytesPerPixel);
-                            byte pixelValue = inputPixels[pixelIndex];
-                            values.Add(pixelValue);
+                            byte val = inputPixels[idx];
+                            localHist[val]++;
+                            idx += bytesPerPixel;
                         }
                     }
 
-                    values.Sort();
-                    byte medianValue = values[values.Count / 2];
-                    int outputIndex = (y * stride) + (x * bytesPerPixel);
-                    outputPixels[outputIndex] = medianValue;
-                    outputPixels[outputIndex + 1] = medianValue;
-                    outputPixels[outputIndex + 2] = medianValue;
+                    int count = 0;
+                    int target = (xMax - xMin + 1) * (yMax - yMin + 1) / 2;
+                    byte median = 0;
+
+                    for (int i = 0; i < 256; i++)
+                    {
+                        count += localHist[i];
+                        if (count > target)
+                        {
+                            median = (byte)i;
+                            break;
+                        }
+                    }
+
+                    int outIdx = (y * stride) + (x * bytesPerPixel);
+
+                    outputPixels[outIdx] = median;
+                    if (bytesPerPixel >= 3)
+                    {
+                        outputPixels[outIdx + 1] = median;
+                        outputPixels[outIdx + 2] = median;
+                    }
                     if (bytesPerPixel == 4)
                     {
-                        outputPixels[outputIndex + 3] = 255;
+                        outputPixels[outIdx + 3] = 255;
                     }
                 }
+
+                return localHist;
+            },
+            _ =>
+            {
             });
 
-        outputBitmap?.WritePixels(new Int32Rect(0, 0, width, height), outputPixels, stride, 0);
-        outputBitmap.Freeze();
-        inputPixels = null;
-        outputPixels = null;
-        return outputBitmap;
+        output.WritePixels(new Int32Rect(0, 0, width, height), outputPixels, stride, 0);
+        output.Freeze();
+
+        return output;
     }
 
     public static WriteableBitmap RemoveVerticalLines(this WriteableBitmap source, int sensitivity = 6)

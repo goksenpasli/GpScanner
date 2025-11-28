@@ -147,14 +147,9 @@
                                             Text="ç" />
                                     </Hyperlink>
                                 </TextBlock>
-                            </Grid>
-                        </Border>
-                    </DockPanel>
-                    <Separator />
-                    <UniformGrid Columns="2">
-                        <StackPanel>
-                            <UniformGrid Columns="3" IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}">
-                                <Slider VerticalAlignment="Center"
+                                <Slider Width="64"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Bottom"
                                     IsSnapToTickEnabled="True"
                                     Maximum="360"
                                     Minimum="0"
@@ -162,15 +157,21 @@
                                     SmallChange="1"
                                     Ticks="0, 90, 180, 270, 360"
                                     Value="{Binding Scanner.CroppedImageAngle}" />
-                                <StackPanel Orientation="Horizontal">
+                            </Grid>
+                        </Border>
+                    </DockPanel>
+                    <Separator />
+                    <UniformGrid Columns="2">
+                        <StackPanel>
+                            <UniformGrid Columns="2" IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}">
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc DESPECKLE}" />
                                     <Extensions:NumericUpDown Interval="1"
                                         Maximum="10"
                                         Minimum="0"
                                         Value="{Binding Scanner.MedianValue, Delay=150, UpdateSourceTrigger=PropertyChanged}" />
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <Extensions:NumericUpDown Interval="1"
                                         Maximum="50"
                                         Minimum="1"

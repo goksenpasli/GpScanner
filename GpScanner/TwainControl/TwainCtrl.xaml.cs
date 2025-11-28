@@ -273,7 +273,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (parameter is ScannedImage item &&
                 MessageBox.Show($"{Translation.GetResStringValue("Auto")} {Translation.GetResStringValue("DESKEW")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
-                    await CreateDeskewedImage(item);
+                    await CreateAutoDeskewedImage(item);
                 }
             },
             parameter => true);
@@ -283,13 +283,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (parameter is ScannedImage item)
                 {
-                    BitmapFrame bitmapFrame = BitmapFrame.Create(await item.Resim.RotateImageAsync(CustomDeskewAngle, Brushes.White));
-                    bitmapFrame?.Freeze();
-                    item.Resim = bitmapFrame;
-                    double deskewAngle = Deskew.GetDeskewAngle(item.Resim);
-                    item.DeskewAngle = deskewAngle + 90;
-                    bitmapFrame = null;
-                    GC.Collect();
+                    await CreateAutoDeskewedImage(item, CustomDeskewAngle);
                 }
             },
             parameter => CustomDeskewAngle != 0);
@@ -315,19 +309,28 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     $"{Translation.GetResStringValue("ALL")} {Translation.GetResStringValue("AUTOROTATE")}",
                     async () =>
                     {
-                        int parallelcount = (int)numericUpDown.Value;
-                        await AutoRotateBasedTextOrientation(Scanner.Resimler, parallelcount);
-                        if (extendedmessagebox.IsChecked)
+                        try
                         {
-                            foreach (ScannedImage item in Scanner.Resimler)
+                            AutoRotateIsWorking = true;
+                            int parallelcount = (int)numericUpDown.Value;
+                            await AutoRotateBasedTextOrientation(Scanner.Resimler, parallelcount);
+                            if (extendedmessagebox.IsChecked)
                             {
-                                await CreateDeskewedImage(item);
+                                for (int i = 0; i < Scanner.Resimler.Count; i++)
+                                {
+                                    await CreateAutoDeskewedImage(Scanner.Resimler[i]);
+                                    AllRotateProgressValue = (i + 1) / (double)Scanner.Resimler.Count;
+                                }
                             }
+                        }
+                        finally
+                        {
+                            AutoRotateIsWorking = false;
                         }
                     });
                 GC.Collect();
             },
-            parameter => Scanner?.Resimler?.Any() == true && TesseractOrientationFileExists);
+            parameter => Scanner?.Resimler?.Any() == true && TesseractOrientationFileExists && !AutoRotateIsWorking);
 
         ToolBoxManualDeskewImage = new RelayCommand<object>(
             async parameter =>
@@ -2590,6 +2593,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> AutoDeskewImage { get; }
 
+    public bool AutoRotateIsWorking
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(AutoRotateIsWorking));
+            }
+        }
+    }
+
     public RelayCommand<object> BlackAndWhitePdfPage { get; }
 
     public byte[] CameraQRCodeData
@@ -4359,10 +4375,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    private static async Task CreateDeskewedImage(ScannedImage item)
+    private static async Task CreateAutoDeskewedImage(ScannedImage item, double? angle = null)
     {
-        double deskewAngle = Deskew.GetDeskewAngle(item.Resim);
-        BitmapFrame bitmapFrame = BitmapFrame.Create(await item.Resim.RotateImageAsync(deskewAngle, Brushes.White));
+        BitmapFrame bitmapFrame = BitmapFrame.Create(await item.Resim.RotateImageAsync(angle is null ? Deskew.GetDeskewAngle(item.Resim) : angle.Value, Brushes.White));
         bitmapFrame?.Freeze();
         item.Resim = bitmapFrame;
         item.DeskewAngle = Deskew.GetDeskewAngle(item.Resim) + 90;
