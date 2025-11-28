@@ -18,6 +18,8 @@ namespace TwainControl
 
         public DataTemplate Img { get; set; }
 
+        public DataTemplate J2k { get; set; }
+
         public DataTemplate Jb2 { get; set; }
 
         public DataTemplate Jb2Zip { get; set; }
@@ -40,9 +42,9 @@ namespace TwainControl
         {
             if (!DesignerProperties.GetIsInDesignMode(container) && item is string dosya)
             {
-                string[] imgext = [".jpg", ".jpeg", ".bmp", ".png", ".tif", ".tiff"];
-                string[] archiveext = [".7z", ".arj", ".bzip2", ".cab", ".gzip", ".iso", ".lzh", ".lzma", ".ntfs", ".ppmd", ".rar", ".rar5", ".rpm", ".tar", ".vhd", ".wim", ".xar", ".xz", ".z", ".zip", ".gz"];
-                string[] videoext = [".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg"];
+                string[] imgext = [ ".jpg", ".jpeg", ".bmp", ".png", ".tif", ".tiff" ];
+                string[] archiveext = [ ".7z", ".arj", ".bzip2", ".cab", ".gzip", ".iso", ".lzh", ".lzma", ".ntfs", ".ppmd", ".rar", ".rar5", ".rpm", ".tar", ".vhd", ".wim", ".xar", ".xz", ".z", ".zip", ".gz" ];
+                string[] videoext = [ ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg" ];
                 string ext = Path.GetExtension(dosya).ToLowerInvariant();
                 if (ext is not null)
                 {
@@ -53,6 +55,7 @@ namespace TwainControl
                         ".xps" => Xps,
                         ".webp" => Webp,
                         ".jb2" => Jb2,
+                        ".j2k" => J2k,
                         ".jb2zip" => Jb2Zip,
                         ".cbr" or ".cbz" => Cbr,
                         ".docx" or ".txt" or ".odt" => Docx,

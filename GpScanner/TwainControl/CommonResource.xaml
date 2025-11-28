@@ -1090,13 +1090,20 @@
         </Extensions:ImageViewer>
     </DataTemplate>
     <DataTemplate x:Key="Jb2Template">
-        <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
+        <local:Jb2ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
+            ImageFilePath="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
             OpenButtonVisibility="Collapsed"
             Orientation="Height"
             PanoramaButtonVisibility="Collapsed"
-            PrintButtonVisibility="Visible"
-            Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
-            Tag="{Binding Path=DataContext, Converter={StaticResource Jb2ToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            PrintButtonVisibility="Visible" />
+    </DataTemplate>
+    <DataTemplate x:Key="J2kTemplate">
+        <local:J2kImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
+            ImageFilePath="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+            OpenButtonVisibility="Collapsed"
+            Orientation="Height"
+            PanoramaButtonVisibility="Collapsed"
+            PrintButtonVisibility="Visible" />
     </DataTemplate>
     <DataTemplate x:Key="EypSimpleXlsxTemplate">
         <StackPanel>
@@ -1411,6 +1418,7 @@
         Docx="{StaticResource SimpleArchiveViewerDocxTemplate}"
         Empty="{StaticResource EmptyTemplate}"
         Img="{StaticResource EypImgViewerTemplate}"
+        J2k="{StaticResource J2kTemplate}"
         Jb2="{StaticResource Jb2Template}"
         Pdf="{StaticResource EypSimplePdfTemplate}"
         Vid="{StaticResource VideoViewerTemplateMini}"
@@ -1424,6 +1432,7 @@
         Empty="{StaticResource SimpleArchiveViewerEmptyTemplate}"
         Eyp="{StaticResource SimpleArchiveViewerEypViewerTemplate}"
         Img="{StaticResource SimpleArchiveViewerImgViewerTemplate}"
+        J2k="{StaticResource J2kTemplate}"
         Jb2="{StaticResource Jb2Template}"
         Pdf="{StaticResource SimpleArchiveViewerPdfViewerTemplate}"
         Vid="{StaticResource SimpleArchiveViewerVideoViewerTemplate}"
@@ -1437,6 +1446,7 @@
         Docx="{StaticResource SimpleArchiveViewerDocxTemplate}"
         Eyp="{StaticResource EypViewerTemplate}"
         Img="{StaticResource EypImgViewerTemplate}"
+        J2k="{StaticResource J2kTemplate}"
         Jb2="{StaticResource Jb2Template}"
         Pdf="{StaticResource EypSimplePdfTemplate}"
         Vid="{StaticResource VideoViewerTemplateMini}"

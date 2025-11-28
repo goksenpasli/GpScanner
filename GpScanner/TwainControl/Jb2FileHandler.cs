@@ -1,5 +1,4 @@
 ﻿using Extensions;
-using JBig2Decoder;
 using PdfiumViewer;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,11 @@ namespace TwainControl
 {
     public class Jb2FileHandler : ILoadFileHandler
     {
-        public int GetPageCount(string filename) => 1;
+        public int GetPageCount(string filename)
+        {
+            PBoxJBig2 pBoxJBig2 = new(File.ReadAllBytes(filename), null);
+            return pBoxJBig2.pages.Count;
+        }
 
         public IEnumerable<PdfCharacterInformation> GetPdfCharacters() => null;
 
@@ -32,8 +35,9 @@ namespace TwainControl
                    : await Task.Run(
                 () =>
                 {
-                    JBIG2StreamDecoder jBIG2StreamDecoder = new();
-                    BitmapImage bitmapimage = jBIG2StreamDecoder.decodeJBIG2(File.ReadAllBytes(filename)).ToBitmapImage();
+                    PBoxJBig2 pBoxJBig2 = new(File.ReadAllBytes(filename), null);
+                    using System.Drawing.Image image = pBoxJBig2.decodeImage();
+                    BitmapImage bitmapimage = image.ToBitmapImage(System.Drawing.Imaging.ImageFormat.Tiff);
                     BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(bitmapimage.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(bitmapimage);
                     bitmapFrame.Freeze();
                     return bitmapFrame;
@@ -42,7 +46,40 @@ namespace TwainControl
 
         public Task<BitmapImage> LoadPdfAsync(string filename, int pageNumber) => throw new NotImplementedException();
 
-        public Task<IEnumerable<BitmapFrame>> LoadTiffPagesAsync(string filename) => throw new NotImplementedException();
+        public async Task<IEnumerable<BitmapFrame>> LoadTiffPagesAsync(string filename)
+        {
+            if (!IsValidFile(filename))
+            {
+                return null;
+            }
+            List<BitmapFrame> frames = [];
+            int pageCount = GetPageCount(filename);
+            PBoxJBig2 pBoxJBig2 = new(File.ReadAllBytes(filename), null);
+            for (int i = 0; i < pageCount; i++)
+            {
+                try
+                {
+                    BitmapFrame bitmapFrame = await Task.Run(
+                        () =>
+                        {
+                            using System.Drawing.Image image = pBoxJBig2.decodeImage(i + 1);
+                            if (image != null)
+                            {
+                                BitmapImage bitmapimage = image.ToBitmapImage(System.Drawing.Imaging.ImageFormat.Tiff);
+                                BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(bitmapimage.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(bitmapimage);
+                                bitmapFrame.Freeze();
+                                return bitmapFrame;
+                            }
+                            return null;
+                        });
+                    frames.Add(bitmapFrame);
+                }
+                catch
+                {
+                }
+            }
+            return frames;
+        }
 
         public Task<BitmapFrame> LoadWebpImage(int decodeheight, string filename, bool fullresolution = true) => throw new NotImplementedException();
 

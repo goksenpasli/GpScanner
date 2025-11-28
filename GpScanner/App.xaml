@@ -564,6 +564,14 @@
                     Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
                     Tag="{Binding Path=DataContext, Converter={StaticResource Jb2ToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
+            <DataTemplate x:Key="J2kTemplateMini">
+                <PdfViewer:PdfShadowedImage Width="150"
+                    Height="150"
+                    IsHitTestVisible="False"
+                    ShowShadow="True"
+                    Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
+                    Tag="{Binding Path=DataContext, Converter={StaticResource J2kToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </DataTemplate>
             <DataTemplate x:Key="WebpTemplateMini">
                 <Grid Width="150" Height="150">
                     <PdfViewer:PdfShadowedImage Width="150"
@@ -981,6 +989,7 @@
                 Docx="{StaticResource DocxViewerInternalThumbTemplate}"
                 Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
                 Img="{StaticResource ContributionViewerImgTemplateMini}"
+                J2k="{StaticResource J2kTemplateMini}"
                 Jb2="{StaticResource Jb2TemplateMini}"
                 Jb2Zip="{StaticResource EmptyViewerTemplate}"
                 Pdf="{StaticResource ContributionViewerPdfViewerTemplateMini}"
@@ -995,6 +1004,7 @@
                 Docx="{StaticResource DocxViewerInternalThumbTemplate}"
                 Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateMini}"
+                J2k="{StaticResource J2kTemplateMini}"
                 Jb2="{StaticResource Jb2TemplateMini}"
                 Jb2Zip="{StaticResource EmptyViewerTemplate}"
                 Pdf="{StaticResource PdfViewerDocumentViewerTemplateMini}"
@@ -1051,6 +1061,7 @@
                 Docx="{StaticResource DocxViewerThumbTemplate}"
                 Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerTemplate}"
+                J2k="{StaticResource J2kTemplateMini}"
                 Jb2="{StaticResource Jb2TemplateMini}"
                 Jb2Zip="{StaticResource Jb2ZipViewerTemplate}"
                 Pdf="{StaticResource SimplePdfTemplate}"
@@ -1066,6 +1077,7 @@
                 Empty="{StaticResource DvdBurnerEmptyViewerTemplate}"
                 Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerTemplate}"
+                J2k="{StaticResource J2kTemplateMini}"
                 Jb2="{StaticResource Jb2TemplateMini}"
                 Jb2Zip="{StaticResource Jb2ZipViewerTemplate}"
                 Pdf="{StaticResource PdfViewerTemplateFull}"

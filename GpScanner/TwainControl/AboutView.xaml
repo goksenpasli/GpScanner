@@ -157,8 +157,8 @@
                 <TextBlock>
                     <Hyperlink local:Policy.PolicyName="WebAdreseGit"
                         Command="{Binding WebAdreseGit}"
-                        CommandParameter="https://www.nuget.org/packages/JBig2Decoder.NET">
-                        JBIG2 Decoder
+                        CommandParameter="https://github.com/gstolarov/JBIG2-JPX?tab=readme-ov-file">
+                        JBIG2/JPX Decoder
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>

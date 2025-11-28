@@ -75,6 +75,9 @@ public class Jb2ZipImageViewer : ImageViewer
                 case ".jb2":
                     loadFileHandler = new Jb2FileHandler();
                     break;
+                case ".j2k":
+                    loadFileHandler = new J2kFileHandler();
+                    break;
             }
             if (!loadFileHandler.IsValidFile(extractpath))
             {

@@ -1042,8 +1042,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 OpenFileDialog openFileDialog = new()
                 {
                     Filter =
-                    "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2;*.docx;*.odt;*.cbz;*.cbr;*.7z;*.arj;*.bzip2;*.cab;*.gzip;*.iso;*.lzh;*.lzma;*.ntfs;*.ppmd;*.rar;*.rar5;*.rpm;*.tar;*.vhd;*.wim;*.xar;*.xz;*.z;*.zip;*.jb2zip;*.gz;*.xls;*.xlsx;*.xlsb;*.csv;*.ods;*.txt)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2;*.docx;*.odt;*.cbz;*.cbr;*.7z;*.arj;*.bzip2;*.cab;*.gzip;*.iso;*.lzh;*.lzma;*.ntfs;*.ppmd;*.rar;*.rar5;*.rpm;*.tar;*.vhd;*.wim;*.xar;*.xz;*.z;*.zip;*.jb2zip;*.gz;*.xls;*.xlsx;*.xlsb;*.csv;*.ods;*.txt|" +
-                        "Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2|" +
+                    "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2;*.j2k;*.docx;*.odt;*.cbz;*.cbr;*.7z;*.arj;*.bzip2;*.cab;*.gzip;*.iso;*.lzh;*.lzma;*.ntfs;*.ppmd;*.rar;*.rar5;*.rpm;*.tar;*.vhd;*.wim;*.xar;*.xz;*.z;*.zip;*.jb2zip;*.gz;*.xls;*.xlsx;*.xlsb;*.csv;*.ods;*.txt)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2;*.j2k;*.docx;*.odt;*.cbz;*.cbr;*.7z;*.arj;*.bzip2;*.cab;*.gzip;*.iso;*.lzh;*.lzma;*.ntfs;*.ppmd;*.rar;*.rar5;*.rpm;*.tar;*.vhd;*.wim;*.xar;*.xz;*.z;*.zip;*.jb2zip;*.gz;*.xls;*.xlsx;*.xlsb;*.csv;*.ods;*.txt|" +
+                        "Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2;*.j2k)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2;*.j2k|" +
                         "Pdf Dosyası (*.pdf)|*.pdf|" +
                         "Docx Dosyası (*.docx;*.odt)|*.docx;*.odt|" +
                         "Xps Dosyası (*.xps)|*.xps|" +
@@ -4111,6 +4111,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 await AddFilesAsync(filename, fileHandler, DecodeHeight, cancellationTokenSource);
                                 break;
 
+                            case ".j2k":
+                                fileHandler = new J2kFileHandler();
+                                await AddFilesAsync(filename, fileHandler, DecodeHeight, cancellationTokenSource);
+                                break;
+
                             case ".cbz":
                             case ".cbr":
                                 fileHandler = new ImageFileHandler();
@@ -4511,6 +4516,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     return;
 
                 case TiffFileHandler:
+                case Jb2FileHandler:
                     await HandleTifXpsFileAsync(fileHandler.LoadTiffPagesAsync, filename, totalPageCount);
                     return;
 
@@ -4924,15 +4930,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         for (int i = 0; i < list.Count; i++)
         {
             BitmapFrame frame = list[i];
-            frame.Freeze();
-            double deskewAngle = Deskew.GetDeskewAngle(frame) + 90;
-            await Dispatcher.InvokeAsync(
-                () =>
-                {
-                    ScannedImage item = new() { DeskewAngle = deskewAngle, Resim = frame, FilePath = filename };
-                    Scanner?.Resimler.Add(item);
-                    PdfLoadProgressValue = (i + 1) / (double)totalPageCount;
-                });
+            if (frame is not null)
+            {
+                frame.Freeze();
+                double deskewAngle = Deskew.GetDeskewAngle(frame) + 90;
+                await Dispatcher.InvokeAsync(
+                    () =>
+                    {
+                        ScannedImage item = new() { DeskewAngle = deskewAngle, Resim = frame, FilePath = filename };
+                        Scanner?.Resimler.Add(item);
+                        PdfLoadProgressValue = (i + 1) / (double)totalPageCount;
+                    });
+            }
         }
         _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
     }
