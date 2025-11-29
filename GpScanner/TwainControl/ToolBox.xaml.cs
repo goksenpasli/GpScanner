@@ -159,7 +159,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                     {
                         listcroppedimages = [ .. Scanner.Resimler
                         .Where(z => z.Seçili)
-                        .SelectMany(scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) })) ];
+                        .SelectMany(scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap.ToBitmapImage()) })) ];
                         pdfdocument = await listcroppedimages.GeneratePdfAsync(Format.Jpg, Paper, Settings.Default.JpegQuality, null, Settings.Default.ImgLoadResolution, progress => Scanner.PdfSaveProgressValue = progress);
                     });
                 string savefolder = CreateSaveFolder("SPLIT");

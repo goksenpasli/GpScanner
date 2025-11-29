@@ -1810,6 +1810,24 @@
                                         Minimum="-1"
                                         NumericUpdownTextBoxVisibility="Collapsed"
                                         Value="{Binding AllImageRotationAngle}" />
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    <Extensions:NumericUpDown Interval="1"
+                                        Maximum="50"
+                                        Minimum="1"
+                                        Value="{Binding Scanner.VerticalLineThreshold, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Button Command="{Binding RemoveVerticalLines}">
+                                        <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
+                                        <Button.ToolTip>
+                                            <ToolTip>
+                                                <StackPanel>
+                                                    <Viewbox Width="200" Height="100">
+                                                        <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
+                                                    </Viewbox>
+                                                    <TextBlock Text="{local:Loc DELETE}" TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </ToolTip>
+                                        </Button.ToolTip>
+                                    </Button>
                                 </WrapPanel>
                                 <Separator Grid.Row="1" />
                                 <ListBox x:Name="Lb"

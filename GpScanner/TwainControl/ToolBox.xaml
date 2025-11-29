@@ -175,7 +175,7 @@
                                     <Extensions:NumericUpDown Interval="1"
                                         Maximum="50"
                                         Minimum="1"
-                                        Value="{Binding Scanner.VerticalLineThreshold, Delay=150, UpdateSourceTrigger=PropertyChanged}" />
+                                        Value="{Binding Scanner.VerticalLineThreshold, UpdateSourceTrigger=PropertyChanged}" />
                                     <Button Command="{Binding RemoveVerticalLine, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                         <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
                                         <Button.ToolTip>

@@ -2529,6 +2529,32 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 await Viewer.GenerateDocument(printdialog, pdfDocument, (int)printdialog.MinPage, (int)printdialog.MaxPage, PrintDpi);
             },
             parameter => true);
+
+        RemoveVerticalLines = new RelayCommand<object>(
+            async parameter =>
+            {
+                int count = GetSelectedImages().Count;
+                IProgress<double> progress = new Progress<double>(p => AllRotateProgressValue = p);
+                await Task.Run(
+                    () =>
+                    {
+                        for (int i = 0; i < count; i++)
+                        {
+                            ScannedImage item = GetSelectedImages()[i];
+                            WriteableBitmap wbmp = new(item.Resim);
+                            WriteableBitmap bitmapWithoutVerticalLines = wbmp.RemoveVerticalLines(Scanner.VerticalLineThreshold);
+                            bitmapWithoutVerticalLines.Freeze();
+                            BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapWithoutVerticalLines.ToBitmapImage());
+                            bitmapFrame.Freeze();
+                            item.Resim = bitmapFrame;
+                            bitmapFrame = null;
+                            wbmp = null;
+                            bitmapWithoutVerticalLines = null;
+                            progress.Report((i + 1) / (double)count);
+                        }
+                    });
+            },
+            parameter => GetSelectedImages().Count > 0);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -3475,6 +3501,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> RemoveSplitListsIndex { get; }
 
+    public RelayCommand<object> RemoveVerticalLines { get; }
+
     public RelayCommand<object> ReplaceSelectedImage { get; }
 
     public ICommand ResetCrop { get; }
@@ -4382,7 +4410,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private static async Task CreateAutoDeskewedImage(ScannedImage item, double? angle = null)
     {
-        BitmapFrame bitmapFrame = BitmapFrame.Create(await item.Resim.RotateImageAsync(angle is null ? Deskew.GetDeskewAngle(item.Resim) : angle.Value, Brushes.White));
+        BitmapFrame bitmapFrame = BitmapFrame.Create(await item.Resim.RotateImageAsync(angle ?? Deskew.GetDeskewAngle(item.Resim), Brushes.White));
         bitmapFrame?.Freeze();
         item.Resim = bitmapFrame;
         item.DeskewAngle = Deskew.GetDeskewAngle(item.Resim) + 90;
@@ -4590,7 +4618,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             {
                                 image.Resim = await RotateImage(image, 1);
                             }
-                            _ = Dispatcher.Invoke(() => AllRotateProgressValue = (i + 1) / (double)Scanner.Resimler.Count);
+                            AllRotateProgressValue = (i + 1) / (double)Scanner.Resimler.Count;
                             i++;
                         }
                         catch
@@ -5860,6 +5888,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             WriteableBitmap wbmp = new(evrak);
             evrak = wbmp.RemoveVerticalLines(Settings.Default.VerticalLineThreshold);
+            wbmp = null;
         }
 
         evrak.Freeze();

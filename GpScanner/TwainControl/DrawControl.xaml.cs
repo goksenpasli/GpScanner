@@ -154,7 +154,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
                 {
                     WriteableBitmap result = PerspectiveWarpBilinear(srcBmp, points, finalW, finalH);
                     result.Freeze();
-                    scannedImage.Resim = BitmapFrame.Create(result);
+                    scannedImage.Resim = BitmapFrame.Create(result.ToBitmapImage());
                 }
                 catch (Exception ex)
                 {

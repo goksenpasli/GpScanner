@@ -142,7 +142,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public BitmapFrame CameraEncodeBitmapImage()
     {
-        BitmapFrame bitmapframe = BitmapFrame.Create(new TransformedBitmap(Device?.BitmapSource, new RotateTransform(Rotation)));
+        BitmapFrame bitmapframe = BitmapFrame.Create(new TransformedBitmap(Device?.BitmapSource, new RotateTransform(Rotation)).ToBitmapImage());
         bitmapframe?.Freeze();
         return bitmapframe;
     }

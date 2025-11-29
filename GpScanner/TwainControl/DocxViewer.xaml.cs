@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
@@ -41,7 +42,7 @@ namespace TwainControl
         private static BlockUIContainer BlockUIContainerGetPicture(Picture picture)
         {
             System.Windows.Controls.Image image = new();
-            BitmapFrame bitmapFrame = Path.GetExtension(picture.FileName.ToLowerInvariant()) == ".emf" ? BitmapFrame.Create(EmfFileToBitmapSource(picture.Stream)) : BitmapFrame.Create(picture.Stream, BitmapCreateOptions.None, BitmapCacheOption.None);
+            BitmapFrame bitmapFrame = Path.GetExtension(picture.FileName.ToLowerInvariant()) == ".emf" ? BitmapFrame.Create(EmfFileToBitmapSource(picture.Stream).ToBitmapImage()) : BitmapFrame.Create(picture.Stream, BitmapCreateOptions.None, BitmapCacheOption.None);
             bitmapFrame?.Freeze();
             image.Source = bitmapFrame;
             return new BlockUIContainer(image);
