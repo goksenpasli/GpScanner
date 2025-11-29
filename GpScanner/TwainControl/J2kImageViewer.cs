@@ -17,9 +17,16 @@ public class J2kImageViewer : ImageViewer
             switch (Path.GetExtension(filepath).ToLowerInvariant())
             {
                 case ".j2k":
-                    imageViewer.Sayfa = 1;
-                    J2kFileHandler j2KFileHandler = new();
-                    Source = await j2KFileHandler.LoadImageAsync(filepath);
+                    try
+                    {
+                        imageViewer.Sayfa = 1;
+                        J2kFileHandler j2KFileHandler = new();
+                        Source = await j2KFileHandler.LoadImageAsync(filepath);
+                    }
+                    catch
+                    {
+                        Source = null;
+                    }
                     break;
             }
         }

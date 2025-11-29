@@ -51,15 +51,22 @@ public class Jb2ImageViewer : ImageViewer
             {
                 return;
             }
-            PBoxJBig2 pBoxJBig2 = new(File.ReadAllBytes(ImageFilePath), null);
-            using System.Drawing.Image image = pBoxJBig2.decodeImage(Sayfa);
-            BitmapImage bitmapimage = image.ToBitmapImage(System.Drawing.Imaging.ImageFormat.Tiff);
-            BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(bitmapimage.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(bitmapimage);
-            bitmapFrame.Freeze();
-            Source = bitmapFrame;
-            if (Resize?.CanExecute(null) == true)
+            try
             {
-                Resize.Execute(null);
+                PBoxJBig2 pBoxJBig2 = new(File.ReadAllBytes(ImageFilePath), null);
+                using System.Drawing.Image image = pBoxJBig2.decodeImage(Sayfa);
+                BitmapImage bitmapimage = image.ToBitmapImage(System.Drawing.Imaging.ImageFormat.Tiff);
+                BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(bitmapimage.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(bitmapimage);
+                bitmapFrame.Freeze();
+                Source = bitmapFrame;
+                if (Resize?.CanExecute(null) == true)
+                {
+                    Resize.Execute(null);
+                }
+            }
+            catch
+            {
+                Source = null;
             }
         }
     }
