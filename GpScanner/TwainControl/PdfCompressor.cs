@@ -1,15 +1,45 @@
-﻿using PdfCompressor;
+﻿using Extensions;
+using PdfCompressor;
 using PdfSharp.Pdf;
+using PdfSharp.Pdf.IO;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace TwainControl;
 
 public class PdfCompressor : Compressor
 {
+    public bool EncodeAsJb2File
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(EncodeAsJb2File));
+            }
+        }
+    }
+
     public async Task<PdfDocument> Compress(string pdffilepath)
     {
-        using PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(pdffilepath);
+
+        using PdfDocument pdfDocument = EncodeAsJb2File ? await Jb2CompressAsync(pdffilepath) : await CompressFilePdfDocumentAsync(pdffilepath);
         ApplyDefaultPdfCompression(pdfDocument);
         return pdfDocument;
+    }
+
+    private async Task<PdfDocument> Jb2CompressAsync(string path)
+    {
+        List<BitmapImage> bitmapframes = await GetBitmapImagesAsync(path);
+        List<ScannedImage> scannedimages = bitmapframes.ConvertAll(img => new ScannedImage() { Resim = BitmapFrame.Create(img.ToBitmapImage()) });
+        byte[] bytes = scannedimages.CreateMultipagePdfWithJbig2Images().AddPdfPassword_PdfSharp().ToArray();
+        File.WriteAllBytes(path, bytes);
+        bytes = null;
+        using PdfDocument document = PdfReader.Open(path);
+        return document;
     }
 }

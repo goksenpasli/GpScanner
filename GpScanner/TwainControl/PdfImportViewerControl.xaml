@@ -35,6 +35,7 @@
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
             <Extensions:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+            <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
             <Pdfviewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
             <Pdfviewer:PageNumberOneUpConverter x:Key="PageNumberOneUpConverter" />
             <Style TargetType="ComboBox">
@@ -1214,6 +1215,10 @@
                                 Content="PDF MOZJPEG"
                                 IsChecked="{Binding UseMozJpeg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}" />
+                            <CheckBox VerticalAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Content="{Binding Source='.jb2', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}"
+                                IsChecked="{Binding EncodeAsJb2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </UniformGrid>
                     </Border>
                 </Extensions:SplitButton.InternalContent>

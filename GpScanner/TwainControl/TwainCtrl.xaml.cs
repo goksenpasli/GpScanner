@@ -2108,24 +2108,30 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (parameter is Viewer pdfviewer &&
                 MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("COMPRESS")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
-                    string filepath = pdfviewer.PdfFilePath;
-                    double oldsize = new FileInfo(filepath).Length;
-                    PdfCompressor pdfcompressor = new() { UseMozJpeg = UseMozJpeg, Dpi = PdfCompressDpi, Quality = PdfQuality, };
-                    pdfcompressor.ProgressChanged += (_, e) => Dispatcher.Invoke(() => PdfImportControlProgressValue = e);
-                    PdfToolBarControlIsEnabled = false;
-                    using PdfDocument pdfdocument = await pdfcompressor.Compress(filepath);
-                    if (pdfdocument is null)
+                    try
                     {
-                        return;
+                        string filepath = pdfviewer.PdfFilePath;
+                        double oldsize = new FileInfo(filepath).Length;
+                        PdfCompressor pdfcompressor = new() { EncodeAsJb2File = EncodeAsJb2, UseMozJpeg = UseMozJpeg, Dpi = PdfCompressDpi, Quality = PdfQuality, };
+                        pdfcompressor.ProgressChanged += (_, e) => Dispatcher.Invoke(() => PdfImportControlProgressValue = e);
+                        PdfToolBarControlIsEnabled = false;
+                        using PdfDocument pdfdocument = await pdfcompressor.Compress(filepath);
+                        if (pdfdocument is null)
+                        {
+                            return;
+                        }
+                        pdfdocument.Save(filepath);
+                        double newsize = new FileInfo(filepath).Length;
+                        pdfviewer.PdfFilePath = null;
+                        pdfviewer.PdfFilePath = filepath;
+                        double compressionratio = newsize / oldsize;
+                        ExtendedMessageBox extendedMessageBox = new();
+                        extendedMessageBox.ShowDialog(Window.GetWindow(this), $"{Translation.GetResStringValue("SUCCESS")}\n{compressionratio:P2}", AppName);
                     }
-                    pdfdocument.Save(filepath);
-                    PdfToolBarControlIsEnabled = true;
-                    double newsize = new FileInfo(filepath).Length;
-                    pdfviewer.PdfFilePath = null;
-                    pdfviewer.PdfFilePath = filepath;
-                    double compressionratio = newsize / oldsize;
-                    ExtendedMessageBox extendedMessageBox = new();
-                    extendedMessageBox.ShowDialog(Window.GetWindow(this), $"{Translation.GetResStringValue("SUCCESS")}\n{compressionratio:P2}", AppName);
+                    finally
+                    {
+                        PdfToolBarControlIsEnabled = true;
+                    }
                 }
             },
             parameter => parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));

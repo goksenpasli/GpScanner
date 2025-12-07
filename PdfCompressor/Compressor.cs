@@ -178,12 +178,7 @@ public class Compressor : Control, INotifyPropertyChanged
 
     protected async Task<PdfDocument> CompressFilePdfDocumentAsync(string path)
     {
-        if (!IsValidPdfFile(path))
-        {
-            throw new ArgumentException("Invalid PDF File");
-        }
-        using PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(path);
-        List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
+        List<BitmapImage> images = await GetBitmapImagesAsync(path);
         return await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi, progress => CompressionProgress = progress);
     }
 
@@ -286,6 +281,16 @@ public class Compressor : Control, INotifyPropertyChanged
         }
 
         return document;
+    }
+
+    protected async Task<List<BitmapImage>> GetBitmapImagesAsync(string path)
+    {
+        if (!IsValidPdfFile(path))
+        {
+            throw new ArgumentException("Invalid PDF File");
+        }
+        using PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(path);
+        return await AddToListAsync(loadedpdfdoc, Dpi);
     }
 
     protected virtual void OnProgressChanged(double progress) => ProgressChanged?.Invoke(this, progress);
