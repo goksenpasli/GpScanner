@@ -129,7 +129,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         TransferImage = new RelayCommand<object>(
             parameter =>
             {
-                BitmapFrame bitmapFrame = TwainCtrl.GenerateBitmapFrame((BitmapSource)Scanner.CroppedImage);
+                BitmapFrame bitmapFrame = BitmapFrame.Create((BitmapSource)Scanner.CroppedImage);
                 bitmapFrame.Freeze();
                 ScannedImage scannedImage;
                 if (Keyboard.Modifiers == ModifierKeys.Alt && (Scanner.EnAdet > 1 || Scanner.BoyAdet > 1))

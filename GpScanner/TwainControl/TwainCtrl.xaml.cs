@@ -367,25 +367,32 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter => Scanner?.CroppedImage is not null && CustomDeskewAngle != 0);
 
         InvertSelectedImage = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 bool bw = Keyboard.Modifiers == ModifierKeys.Alt;
                 bool grayscale = Keyboard.Modifiers == ModifierKeys.Shift;
+
                 if (MessageBox.Show($"{Translation.GetResStringValue("LONGTIMEJOB")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.No)
                 {
                     return;
                 }
-                foreach (ScannedImage item in GetSelectedImages())
-                {
-                    using Bitmap bitmap = item.Resim.BitmapSourceToBitmap();
-                    BitmapFrame processedImage = bw
-                                                 ? BitmapFrame.Create(bitmap.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Tiff))
-                                                 : grayscale ? BitmapFrame.Create(bitmap.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg)) : BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
-                    processedImage?.Freeze();
-                    item.Resim = processedImage;
-                    processedImage = null;
-                    GC.Collect();
-                }
+
+                List<ScannedImage> selected = [.. GetSelectedImages()];
+                int threshold = Scanner.ToolBarBwThreshold;
+                await Task.Run(
+                    () =>
+                    {
+                        for (int i = 0; i < selected.Count; i++)
+                        {
+                            ScannedImage item = selected[i];
+                            using Bitmap bitmap = item.Resim.BitmapSourceToBitmap();
+                            using Bitmap processed = bw ? bitmap.ConvertBlackAndWhite(threshold) : grayscale ? bitmap.ConvertBlackAndWhite(threshold, true) : item.Resim.InvertBitmap().BitmapSourceToBitmap();
+                            BitmapImage img = bw ? processed.ToBitmapImage(ImageFormat.Tiff) : processed.ToBitmapImage(ImageFormat.Jpeg);
+                            img.Freeze();
+                            item.Resim = BitmapFrame.Create(img);
+                            AllRotateProgressValue = (i + 1) / (double)selected.Count;
+                        }
+                    });
             },
             parameter => Scanner.Resimler.Count(z => z.Seçili) > 0);
 
@@ -1134,7 +1141,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     BitmapSource image = Clipboard.GetImage();
                     if (image is not null)
                     {
-                        Scanner?.Resimler?.Add(new ScannedImage { Seçili = true, Resim = GenerateBitmapFrame(image.ToBitmapImage()) });
+                        Scanner?.Resimler?.Add(new ScannedImage { Seçili = true, Resim = BitmapFrame.Create(image) });
                     }
                 }
                 if (Clipboard.ContainsFileDropList())
@@ -1181,7 +1188,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     BitmapSource image = Clipboard.GetImage();
                     if (image is not null)
                     {
-                        scannedImage.Resim = GenerateBitmapFrame(image.ToBitmapImage());
+                        scannedImage.Resim = BitmapFrame.Create(image);
                     }
                     return;
                 }
@@ -1560,7 +1567,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     return;
                 }
                 using PdfDocument pdfdocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
-                if ((pdfdocument is null) || (pdfviewer.Sayfa < 1 || pdfviewer.Sayfa > pdfdocument.PageCount))
+                if ((pdfdocument is null) || pdfviewer.Sayfa < 1 || pdfviewer.Sayfa > pdfdocument.PageCount)
                 {
                     return;
                 }
@@ -1795,7 +1802,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (parameter is ScannedImage scannedImage && scannedImage?.Resim is not null)
                 {
-                    Clipboard.SetImage(scannedImage.Resim.ToBitmapImage());
+                    Clipboard.SetImage(scannedImage.Resim);
                     ExtendedMessageBox extendedMessageBox = new();
                     extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("COPYCLIPBOARD"), AppName);
                 }
@@ -4019,14 +4026,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public static bool FileNameValid(string filename) => !string.IsNullOrWhiteSpace(filename) && filename.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
 
-    public static BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource)
-    {
-        bitmapSource.Freeze();
-        BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource.ToBitmapImage());
-        bitmapFrame.Freeze();
-        return bitmapFrame;
-    }
-
     [DllImport("winspool.drv", CharSet = CharSet.Unicode, SetLastError = true)]
     public static extern bool GetDefaultPrinter(StringBuilder pszBuffer, ref int pcchBuffer);
 
@@ -4559,7 +4558,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             switch (fileHandler)
             {
                 case PdfFileHandler:
-                    bitmapFrame = BitmapFrame.Create((await fileHandler.LoadPdfAsync(filename, i)).ToBitmapImage());
+                    bitmapFrame = BitmapFrame.Create(await fileHandler.LoadPdfAsync(filename, i));
                     _ = fileHandler.GetPdfCharacters();
                     break;
 
@@ -5303,7 +5302,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         BitmapSource image = Clipboard.GetImage();
         if (image is not null)
         {
-            BitmapFrame bitmapFrame = GenerateBitmapFrame(image);
+            BitmapFrame bitmapFrame = BitmapFrame.Create(image);
             await Task.Run(
                 () =>
                 {

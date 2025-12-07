@@ -63,6 +63,7 @@ public static class PdfGeneration
             MemoryStream encryptedPdf = new();
             document.Save(encryptedPdf);
             encryptedPdf.Position = 0;
+            unencryptedPdf?.Dispose();
             return encryptedPdf;
         }
         else
@@ -161,6 +162,9 @@ public static class PdfGeneration
             Write(output, "\nendstream\nendobj\n");
 
             progress?.Report((i + 1) / totalPages);
+            data = null;
+            page = null;
+            GC.Collect();
         }
 
         long pagesOffset = output.Position;

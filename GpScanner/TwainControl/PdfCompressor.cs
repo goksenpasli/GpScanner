@@ -36,7 +36,7 @@ public class PdfCompressor : Compressor
     private async Task<PdfDocument> Jb2CompressAsync(string path)
     {
         List<BitmapImage> bitmapframes = await GetBitmapImagesAsync(path);
-        List<ScannedImage> scannedimages = bitmapframes.ConvertAll(img => new ScannedImage() { Resim = BitmapFrame.Create(img.ToBitmapImage()) });
+        List<ScannedImage> scannedimages = bitmapframes.ConvertAll(img => new ScannedImage() { Resim = BitmapFrame.Create(img) });
         Progress<double> progress = new(percent => CompressionProgress = percent);
         byte[] bytes = await Task.Run(() => scannedimages.CreateMultipagePdfWithJbig2Images(progress).AddPdfPassword_PdfSharp().ToArray());
         File.WriteAllBytes(path, bytes);
