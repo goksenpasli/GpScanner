@@ -194,7 +194,7 @@
                         <Image.Source>
                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                 <Binding Source="Shell32.dll" />
-                                <Binding Source="100" />
+                                <Binding Source="99" />
                             </MultiBinding>
                         </Image.Source>
                     </Image>
@@ -302,7 +302,7 @@
                                     <Setter.Value>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />
-                                            <Binding Source="294" />
+                                            <Binding Source="100" />
                                         </MultiBinding>
                                     </Setter.Value>
                                 </Setter>
@@ -311,8 +311,8 @@
                                         <Setter Property="Source">
                                             <Setter.Value>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="297" />
+                                                    <Binding Source="Comres.dll" />
+                                                    <Binding Source="6" />
                                                 </MultiBinding>
                                             </Setter.Value>
                                         </Setter>

@@ -332,6 +332,26 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => Scanner?.Resimler?.Any() == true && TesseractOrientationFileExists && !AutoRotateIsWorking);
 
+        ToolBarAutoDeskewImage = new RelayCommand<object>(
+            async parameter =>
+            {
+                try
+                {
+                    AutoRotateIsWorking = true;
+                    int count = GetSelectedImages().Count;
+                    for (int i = 0; i < count; i++)
+                    {
+                        await CreateAutoDeskewedImage(GetSelectedImages()[i]);
+                        AllRotateProgressValue = (i + 1) / (double)Scanner.Resimler.Count;
+                    }
+                }
+                finally
+                {
+                    AutoRotateIsWorking = false;
+                }
+            },
+            parameter => GetSelectedImages().Count > 1 && !AutoRotateIsWorking);
+
         ToolBoxManualDeskewImage = new RelayCommand<object>(
             async parameter =>
             {
@@ -2561,17 +2581,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public static Cursor DragCursor { get; set; }
 
-    public static bool IsAdministrator
-    {
-        get
-        {
-            using WindowsIdentity identity = WindowsIdentity.GetCurrent();
-            WindowsPrincipal principal = new(identity);
-            field = principal.IsInRole(WindowsBuiltInRole.Administrator);
-            return field;
-        }
-    }
-
     public RelayCommand<object> AddActiveVisibleContentImage { get; }
 
     public ICommand AddAllFileToControlPanel { get; }
@@ -3072,6 +3081,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public RelayCommand<object> InvertPdfPage { get; }
 
     public RelayCommand<object> InvertSelectedImage { get; }
+
+    public bool IsAdministrator
+    {
+        get
+        {
+            using WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new(identity);
+            field = principal.IsInRole(WindowsBuiltInRole.Administrator);
+            return field;
+        }
+    }
 
     public bool IsEven
     {
@@ -3811,6 +3831,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     }
+
+    public RelayCommand<object> ToolBarAutoDeskewImage { get; }
 
     public RelayCommand<object> ToolBoxManualDeskewImage { get; }
 

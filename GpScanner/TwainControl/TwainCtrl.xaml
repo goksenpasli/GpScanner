@@ -1815,7 +1815,9 @@
                                         Maximum="50"
                                         Minimum="1"
                                         Value="{Binding Scanner.VerticalLineThreshold, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Button Command="{Binding RemoveVerticalLines}">
+                                    <Button Width="24"
+                                        Height="24"
+                                        Command="{Binding RemoveVerticalLines}">
                                         <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
                                         <Button.ToolTip>
                                             <ToolTip>
@@ -1827,6 +1829,15 @@
                                                 </StackPanel>
                                             </ToolTip>
                                         </Button.ToolTip>
+                                    </Button>
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    <Button Width="24"
+                                        Height="24"
+                                        Command="{Binding ToolBarAutoDeskewImage}">
+                                        <Extensions:AngleGauge Width="18"
+                                            Height="18"
+                                            Margin="1"
+                                            Angle="90" />
                                     </Button>
                                 </WrapPanel>
                                 <Separator Grid.Row="1" />

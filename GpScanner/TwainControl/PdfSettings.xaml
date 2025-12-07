@@ -76,6 +76,7 @@
                     <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                         local:Policy.PolicyName="UserName"
                         CopyButtonVisibility="Collapsed"
+                        IsEnabled="{Binding IsAdministrator}"
                         OpenButtonVisibility="Collapsed"
                         Text="{Binding Scanner.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <Image Width="16" Height="16">
@@ -90,6 +91,7 @@
                     <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                         local:Policy.PolicyName="CreatorAppName"
                         CopyButtonVisibility="Collapsed"
+                        IsEnabled="{Binding IsAdministrator}"
                         OpenButtonVisibility="Collapsed"
                         Text="{Binding Scanner.CreatorAppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <Image Width="16" Height="16">

@@ -2030,14 +2030,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             field = principal.IsInRole(WindowsBuiltInRole.Administrator);
             return field;
         }
-        set
-        {
-            if (field != value)
-            {
-                field = value;
-                OnPropertyChanged(nameof(IsAdministrator));
-            }
-        }
     }
 
     public bool IsSqlQuery
