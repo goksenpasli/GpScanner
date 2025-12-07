@@ -107,6 +107,7 @@
       <DependentUpon>TranslateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\VirtualizingWrapPanel.cs" />
+    <Compile Include="Converters\BooleanMultiConverter.cs" />
     <Compile Include="Converters\CloneConverter.cs" />
     <Compile Include="Converters\ContributionToColorConverter.cs" />
     <Compile Include="Converters\DoubleToThicknessConverter.cs" />

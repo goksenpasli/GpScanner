@@ -36,6 +36,7 @@
             <Extensions:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
             <Extensions:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
             <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
+            <Extensions:BooleanMultiConverter x:Key="BooleanMultiConverter" />
             <Pdfviewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
             <Pdfviewer:PageNumberOneUpConverter x:Key="PageNumberOneUpConverter" />
             <Style TargetType="ComboBox">
@@ -1213,8 +1214,14 @@
                             <CheckBox VerticalAlignment="Center"
                                 VerticalContentAlignment="Center"
                                 Content="PDF MOZJPEG"
-                                IsChecked="{Binding UseMozJpeg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}" />
+                                IsChecked="{Binding UseMozJpeg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <CheckBox.IsEnabled>
+                                    <MultiBinding Converter="{StaticResource BooleanMultiConverter}" ConverterParameter="Reverse">
+                                        <Binding Source="{x:Static mozjpeg:MozJpeg.MozJpegDllExists}" />
+                                        <Binding Mode="OneWay" Path="EncodeAsJb2" />
+                                    </MultiBinding>
+                                </CheckBox.IsEnabled>
+                            </CheckBox>
                             <CheckBox VerticalAlignment="Center"
                                 VerticalContentAlignment="Center"
                                 Content="{Binding Source='.jb2', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}"

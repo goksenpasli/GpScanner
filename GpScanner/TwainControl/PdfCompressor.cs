@@ -2,6 +2,7 @@
 using PdfCompressor;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -36,7 +37,8 @@ public class PdfCompressor : Compressor
     {
         List<BitmapImage> bitmapframes = await GetBitmapImagesAsync(path);
         List<ScannedImage> scannedimages = bitmapframes.ConvertAll(img => new ScannedImage() { Resim = BitmapFrame.Create(img.ToBitmapImage()) });
-        byte[] bytes = scannedimages.CreateMultipagePdfWithJbig2Images().AddPdfPassword_PdfSharp().ToArray();
+        Progress<double> progress = new(percent => CompressionProgress = percent);
+        byte[] bytes = await Task.Run(() => scannedimages.CreateMultipagePdfWithJbig2Images(progress).AddPdfPassword_PdfSharp().ToArray());
         File.WriteAllBytes(path, bytes);
         bytes = null;
         using PdfDocument document = PdfReader.Open(path);
