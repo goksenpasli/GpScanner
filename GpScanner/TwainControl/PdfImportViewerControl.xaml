@@ -1191,14 +1191,19 @@
                             <TextBlock VerticalAlignment="Center">
                                 <Run Text="{Binding PdfCompressDpi, Mode=OneWay}" />
                                 <Run Text="DPI" />
+                                <InlineUIContainer BaselineAlignment="Center">
+                                    <ToggleButton Content="°"
+                                        FontFamily="Wingdings"
+                                        IsChecked="{Binding CompressorDpiSnap}" />
+                                </InlineUIContainer>
                             </TextBlock>
                             <Slider AutoToolTipPlacement="TopLeft"
-                                IsSnapToTickEnabled="True"
-                                Maximum="4800"
-                                Minimum="12"
+                                IsSnapToTickEnabled="{Binding CompressorDpiSnap, Mode=OneWay}"
+                                Maximum="600"
+                                Minimum="72"
                                 SmallChange="1"
                                 Style="{DynamicResource Slider}"
-                                Ticks="12,24,36,48,72,96,120,150,200,300,450,600,1200,2400,4800"
+                                Ticks="72,96,120,150,200,300,450,600"
                                 Value="{Binding PdfCompressDpi, Mode=TwoWay}" />
                             <TextBlock VerticalAlignment="Center">
                                 <Run Text="{local:Loc JPEGQUALITY}" />
@@ -1224,8 +1229,12 @@
                             </CheckBox>
                             <CheckBox VerticalAlignment="Center"
                                 VerticalContentAlignment="Center"
-                                Content="{Binding Source='.jb2', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}"
-                                IsChecked="{Binding EncodeAsJb2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                IsChecked="{Binding EncodeAsJb2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <TextBlock>
+                                    <Run Text="{Binding Source='.jb2', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                    <Run Text="{local:Loc BW}" />
+                                </TextBlock>
+                            </CheckBox>
                         </UniformGrid>
                     </Border>
                 </Extensions:SplitButton.InternalContent>

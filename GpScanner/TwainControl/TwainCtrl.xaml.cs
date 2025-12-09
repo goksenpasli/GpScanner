@@ -377,7 +377,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     return;
                 }
 
-                List<ScannedImage> selected = [.. GetSelectedImages()];
+                List<ScannedImage> selected = [ .. GetSelectedImages() ];
                 int threshold = Scanner.ToolBarBwThreshold;
                 await Task.Run(
                     () =>
@@ -2118,7 +2118,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     try
                     {
                         string filepath = pdfviewer.PdfFilePath;
-                        double oldsize = new FileInfo(filepath).Length;
+                        long oldSize = new FileInfo(filepath).Length;
                         PdfCompressor pdfcompressor = new() { EncodeAsJb2File = EncodeAsJb2, UseMozJpeg = UseMozJpeg, Dpi = PdfCompressDpi, Quality = PdfQuality, };
                         pdfcompressor.ProgressChanged += (_, e) => Dispatcher.Invoke(() => PdfImportControlProgressValue = e);
                         PdfToolBarControlIsEnabled = false;
@@ -2127,13 +2127,33 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         {
                             return;
                         }
-                        pdfdocument.Save(filepath);
-                        double newsize = new FileInfo(filepath).Length;
+                        string originalPath = filepath;
+                        string tempPath = Path.Combine(Path.GetDirectoryName(originalPath), $"{Path.GetFileNameWithoutExtension(originalPath)}_temp.pdf");
+                        pdfdocument.Save(tempPath);
+                        long newSize = new FileInfo(tempPath).Length;
+                        if (newSize >= oldSize)
+                        {
+                            try
+                            {
+                                File.Delete(tempPath);
+                            }
+                            catch
+                            {
+                            }
+                            ExtendedMessageBox errormessagebox = new() { YesIconType = IconType.Error };
+                            errormessagebox.ShowDialog(
+                                Window.GetWindow(this),
+                                $"{Translation.GetResStringValue("ERROR")}\n{Translation.GetResStringValue("ORİGİNAL")}:{oldSize / 1048576d:F} MB\n{Translation.GetResStringValue("DOCUMENT")} {Translation.GetResStringValue("BIG")}:{newSize / 1048576d:F} MB",
+                                AppName);
+                            return;
+                        }
+                        File.Delete(originalPath);
+                        File.Move(tempPath, originalPath);
                         pdfviewer.PdfFilePath = null;
-                        pdfviewer.PdfFilePath = filepath;
-                        double compressionratio = newsize / oldsize;
+                        pdfviewer.PdfFilePath = originalPath;
+                        double compressionratio = (double)newSize / oldSize;
                         ExtendedMessageBox extendedMessageBox = new();
-                        extendedMessageBox.ShowDialog(Window.GetWindow(this), $"{Translation.GetResStringValue("SUCCESS")}\n{compressionratio:P2}", AppName);
+                        extendedMessageBox.ShowDialog(Window.GetWindow(this), $"{Translation.GetResStringValue("SUCCESS")}\n{compressionratio:P2} {newSize / 1048576d:F} MB", AppName);
                     }
                     finally
                     {
@@ -2566,28 +2586,36 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         RemoveVerticalLines = new RelayCommand<object>(
             async parameter =>
             {
-                int count = GetSelectedImages().Count;
-                IProgress<double> progress = new Progress<double>(p => AllRotateProgressValue = p);
-                await Task.Run(
-                    () =>
-                    {
-                        for (int i = 0; i < count; i++)
+                try
+                {
+                    int count = GetSelectedImages().Count;
+                    IProgress<double> progress = new Progress<double>(p => AllRotateProgressValue = p);
+                    RemoveVerticalLinesIsRunning = true;
+                    await Task.Run(
+                        () =>
                         {
-                            ScannedImage item = GetSelectedImages()[i];
-                            WriteableBitmap wbmp = new(item.Resim);
-                            WriteableBitmap bitmapWithoutVerticalLines = wbmp.RemoveVerticalLines(Scanner.VerticalLineThreshold);
-                            bitmapWithoutVerticalLines.Freeze();
-                            BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapWithoutVerticalLines.ToBitmapImage());
-                            bitmapFrame.Freeze();
-                            item.Resim = bitmapFrame;
-                            bitmapFrame = null;
-                            wbmp = null;
-                            bitmapWithoutVerticalLines = null;
-                            progress.Report((i + 1) / (double)count);
-                        }
-                    });
+                            for (int i = 0; i < count; i++)
+                            {
+                                ScannedImage item = GetSelectedImages()[i];
+                                WriteableBitmap wbmp = new(item.Resim);
+                                WriteableBitmap bitmapWithoutVerticalLines = wbmp.RemoveVerticalLines(Scanner.VerticalLineThreshold);
+                                bitmapWithoutVerticalLines.Freeze();
+                                BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapWithoutVerticalLines.ToBitmapImage());
+                                bitmapFrame.Freeze();
+                                item.Resim = bitmapFrame;
+                                bitmapFrame = null;
+                                wbmp = null;
+                                bitmapWithoutVerticalLines = null;
+                                progress.Report((i + 1) / (double)count);
+                            }
+                        });
+                }
+                finally
+                {
+                    RemoveVerticalLinesIsRunning = false;
+                }
             },
-            parameter => GetSelectedImages().Count > 0);
+            parameter => GetSelectedImages().Count > 0 && !RemoveVerticalLinesIsRunning);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -2741,6 +2769,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         (double)Resolution.High,
         false,
         (double)Quality.High), new Tuple<string, int, double, bool, double>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.Ultra, false, (double)Quality.Ultra) ];
+
+    public bool CompressorDpiSnap
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(CompressorDpiSnap));
+            }
+        }
+    } = true;
 
     public RelayCommand<object> CompressPdfFile { get; }
 
@@ -3535,6 +3576,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public RelayCommand<object> RemoveSplitListsIndex { get; }
 
     public RelayCommand<object> RemoveVerticalLines { get; }
+
+    public bool RemoveVerticalLinesIsRunning
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(RemoveVerticalLinesIsRunning));
+            }
+        }
+    }
 
     public RelayCommand<object> ReplaceSelectedImage { get; }
 
