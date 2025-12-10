@@ -3359,7 +3359,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         try
         {
 
-            List<string> unindexedfileextensions = [".pdf", ".webp", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx", ".xlsx", ".xls", ".xlsb", ".csv", ".ods", ".odt", ".zip", ".rar", ".7z", ".tar", ".arj", ".gzip"];
+            List<string> unindexedfileextensions = [".pdf", ".webp", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx", ".xlsx", ".xls", ".xlsb", ".csv", ".ods", ".odt", ".zip", ".rar", ".7z", ".tar", ".arj", ".gzip", ".j2k", ".jb2", ".jb2zip"];
             HashSet<string> scannerunindexedfiles = (await GetScannerFileData())?.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z?.FileName?.ToLowerInvariant()))).Select(z => z.FileName).ToHashSet();
             using AppDbContext context = new();
             List<string> scannedDatabaseFiles = await context?.Data?.AsNoTracking()?.Select(x => x.FileName).ToListAsync();
@@ -3599,9 +3599,25 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 _ = ocrTextBuilder.Append(string.Join(" ", ocrData?.Select(z => z.Text)));
                 break;
 
-            case ".zip" or ".rar" or ".7z" or ".tar" or ".arj" or ".gzip":
+            case ".zip" or ".rar" or ".7z" or ".tar" or ".arj" or ".gzip" or ".jb2zip":
                 cancellationToken.ThrowIfCancellationRequested();
                 _ = ocrTextBuilder.Append(unIndexedFile);
+                break;
+
+            case ".jb2":
+                cancellationToken.ThrowIfCancellationRequested();
+                Jb2FileHandler jb2FileHandler = new();
+                BitmapFrame jb2BitmapFrame = await jb2FileHandler.LoadImageAsync(unIndexedFile);
+                ocrData = await jb2BitmapFrame.ToTiffJpegByteArray(Format.Tiff).OcrAsync(Settings.Default.DefaultTtsLang);
+                _ = ocrTextBuilder.Append(string.Join(" ", ocrData?.Select(z => z.Text)));
+                break;
+
+            case ".j2k":
+                cancellationToken.ThrowIfCancellationRequested();
+                J2kFileHandler j2KFileHandler = new();
+                BitmapFrame j2kBitmapFrame = await j2KFileHandler.LoadImageAsync(unIndexedFile);
+                ocrData = await j2kBitmapFrame.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
+                _ = ocrTextBuilder.Append(string.Join(" ", ocrData?.Select(z => z.Text)));
                 break;
 
             default:

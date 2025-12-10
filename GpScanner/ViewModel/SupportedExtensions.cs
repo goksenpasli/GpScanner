@@ -29,7 +29,7 @@ namespace GpScanner.ViewModel
             {
                 Name = ".cbr",
                 IsChecked = true
-            } ]
+            }, new() { Name = ".j2k", IsChecked = true } ]
         }, new FileCategory
         {
             Category = Translation.GetResStringValue("DOCUMENT"),

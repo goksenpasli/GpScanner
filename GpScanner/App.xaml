@@ -39,6 +39,9 @@
             <converter:CbrCbzFirstpageToBitmapImageConverter x:Key="CbrCbzFirstpageToBitmapImageConverter" />
             <converter:JpgPngToBitmapImageConverter x:Key="JpgPngToBitmapImageConverter" />
             <converter:XpsFileToBitmapImageConverter x:Key="XpsFileToBitmapImageConverter" />
+            <converter:J2kToBitmapImageConverter x:Key="J2kToBitmapImageConverter" />
+            <converter:WebpFileToBitmapImageConverter x:Key="WebpFileToBitmapImageConverter" />
+            <converter:Jb2ToBitmapImageConverter x:Key="Jb2ToBitmapImageConverter" />
             <converter:DivideConverter x:Key="DivideConverter" />
             <System:Double x:Key="Zero">0</System:Double>
             <Style TargetType="ComboBoxItem">
@@ -646,11 +649,18 @@
                 </PdfViewer:PdfShadowedImage>
             </DataTemplate>
             <DataTemplate x:Key="Jb2Template">
-                <Extensions:ImageViewer OpenButtonVisibility="Collapsed"
+                <twain:Jb2ImageViewer ImageFilePath="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    OpenButtonVisibility="Collapsed"
+                    Orientation="Height"
                     PanoramaButtonVisibility="Collapsed"
-                    PrintButtonVisibility="Visible"
-                    Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
-                    Tag="{Binding Path=DataContext, Converter={StaticResource Jb2ToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                    PrintButtonVisibility="Visible" />
+            </DataTemplate>
+            <DataTemplate x:Key="J2kTemplate">
+                <twain:J2kImageViewer ImageFilePath="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    OpenButtonVisibility="Collapsed"
+                    Orientation="Height"
+                    PanoramaButtonVisibility="Collapsed"
+                    PrintButtonVisibility="Visible" />
             </DataTemplate>
             <DataTemplate x:Key="WebpTemplate">
                 <Extensions:ImageViewer OpenButtonVisibility="Collapsed"
@@ -975,6 +985,7 @@
                 Docx="{StaticResource DocxViewerThumbTemplate}"
                 Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateFull}"
+                J2k="{StaticResource J2kTemplate}"
                 Jb2="{StaticResource Jb2Template}"
                 Jb2Zip="{StaticResource Jb2ZipViewerTemplate}"
                 Pdf="{StaticResource PdfViewerDocumentViewerTemplateFull}"
@@ -1019,6 +1030,7 @@
                 Docx="{StaticResource DocxViewerInternalThumbTemplate}"
                 Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateMini}"
+                J2k="{StaticResource J2kTemplateMini}"
                 Jb2="{StaticResource Jb2MonthTemplateMini}"
                 Jb2Zip="{StaticResource EmptyViewerTemplate}"
                 Pdf="{StaticResource PdfViewerDocumentViewerMonthTemplateMini}"
@@ -1033,6 +1045,7 @@
                 Docx="{StaticResource DocxViewerThumbTemplate}"
                 Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerTemplate}"
+                J2k="{StaticResource J2kTemplate}"
                 Jb2="{StaticResource Jb2Template}"
                 Jb2Zip="{StaticResource Jb2ZipViewerTemplate}"
                 Pdf="{StaticResource PdfViewerTemplateFull}"
@@ -1047,6 +1060,7 @@
                 Docx="{StaticResource DocxViewerThumbTemplate}"
                 Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerTemplate}"
+                J2k="{StaticResource J2kTemplate}"
                 Jb2="{StaticResource Jb2Template}"
                 Jb2Zip="{StaticResource Jb2ZipViewerTemplate}"
                 Pdf="{StaticResource UnIndexedPdfViewerTemplateFull}"
