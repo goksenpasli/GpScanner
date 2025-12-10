@@ -493,6 +493,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         Tümünüİşaretle = new RelayCommand<object>(
             parameter =>
             {
+                foreach (Scanner item in Dosyalar)
+                {
+                    item.Seçili = false;
+                }
+
                 if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
                     foreach (Scanner item in Dosyalar.Where(z => File.Exists(z.FileName)))

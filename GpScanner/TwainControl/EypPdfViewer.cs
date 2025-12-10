@@ -36,22 +36,11 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                 {
                     if (Path.GetExtension(openFileDialog.FileName.ToLowerInvariant()) == ".eyp")
                     {
-                        string eypfile = ExtractEypFilesToPdf(openFileDialog.FileName);
-                        if (!IsValidPdfFile(eypfile))
-                        {
-                            return;
-                        }
-
-                        PdfFilePath = eypfile;
+                        PdfFilePath = ExtractEypFilesToPdf(openFileDialog.FileName);
                     }
 
                     if (Path.GetExtension(openFileDialog.FileName.ToLowerInvariant()) == ".pdf")
                     {
-                        if (!IsValidPdfFile(openFileDialog.FileName))
-                        {
-                            return;
-                        }
-
                         PdfFilePath = openFileDialog.FileName;
                         AddToHistoryList(PdfFilePath);
                     }

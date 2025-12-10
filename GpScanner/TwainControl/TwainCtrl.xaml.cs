@@ -1766,7 +1766,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
                 {
                     PdfPages = [];
-                    for (int i = 1; i <= Viewer.PdfPageCount(pdfViewer.PdfFilePath); i++)
+                    int count = Viewer.PdfPageCount(pdfViewer.PdfFilePath);
+                    for (int i = 1; i <= count; i++)
                     {
                         PdfData data = new() { PageNumber = i };
                         data.PropertyChanged -= PdfData_PropertyChanged;

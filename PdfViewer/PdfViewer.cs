@@ -73,7 +73,7 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             async parameter =>
             {
                 OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Pdf Dosyaları (*.pdf)|*.pdf" };
-                if (openFileDialog.ShowDialog() == true && await IsValidPdfFileAsync(openFileDialog.FileName))
+                if (openFileDialog.ShowDialog() == true && IsValidPdfFile(openFileDialog.FileName))
                 {
                     PdfFilePath = openFileDialog.FileName;
                 }
@@ -489,7 +489,7 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public static async Task<BitmapImage> ConvertToImgAsync(string pdffilepath, int page, int dpi = 72)
     {
-        if (string.IsNullOrEmpty(pdffilepath) || !await IsValidPdfFileAsync(pdffilepath))
+        if (string.IsNullOrEmpty(pdffilepath) || !IsValidPdfFile(pdffilepath))
         {
             throw new ArgumentException("Invalid PDF file", nameof(pdffilepath));
         }
@@ -557,7 +557,7 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 {
                     using MemoryStream ms = new(pdffilestream);
                     using PdfDocument pdfDoc = PdfDocument.Load(ms);
-                    if ((pdfDoc is null) || (page < 1 || page > pdfDoc.PageCount))
+                    if ((pdfDoc is null) || page < 1 || page > pdfDoc.PageCount)
                     {
                         return null;
                     }
@@ -596,10 +596,9 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
 
         byte[] buffer = new byte[4];
-        using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
-        _ = fs.Read(buffer, 0, buffer.Length);
-        byte[] pdfheader = [ 0x25, 0x50, 0x44, 0x46 ];
-        return buffer?.SequenceEqual(pdfheader) == true;
+        using FileStream fs = new(filename, FileMode.Open, FileAccess.Read, FileShare.Read, 4, FileOptions.SequentialScan);
+        int read = fs.Read(buffer, 0, 4);
+        return read == 4 && buffer[0] == 0x25 && buffer[1] == 0x50 && buffer[2] == 0x44 && buffer[3] == 0x46;
     }
 
     public static int PdfPageCount(string pdffile)
@@ -717,25 +716,11 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private static async Task<bool> IsValidPdfFileAsync(string filename)
-    {
-        if (!File.Exists(filename))
-        {
-            return false;
-        }
-
-        byte[] buffer = new byte[4];
-        using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
-        int bytesRead = await fs.ReadAsync(buffer, 0, buffer.Length);
-        byte[] pdfheader = [ 0x25, 0x50, 0x44, 0x46 ];
-        return bytesRead == buffer.Length && buffer.SequenceEqual(pdfheader);
-    }
-
     private static async void PdfFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is PdfViewer pdfViewer)
         {
-            if (await IsValidPdfFileAsync(e.NewValue as string))
+            if (IsValidPdfFile(e.NewValue as string))
             {
                 try
                 {
