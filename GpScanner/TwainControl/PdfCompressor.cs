@@ -1,5 +1,4 @@
-﻿using Extensions;
-using PdfCompressor;
+﻿using PdfCompressor;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using System;
@@ -39,9 +38,8 @@ public class PdfCompressor : Compressor
         List<ScannedImage> scannedimages = bitmapframes.ConvertAll(img => new ScannedImage() { Resim = BitmapFrame.Create(img) });
         Progress<double> progress = new(percent => CompressionProgress = percent);
         byte[] bytes = await Task.Run(() => scannedimages.CreateMultipagePdfWithJbig2Images(progress).AddPdfPassword_PdfSharp().ToArray());
-        File.WriteAllBytes(path, bytes);
-        bytes = null;
-        using PdfDocument document = PdfReader.Open(path);
+        using MemoryStream memorystream = new(bytes);
+        using PdfDocument document = PdfReader.Open(memorystream);
         return document;
     }
 }
