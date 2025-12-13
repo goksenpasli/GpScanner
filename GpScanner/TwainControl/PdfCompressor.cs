@@ -37,8 +37,7 @@ public class PdfCompressor : Compressor
         List<BitmapImage> bitmapframes = await GetBitmapImagesAsync(path);
         List<ScannedImage> scannedimages = bitmapframes.ConvertAll(img => new ScannedImage() { Resim = BitmapFrame.Create(img) });
         Progress<double> progress = new(percent => CompressionProgress = percent);
-        byte[] bytes = await Task.Run(() => scannedimages.CreateMultipagePdfWithJbig2Images(progress).AddPdfPassword_PdfSharp().ToArray());
-        using MemoryStream memorystream = new(bytes);
+        using MemoryStream memorystream = await Task.Run(() => scannedimages.CreateMultipagePdfWithJbig2Images(progress).AddPdfPassword_PdfSharp());
         using PdfDocument document = PdfReader.Open(memorystream);
         return document;
     }

@@ -3904,6 +3904,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> ToolBoxManualDeskewImage { get; }
 
+    public int TotalPageCount
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(TotalPageCount));
+            }
+        }
+    }
+
     public int TrimPage
     {
         get;
@@ -4601,9 +4614,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             return;
         }
 
-        int totalPageCount = fileHandler.GetPageCount(filename);
+        TotalPageCount = fileHandler.GetPageCount(filename);
         BitmapFrame bitmapFrame;
-        for (int i = 1; i <= totalPageCount; i++)
+        for (int i = 1; i <= TotalPageCount; i++)
         {
             if (cancellationTokenSource?.IsCancellationRequested == true)
             {
@@ -4622,12 +4635,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     break;
 
                 case XpsFileHandler:
-                    await HandleTifXpsFileAsync(fileHandler.LoadXpsPagesAsync, filename, totalPageCount);
+                    await HandleTifXpsFileAsync(fileHandler.LoadXpsPagesAsync, filename, TotalPageCount);
                     return;
 
                 case TiffFileHandler:
                 case Jb2FileHandler:
-                    await HandleTifXpsFileAsync(fileHandler.LoadTiffPagesAsync, filename, totalPageCount);
+                    await HandleTifXpsFileAsync(fileHandler.LoadTiffPagesAsync, filename, TotalPageCount);
                     return;
 
                 default:
@@ -4642,7 +4655,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     ScannedImage item = new() { GetPdfCharacterInformations = fileHandler.GetPdfCharacters(), Resim = bitmapFrame, FilePath = filename, DeskewAngle = deskewAngle };
                     Scanner?.Resimler.Add(item);
-                    PdfLoadProgressValue = (double)i / totalPageCount;
+                    PdfLoadProgressValue = (double)i / TotalPageCount;
                 });
             bitmapFrame = null;
         }

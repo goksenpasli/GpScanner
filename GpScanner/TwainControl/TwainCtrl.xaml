@@ -973,229 +973,187 @@
                                     <Setter Property="VerticalContentAlignment" Value="Center" />
                                 </Style>
                             </StackPanel.Resources>
-                            <Grid Grid.ColumnSpan="3" IsEnabled="{Binding Scanner.ArayüzEtkin}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <ComboBox x:Name="CbFolderFormat"
-                                    VerticalContentAlignment="Center"
-                                    local:Policy.PolicyName="FolderDateFormat"
-                                    ItemContainerStyle="{StaticResource ScanTypeLbItem}"
-                                    ItemsSource="{Binding Source={StaticResource FolderDates}}"
-                                    SelectedValue="{Binding FolderDateFormat, Source={x:Static properties:Settings.Default}}"
-                                    SelectedValuePath="Key">
-                                    <ComboBox.GroupStyle>
-                                        <GroupStyle ContainerStyle="{StaticResource BorderGroupStyleContainerStyle}">
-                                            <GroupStyle.Panel>
-                                                <ItemsPanelTemplate>
-                                                    <UniformGrid Columns="4" />
-                                                </ItemsPanelTemplate>
-                                            </GroupStyle.Panel>
-                                        </GroupStyle>
-                                    </ComboBox.GroupStyle>
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay, Path=Key}" />
-                                                <Button VerticalAlignment="Center"
-                                                    Background="{x:Null}"
-                                                    BorderBrush="{x:Null}"
-                                                    Command="{Binding ShowDateFolderHelp, RelativeSource={RelativeSource AncestorType={x:Type local:TwainCtrl}}}">
-                                                    <Image Width="16" Height="16">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="23" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                </Button>
+                            <Separator />
+                            <StackPanel Height="25"
+                                Background="{StaticResource BorderBackground}"
+                                IsEnabled="{Binding Scanner.ArayüzEtkin}"
+                                Orientation="Horizontal">
+                                <Extensions:NumericUpDown Interval="1"
+                                    IsEnabled="{Binding ApplyVerticalLineRemove, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
+                                    Maximum="50"
+                                    Minimum="1"
+                                    Value="{Binding VerticalLineThreshold, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                <ToggleButton IsChecked="{Binding ApplyVerticalLineRemove, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                    <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
+                                    <ToggleButton.ToolTip>
+                                        <ToolTip>
+                                            <StackPanel>
+                                                <Viewbox Width="200" Height="100">
+                                                    <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
+                                                </Viewbox>
+                                                <TextBlock Text="{local:Loc DELETE}" TextWrapping="Wrap" />
                                             </StackPanel>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
-                                <StackPanel Grid.Column="1"
-                                    Background="{StaticResource BorderBackground}"
-                                    Orientation="Horizontal">
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                    <Extensions:NumericUpDown Interval="1"
-                                        IsEnabled="{Binding ApplyVerticalLineRemove, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
-                                        Maximum="50"
-                                        Minimum="1"
-                                        Value="{Binding VerticalLineThreshold, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                    <ToggleButton IsChecked="{Binding ApplyVerticalLineRemove, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                        <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
-                                        <ToggleButton.ToolTip>
-                                            <ToolTip>
-                                                <StackPanel>
-                                                    <Viewbox Width="200" Height="100">
-                                                        <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
-                                                    </Viewbox>
-                                                    <TextBlock Text="{local:Loc DELETE}" TextWrapping="Wrap" />
-                                                </StackPanel>
-                                            </ToolTip>
-                                        </ToggleButton.ToolTip>
-                                    </ToggleButton>
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="20" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Extensions:NumericUpDown x:Name="SpDelay"
-                                        local:Policy.PolicyName="ScanDelay"
-                                        Interval="1"
-                                        IsReadOnly="True"
-                                        Maximum="120"
-                                        Minimum="0"
-                                        ToolTip="{local:Loc SECOND}"
-                                        Value="{Binding ScanDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="54" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Extensions:NumericUpDown local:Policy.PolicyName="ScanBetweenDelay"
-                                        Interval="1"
-                                        IsReadOnly="True"
-                                        Maximum="120"
-                                        Minimum="0"
-                                        ToolTip="{local:Loc SECOND}"
-                                        Value="{Binding ScanBetweenDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                    <ListBox HorizontalContentAlignment="Center"
-                                        VerticalContentAlignment="Center"
-                                        local:Policy.PolicyName="SelectedRotation"
-                                        Background="{DynamicResource BorderBackground}"
-                                        BorderBrush="{x:Null}"
-                                        SelectedValue="{Binding SelectedRotation}"
-                                        SelectedValuePath="Tag">
-                                        <ListBox.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <VirtualizingStackPanel Orientation="Horizontal" />
-                                            </ItemsPanelTemplate>
-                                        </ListBox.ItemsPanel>
-                                        <ListBox.ItemContainerStyle>
-                                            <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}">
-                                                <Setter Property="Margin" Value="0" />
-                                            </Style>
-                                        </ListBox.ItemContainerStyle>
-                                        <ListBoxItem Tag="{Binding Path=[0], Source={StaticResource PageRotations}}">
-                                            <Image Width="16" Height="16">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="1" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </ListBoxItem>
-                                        <ListBoxItem Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" ToolTip="{local:Loc Right}">
-                                            <Image Width="16"
-                                                Height="16"
-                                                RenderTransformOrigin="0.5,0.5">
-                                                <Image.RenderTransform>
-                                                    <TransformGroup>
-                                                        <RotateTransform Angle="90" />
-                                                    </TransformGroup>
-                                                </Image.RenderTransform>
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="1" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </ListBoxItem>
-                                        <ListBoxItem Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" ToolTip="{local:Loc Left}">
-                                            <Image Width="16"
-                                                Height="16"
-                                                RenderTransformOrigin="0.5,0.5">
-                                                <Image.RenderTransform>
-                                                    <TransformGroup>
-                                                        <RotateTransform Angle="-90" />
-                                                    </TransformGroup>
-                                                </Image.RenderTransform>
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="1" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </ListBoxItem>
-                                    </ListBox>
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                    <ListBox VerticalContentAlignment="Center"
-                                        local:Policy.PolicyName="SelectedFlip"
-                                        Background="{DynamicResource BorderBackground}"
-                                        BorderBrush="{x:Null}"
-                                        SelectedValue="{Binding SelectedFlip}"
-                                        SelectedValuePath="Tag">
-                                        <ListBox.ItemContainerStyle>
-                                            <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}">
-                                                <Setter Property="Margin" Value="0" />
-                                            </Style>
-                                        </ListBox.ItemContainerStyle>
-                                        <ListBox.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <VirtualizingStackPanel Orientation="Horizontal" />
-                                            </ItemsPanelTemplate>
-                                        </ListBox.ItemsPanel>
-                                        <ListBoxItem Tag="{Binding Path=[0], Source={StaticResource PageFlips}}">
-                                            <Image Width="16" Height="16">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="1" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </ListBoxItem>
-                                        <ListBoxItem RenderTransformOrigin="0.5,0.5"
-                                            Tag="{Binding Path=[1], Source={StaticResource PageFlips}}"
-                                            ToolTip="{local:Loc Rotate180}">
-                                            <ListBoxItem.RenderTransform>
+                                        </ToolTip>
+                                    </ToggleButton.ToolTip>
+                                </ToggleButton>
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="20" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <Extensions:NumericUpDown x:Name="SpDelay"
+                                    local:Policy.PolicyName="ScanDelay"
+                                    Interval="1"
+                                    IsReadOnly="True"
+                                    Maximum="120"
+                                    Minimum="0"
+                                    ToolTip="{local:Loc SECOND}"
+                                    Value="{Binding ScanDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="54" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <Extensions:NumericUpDown local:Policy.PolicyName="ScanBetweenDelay"
+                                    Interval="1"
+                                    IsReadOnly="True"
+                                    Maximum="120"
+                                    Minimum="0"
+                                    ToolTip="{local:Loc SECOND}"
+                                    Value="{Binding ScanBetweenDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                <ListBox HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    local:Policy.PolicyName="SelectedRotation"
+                                    Background="{DynamicResource BorderBackground}"
+                                    BorderBrush="{x:Null}"
+                                    SelectedValue="{Binding SelectedRotation}"
+                                    SelectedValuePath="Tag">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}">
+                                            <Setter Property="Margin" Value="0" />
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBoxItem Tag="{Binding Path=[0], Source={StaticResource PageRotations}}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </ListBoxItem>
+                                    <ListBoxItem Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" ToolTip="{local:Loc Right}">
+                                        <Image Width="16"
+                                            Height="16"
+                                            RenderTransformOrigin="0.5,0.5">
+                                            <Image.RenderTransform>
                                                 <TransformGroup>
-                                                    <ScaleTransform ScaleY="-1" />
+                                                    <RotateTransform Angle="90" />
                                                 </TransformGroup>
-                                            </ListBoxItem.RenderTransform>
-                                            <Image Width="16" Height="16">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="1" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </ListBoxItem>
-                                        <ListBoxItem RenderTransformOrigin="0.5,0.5"
-                                            Tag="{Binding Path=[2], Source={StaticResource PageFlips}}"
-                                            ToolTip="{local:Loc FLIP}">
-                                            <ListBoxItem.RenderTransform>
+                                            </Image.RenderTransform>
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </ListBoxItem>
+                                    <ListBoxItem Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" ToolTip="{local:Loc Left}">
+                                        <Image Width="16"
+                                            Height="16"
+                                            RenderTransformOrigin="0.5,0.5">
+                                            <Image.RenderTransform>
                                                 <TransformGroup>
-                                                    <ScaleTransform ScaleX="-1" />
+                                                    <RotateTransform Angle="-90" />
                                                 </TransformGroup>
-                                            </ListBoxItem.RenderTransform>
-                                            <Image Width="16" Height="16">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="1" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </ListBoxItem>
-                                    </ListBox>
-                                </StackPanel>
-                            </Grid>
+                                            </Image.RenderTransform>
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </ListBoxItem>
+                                </ListBox>
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                <ListBox VerticalContentAlignment="Center"
+                                    local:Policy.PolicyName="SelectedFlip"
+                                    Background="{DynamicResource BorderBackground}"
+                                    BorderBrush="{x:Null}"
+                                    SelectedValue="{Binding SelectedFlip}"
+                                    SelectedValuePath="Tag">
+                                    <ListBox.ItemContainerStyle>
+                                        <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}">
+                                            <Setter Property="Margin" Value="0" />
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBoxItem Tag="{Binding Path=[0], Source={StaticResource PageFlips}}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </ListBoxItem>
+                                    <ListBoxItem RenderTransformOrigin="0.5,0.5"
+                                        Tag="{Binding Path=[1], Source={StaticResource PageFlips}}"
+                                        ToolTip="{local:Loc Rotate180}">
+                                        <ListBoxItem.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform ScaleY="-1" />
+                                            </TransformGroup>
+                                        </ListBoxItem.RenderTransform>
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </ListBoxItem>
+                                    <ListBoxItem RenderTransformOrigin="0.5,0.5"
+                                        Tag="{Binding Path=[2], Source={StaticResource PageFlips}}"
+                                        ToolTip="{local:Loc FLIP}">
+                                        <ListBoxItem.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform ScaleX="-1" />
+                                            </TransformGroup>
+                                        </ListBoxItem.RenderTransform>
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </ListBoxItem>
+                                </ListBox>
+                            </StackPanel>
                             <Separator />
                             <Grid IsEnabled="{Binding Scanner.ArayüzEtkin}">
                                 <Grid.ColumnDefinitions>
@@ -1302,185 +1260,229 @@
                                 </CheckBox>
                             </Grid>
                             <Separator />
-                            <AdornerDecorator>
-                                <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
-                                    d:Text="FileName"
-                                    local:Policy.PolicyName="SaveFileName"
-                                    GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus"
-                                    IsEnabled="{Binding Scanner.ArayüzEtkin}"
-                                    KeyBoardButtonVisibility="Visible"
-                                    MaxLength="255"
-                                    OpenButtonVisibility="Collapsed"
-                                    RemainingLengthVisibility="Collapsed"
-                                    ResetButtonVisibility="Collapsed"
-                                    Text="{Binding Scanner.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                    TitleCaseMenuVisibility="Visible"
-                                    ToolTip="{Binding Scanner.SaveFileName}"
-                                    Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
-                                    <Extensions:ButtonedTextBox.ContextMenu>
-                                        <ContextMenu>
-                                            <ContextMenu.Resources>
-                                                <Style TargetType="{x:Type MenuItem}">
-                                                    <Setter Property="Command" Value="{Binding InsertFileNamePlaceHolder}" />
-                                                    <Setter Property="ToolTip" Value="{Binding CommandParameter, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource FileDateContextMenuConverter}}" />
-                                                </Style>
-                                            </ContextMenu.Resources>
-                                            <MenuItem Header="{local:Loc AutoText}" ToolTipService.IsEnabled="False">
-                                                <MenuItem.Icon>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <AdornerDecorator>
+                                    <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                                        d:Text="FileName"
+                                        local:Policy.PolicyName="SaveFileName"
+                                        GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus"
+                                        IsEnabled="{Binding Scanner.ArayüzEtkin}"
+                                        KeyBoardButtonVisibility="Visible"
+                                        MaxLength="255"
+                                        OpenButtonVisibility="Collapsed"
+                                        RemainingLengthVisibility="Collapsed"
+                                        ResetButtonVisibility="Collapsed"
+                                        Text="{Binding Scanner.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                        TitleCaseMenuVisibility="Visible"
+                                        ToolTip="{Binding Scanner.SaveFileName}"
+                                        Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
+                                        <Extensions:ButtonedTextBox.ContextMenu>
+                                            <ContextMenu>
+                                                <ContextMenu.Resources>
+                                                    <Style TargetType="{x:Type MenuItem}">
+                                                        <Setter Property="Command" Value="{Binding InsertFileNamePlaceHolder}" />
+                                                        <Setter Property="ToolTip" Value="{Binding CommandParameter, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource FileDateContextMenuConverter}}" />
+                                                    </Style>
+                                                </ContextMenu.Resources>
+                                                <MenuItem Header="{local:Loc AutoText}" ToolTipService.IsEnabled="False">
+                                                    <MenuItem.Icon>
+                                                        <Image Width="16" Height="16">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="43" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </MenuItem.Icon>
+                                                    <MenuItem CommandParameter="[DATE]-[MONTH]-[YEAR] [HOUR].[MINUTE].[SECOND]">
+                                                        <MenuItem.Icon>
+                                                            <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                        </MenuItem.Icon>
+                                                        <MenuItem.Header>
+                                                            <TextBlock>
+                                                                <Run Text="{local:Loc DAY}" />
+                                                                <Run Text="{local:Loc MONTH}" />
+                                                                <Run Text="{local:Loc YEAR}" />
+                                                                <Run Text="{local:Loc TIME}" />
+                                                                <Run Text="{local:Loc MINUTE}" />
+                                                                <Run Text="{local:Loc SECOND}" />
+                                                            </TextBlock>
+                                                        </MenuItem.Header>
+                                                    </MenuItem>
+                                                    <MenuItem CommandParameter="[DATE]-[MONTH]-[YEAR]">
+                                                        <MenuItem.Icon>
+                                                            <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                        </MenuItem.Icon>
+                                                        <MenuItem.Header>
+                                                            <TextBlock>
+                                                                <Run Text="{local:Loc DAY}" />
+                                                                <Run Text="{local:Loc MONTH}" />
+                                                                <Run Text="{local:Loc YEAR}" />
+                                                            </TextBlock>
+                                                        </MenuItem.Header>
+                                                    </MenuItem>
+                                                    <MenuItem CommandParameter="[MONTH]-[DATE]-[YEAR]">
+                                                        <MenuItem.Icon>
+                                                            <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                        </MenuItem.Icon>
+                                                        <MenuItem.Header>
+                                                            <TextBlock>
+                                                                <Run Text="{local:Loc MONTH}" />
+                                                                <Run Text="{local:Loc DAY}" />
+                                                                <Run Text="{local:Loc YEAR}" />
+                                                            </TextBlock>
+                                                        </MenuItem.Header>
+                                                    </MenuItem>
+                                                    <MenuItem CommandParameter="[USERNAME] [RESOLUTION] DPI">
+                                                        <MenuItem.Icon>
+                                                            <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                        </MenuItem.Icon>
+                                                        <MenuItem.Header>
+                                                            <TextBlock>
+                                                                <Run Text="{local:Loc USERNAME}" />
+                                                                <Run Text="{local:Loc RES}" />
+                                                                <System:String>DPI</System:String>
+                                                            </TextBlock>
+                                                        </MenuItem.Header>
+                                                    </MenuItem>
+                                                    <MenuItem CommandParameter="[COMPUTER] [USERNAME]">
+                                                        <MenuItem.Icon>
+                                                            <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                        </MenuItem.Icon>
+                                                        <MenuItem.Header>
+                                                            <TextBlock>
+                                                                <Run Text="{local:Loc COMPUTER}" />
+                                                                <Run Text="{local:Loc USERNAME}" />
+                                                            </TextBlock>
+                                                        </MenuItem.Header>
+                                                    </MenuItem>
+                                                </MenuItem>
+                                                <MenuItem CommandParameter="[DATE]" Header="{local:Loc DAY}">
+                                                    <MenuItem.Icon>
+                                                        <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem CommandParameter="[MONTH]" Header="{local:Loc MONTH}">
+                                                    <MenuItem.Icon>
+                                                        <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem CommandParameter="[YEAR]" Header="{local:Loc YEAR}">
+                                                    <MenuItem.Icon>
+                                                        <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem CommandParameter="[HOUR]" Header="{local:Loc TIME}">
+                                                    <MenuItem.Icon>
+                                                        <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem CommandParameter="[MINUTE]" Header="{local:Loc MINUTE}">
+                                                    <MenuItem.Icon>
+                                                        <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem CommandParameter="[SECOND]" Header="{local:Loc SECOND}">
+                                                    <MenuItem.Icon>
+                                                        <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem CommandParameter="[GUID]" Header="{local:Loc GUID}">
+                                                    <MenuItem.Icon>
+                                                        <Image Width="16" Height="16">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Comres.dll" />
+                                                                    <Binding Source="0" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem CommandParameter="[USERNAME]" Header="{local:Loc USERNAME}">
+                                                    <MenuItem.Icon>
+                                                        <Image Width="16" Height="16">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Comres.dll" />
+                                                                    <Binding Source="1" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem CommandParameter="[COMPUTER]" Header="{local:Loc COMPUTER}">
+                                                    <MenuItem.Icon>
+                                                        <Image Width="16" Height="16">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="15" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem CommandParameter="[RESOLUTION]" Header="{local:Loc RES}">
+                                                    <MenuItem.Icon>
+                                                        <Image Width="16" Height="16">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="140" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                            </ContextMenu>
+                                        </Extensions:ButtonedTextBox.ContextMenu>
+                                    </Extensions:ButtonedTextBox>
+                                </AdornerDecorator>
+                                <ComboBox x:Name="CbFolderFormat"
+                                    Grid.Column="1"
+                                    VerticalContentAlignment="Center"
+                                    local:Policy.PolicyName="FolderDateFormat"
+                                    ItemContainerStyle="{StaticResource ScanTypeLbItem}"
+                                    ItemsSource="{Binding Source={StaticResource FolderDates}}"
+                                    SelectedValue="{Binding FolderDateFormat, Source={x:Static properties:Settings.Default}}"
+                                    SelectedValuePath="Key">
+                                    <ComboBox.GroupStyle>
+                                        <GroupStyle ContainerStyle="{StaticResource BorderGroupStyleContainerStyle}">
+                                            <GroupStyle.Panel>
+                                                <ItemsPanelTemplate>
+                                                    <UniformGrid Columns="4" />
+                                                </ItemsPanelTemplate>
+                                            </GroupStyle.Panel>
+                                        </GroupStyle>
+                                    </ComboBox.GroupStyle>
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay, Path=Key}" />
+                                                <Button VerticalAlignment="Center"
+                                                    Background="{x:Null}"
+                                                    BorderBrush="{x:Null}"
+                                                    Command="{Binding ShowDateFolderHelp, RelativeSource={RelativeSource AncestorType={x:Type local:TwainCtrl}}}">
                                                     <Image Width="16" Height="16">
                                                         <Image.Source>
                                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                                 <Binding Source="Shell32.dll" />
-                                                                <Binding Source="43" />
+                                                                <Binding Source="23" />
                                                             </MultiBinding>
                                                         </Image.Source>
                                                     </Image>
-                                                </MenuItem.Icon>
-                                                <MenuItem CommandParameter="[DATE]-[MONTH]-[YEAR] [HOUR].[MINUTE].[SECOND]">
-                                                    <MenuItem.Icon>
-                                                        <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
-                                                    </MenuItem.Icon>
-                                                    <MenuItem.Header>
-                                                        <TextBlock>
-                                                            <Run Text="{local:Loc DAY}" />
-                                                            <Run Text="{local:Loc MONTH}" />
-                                                            <Run Text="{local:Loc YEAR}" />
-                                                            <Run Text="{local:Loc TIME}" />
-                                                            <Run Text="{local:Loc MINUTE}" />
-                                                            <Run Text="{local:Loc SECOND}" />
-                                                        </TextBlock>
-                                                    </MenuItem.Header>
-                                                </MenuItem>
-                                                <MenuItem CommandParameter="[DATE]-[MONTH]-[YEAR]">
-                                                    <MenuItem.Icon>
-                                                        <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
-                                                    </MenuItem.Icon>
-                                                    <MenuItem.Header>
-                                                        <TextBlock>
-                                                            <Run Text="{local:Loc DAY}" />
-                                                            <Run Text="{local:Loc MONTH}" />
-                                                            <Run Text="{local:Loc YEAR}" />
-                                                        </TextBlock>
-                                                    </MenuItem.Header>
-                                                </MenuItem>
-                                                <MenuItem CommandParameter="[MONTH]-[DATE]-[YEAR]">
-                                                    <MenuItem.Icon>
-                                                        <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
-                                                    </MenuItem.Icon>
-                                                    <MenuItem.Header>
-                                                        <TextBlock>
-                                                            <Run Text="{local:Loc MONTH}" />
-                                                            <Run Text="{local:Loc DAY}" />
-                                                            <Run Text="{local:Loc YEAR}" />
-                                                        </TextBlock>
-                                                    </MenuItem.Header>
-                                                </MenuItem>
-                                                <MenuItem CommandParameter="[USERNAME] [RESOLUTION] DPI">
-                                                    <MenuItem.Icon>
-                                                        <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
-                                                    </MenuItem.Icon>
-                                                    <MenuItem.Header>
-                                                        <TextBlock>
-                                                            <Run Text="{local:Loc USERNAME}" />
-                                                            <Run Text="{local:Loc RES}" />
-                                                            <System:String>DPI</System:String>
-                                                        </TextBlock>
-                                                    </MenuItem.Header>
-                                                </MenuItem>
-                                                <MenuItem CommandParameter="[COMPUTER] [USERNAME]">
-                                                    <MenuItem.Icon>
-                                                        <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
-                                                    </MenuItem.Icon>
-                                                    <MenuItem.Header>
-                                                        <TextBlock>
-                                                            <Run Text="{local:Loc COMPUTER}" />
-                                                            <Run Text="{local:Loc USERNAME}" />
-                                                        </TextBlock>
-                                                    </MenuItem.Header>
-                                                </MenuItem>
-                                            </MenuItem>
-                                            <MenuItem CommandParameter="[DATE]" Header="{local:Loc DAY}">
-                                                <MenuItem.Icon>
-                                                    <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
-                                                </MenuItem.Icon>
-                                            </MenuItem>
-                                            <MenuItem CommandParameter="[MONTH]" Header="{local:Loc MONTH}">
-                                                <MenuItem.Icon>
-                                                    <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
-                                                </MenuItem.Icon>
-                                            </MenuItem>
-                                            <MenuItem CommandParameter="[YEAR]" Header="{local:Loc YEAR}">
-                                                <MenuItem.Icon>
-                                                    <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
-                                                </MenuItem.Icon>
-                                            </MenuItem>
-                                            <MenuItem CommandParameter="[HOUR]" Header="{local:Loc TIME}">
-                                                <MenuItem.Icon>
-                                                    <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
-                                                </MenuItem.Icon>
-                                            </MenuItem>
-                                            <MenuItem CommandParameter="[MINUTE]" Header="{local:Loc MINUTE}">
-                                                <MenuItem.Icon>
-                                                    <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
-                                                </MenuItem.Icon>
-                                            </MenuItem>
-                                            <MenuItem CommandParameter="[SECOND]" Header="{local:Loc SECOND}">
-                                                <MenuItem.Icon>
-                                                    <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
-                                                </MenuItem.Icon>
-                                            </MenuItem>
-                                            <MenuItem CommandParameter="[GUID]" Header="{local:Loc GUID}">
-                                                <MenuItem.Icon>
-                                                    <Image Width="16" Height="16">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Comres.dll" />
-                                                                <Binding Source="0" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                </MenuItem.Icon>
-                                            </MenuItem>
-                                            <MenuItem CommandParameter="[USERNAME]" Header="{local:Loc USERNAME}">
-                                                <MenuItem.Icon>
-                                                    <Image Width="16" Height="16">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Comres.dll" />
-                                                                <Binding Source="1" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                </MenuItem.Icon>
-                                            </MenuItem>
-                                            <MenuItem CommandParameter="[COMPUTER]" Header="{local:Loc COMPUTER}">
-                                                <MenuItem.Icon>
-                                                    <Image Width="16" Height="16">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="15" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                </MenuItem.Icon>
-                                            </MenuItem>
-                                            <MenuItem CommandParameter="[RESOLUTION]" Header="{local:Loc RES}">
-                                                <MenuItem.Icon>
-                                                    <Image Width="16" Height="16">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="140" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                </MenuItem.Icon>
-                                            </MenuItem>
-                                        </ContextMenu>
-                                    </Extensions:ButtonedTextBox.ContextMenu>
-                                </Extensions:ButtonedTextBox>
-                            </AdornerDecorator>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </Grid>
                         </StackPanel>
                     </ScrollViewer>
                 </Expander>
@@ -2475,9 +2477,19 @@
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
-                                        <TextBlock VerticalAlignment="Center"
-                                            FontWeight="Bold"
-                                            Text="{local:Loc FILE}" />
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                            <Run d:Text="FILE"
+                                                BaselineAlignment="Center"
+                                                Text="{local:Loc FILE}" />
+                                            <LineBreak />
+                                            <Run d:Text="0"
+                                                BaselineAlignment="Center"
+                                                Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" /><Run d:Text="/"
+                                                BaselineAlignment="Center"
+                                                Text="/" /><Run d:Text="0"
+                                                BaselineAlignment="Center"
+                                                Text="{Binding TotalPageCount, Mode=OneWay}" />
+                                        </TextBlock>
                                     </StackPanel>
                                 </Grid>
                             </Button>
