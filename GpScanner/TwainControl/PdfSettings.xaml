@@ -209,6 +209,22 @@
                         Text="MOZJPEG" />
                 </CheckBox.Content>
             </CheckBox>
+            <CheckBox VerticalContentAlignment="Center"
+                local:Policy.PolicyName="UseDeskewAngle"
+                IsChecked="{Binding Path=UseDeskewAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                <CheckBox.Content>
+                    <TextBlock>
+                        <InlineUIContainer BaselineAlignment="Center">
+                            <Extensions:AngleGauge Width="16"
+                                Height="16"
+                                Margin="1"
+                                Angle="90" />
+                        </InlineUIContainer>
+                        <Run BaselineAlignment="Subscript" Text="{local:Loc FILE}" />
+                        <Run BaselineAlignment="Subscript" Text="{local:Loc LOAD}" />
+                    </TextBlock>
+                </CheckBox.Content>
+            </CheckBox>
             <Separator />
             <TextBlock HorizontalAlignment="Center">
                 <Run Text="JB2/JB2ZIP" />

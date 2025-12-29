@@ -38,11 +38,11 @@ namespace GpScanner.ViewModel
             {
                 Name = ".xaml",
                 IsChecked = true
-            }, new() { Name = ".xls", IsChecked = true }, new() { Name = ".xlsx", IsChecked = true }, new() { Name = ".xlsb", IsChecked = true }, new() { Name = ".csv", IsChecked = true }, new() { Name = ".ods", IsChecked = true }, new()
+            }, new() { Name = ".xls", IsChecked = false }, new() { Name = ".xlsx", IsChecked = false }, new() { Name = ".xlsb", IsChecked = false }, new() { Name = ".csv", IsChecked = false }, new() { Name = ".ods", IsChecked = false }, new()
             {
                 Name = ".odt",
-                IsChecked = true
-            }, new() { Name = ".docx", IsChecked = true }, new() { Name = ".eyp", IsChecked = true } ]
+                IsChecked = false
+            }, new() { Name = ".docx", IsChecked = false }, new() { Name = ".eyp", IsChecked = true } ]
         }, new FileCategory
         {
             Category = Translation.GetResStringValue("ARCHIVE"),

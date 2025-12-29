@@ -4649,7 +4649,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
 
             bitmapFrame.Freeze();
-            double deskewAngle = Deskew.GetDeskewAngle(bitmapFrame) + 90;
+            double deskewAngle = Settings.Default.UseDeskewAngle? Deskew.GetDeskewAngle(bitmapFrame) + 90 : 90;
             await Dispatcher.InvokeAsync(
                 () =>
                 {
@@ -5056,7 +5056,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             if (frame is not null)
             {
                 frame.Freeze();
-                double deskewAngle = Deskew.GetDeskewAngle(frame) + 90;
+                double deskewAngle = Settings.Default.UseDeskewAngle ? Deskew.GetDeskewAngle(frame) + 90 : 90;
                 await Dispatcher.InvokeAsync(
                     () =>
                     {

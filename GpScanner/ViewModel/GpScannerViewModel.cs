@@ -1494,7 +1494,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 OnPropertyChanged(nameof(AllItemChecked));
             }
         }
-    } = true;
+    }
 
     public int AllPdfPage
     {

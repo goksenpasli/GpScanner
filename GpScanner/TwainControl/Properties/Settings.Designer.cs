@@ -806,5 +806,17 @@ namespace TwainControl.Properties {
                 this["ApplyVerticalLineRemove"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseDeskewAngle {
+            get {
+                return ((bool)(this["UseDeskewAngle"]));
+            }
+            set {
+                this["UseDeskewAngle"] = value;
+            }
+        }
     }
 }
