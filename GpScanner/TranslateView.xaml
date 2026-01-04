@@ -31,7 +31,7 @@
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
-            <ColumnDefinition Width="72" />
+            <ColumnDefinition Width="44.8" />
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0"
             Grid.Column="0"
@@ -100,7 +100,9 @@
             HorizontalScrollBarVisibility="Visible"
             IsReadOnly="{Binding MetinBoxIsreadOnly}"
             OpenButtonVisibility="Collapsed"
-            PrintButtonVisibility="Visible"
+            PasteButtonVisibility="Collapsed"
+            PrintButtonVisibility="Collapsed"
+            ResetButtonVisibility="Collapsed"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             SpellCheck.IsEnabled="True"
             Text="{Binding Metin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -154,7 +156,8 @@
             HorizontalScrollBarVisibility="Visible"
             IsReadOnly="True"
             OpenButtonVisibility="Collapsed"
-            PrintButtonVisibility="Visible"
+            PasteButtonVisibility="Collapsed"
+            PrintButtonVisibility="Collapsed"
             ResetButtonVisibility="Collapsed"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             SpellCheck.IsEnabled="True"

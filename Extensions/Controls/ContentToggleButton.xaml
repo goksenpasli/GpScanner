@@ -97,6 +97,17 @@
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#3C7FB1" />
                             <Setter TargetName="border" Property="Panel.Background" Value="#BEE6FD" />
                         </Trigger>
+                        <Trigger Property="ToggleButton.IsChecked" Value="True">
+                            <Setter TargetName="border" Property="Border.BorderBrush" Value="#245A83" />
+                            <Setter TargetName="border" Property="Panel.Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
+                                        <GradientStop ice:Freeze="True" Offset="1" Color="#FFFDFEFF" />
+                                        <GradientStop ice:Freeze="True" Offset="0" Color="#FFC1D3EA" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Background" Value="#F4F4F4" />
                             <Setter TargetName="path" Property="Fill" Value="#BFBFBF" />
