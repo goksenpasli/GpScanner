@@ -981,6 +981,7 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="23*" />
@@ -1024,6 +1025,7 @@
                                 FontSize="16" />
                             <Button Grid.RowSpan="2"
                                 Grid.Column="5"
+                                Grid.ColumnSpan="2"
                                 Command="{Binding SetDateToday}">
                                 <Image Width="32" Height="32">
                                     <Image.Source>
@@ -1035,7 +1037,7 @@
                                 </Image>
                             </Button>
                             <Extensions:ContentToggleButton Grid.RowSpan="2"
-                                Grid.Column="6"
+                                Grid.Column="7"
                                 Grid.ColumnSpan="2"
                                 Command="{Binding LoadGroupFilesMonth}"
                                 StaysOpen="True"
@@ -1098,8 +1100,21 @@
                                 Suggestions="{Binding HistoryList}"
                                 Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Watermark="{twainctrl:Loc DOCUMENT}" />
-                            <AdornerDecorator Grid.Row="3"
+                            <Button Grid.Row="3"
                                 Grid.Column="6"
+                                Command="{Binding SearchDocument}"
+                                IsDefault="True">
+                                <Image Width="24" Height="24">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="22" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
+                            <AdornerDecorator Grid.Row="3"
+                                Grid.Column="7"
                                 Margin="1">
                                 <Extensions:ContentToggleButton IsChecked="{Binding SearchDocumentFilterDialogIsOpen}" Tag="{Binding AllItemChecked, ValidatesOnDataErrors=True}">
                                     <Image Width="24" Height="24">
@@ -1116,7 +1131,7 @@
                                 </Extensions:ContentToggleButton>
                             </AdornerDecorator>
                             <ToggleButton Grid.Row="3"
-                                Grid.Column="7"
+                                Grid.Column="8"
                                 d:IsChecked="True"
                                 IsChecked="{Binding SimpleList, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                 <ToggleButton.Style>
