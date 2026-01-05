@@ -42,7 +42,9 @@ namespace TwainControl
         private static BlockUIContainer BlockUIContainerGetPicture(Picture picture)
         {
             System.Windows.Controls.Image image = new();
-            BitmapFrame bitmapFrame = Path.GetExtension(picture.FileName.ToLowerInvariant()) == ".emf" ? BitmapFrame.Create(EmfFileToBitmapSource(picture.Stream).ToBitmapImage()) : BitmapFrame.Create(picture.Stream, BitmapCreateOptions.None, BitmapCacheOption.None);
+            BitmapFrame bitmapFrame = Path.GetExtension(picture.FileName.ToLowerInvariant()) == ".emf"
+                                      ? BitmapFrame.Create(EmfFileToBitmapSource(picture.Stream).ToBitmapImage())
+                                      : BitmapFrame.Create(picture.Stream, BitmapCreateOptions.None, BitmapCacheOption.None);
             bitmapFrame?.Freeze();
             image.Source = bitmapFrame;
             return new BlockUIContainer(image);
@@ -110,73 +112,80 @@ namespace TwainControl
             return Imaging.CreateBitmapSourceFromHBitmap(bmp.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         }
 
-        private static Run GetRun(Paragraph docxparagraph, System.Windows.Documents.Paragraph paragraph, FormattedText formattedText)
+        private static Run GetRun(Paragraph docxParagraph, System.Windows.Documents.Paragraph wpfParagraph, FormattedText formattedText)
         {
-            Run inline = new(formattedText.text)
+            Run run = new(formattedText.text ?? string.Empty);
+
+            Formatting fmt = formattedText.formatting;
+            if (fmt is not null)
             {
-                FontSize = (formattedText.formatting?.Size * 4 / 3) ?? 16,
-                FontFamily = formattedText.formatting?.FontFamily is null ? new System.Windows.Media.FontFamily("Times New Roman") : new System.Windows.Media.FontFamily(formattedText.formatting?.FontFamily.Name)
-            };
-            if (formattedText?.formatting is not null)
-            {
-                if (formattedText.formatting.FontColor.HasValue)
+                run.FontSize = (formattedText.formatting?.Size * 4 / 3) ?? 16;
+                run.FontFamily = fmt.FontFamily is not null ? new FontFamily(fmt.FontFamily.Name) : new FontFamily("Times New Roman");
+
+                if (fmt.FontColor.HasValue)
                 {
-                    SolidColorBrush sb = new(Color.FromArgb(formattedText.formatting.FontColor.Value.A, formattedText.formatting.FontColor.Value.R, formattedText.formatting.FontColor.Value.G, formattedText.formatting.FontColor.Value.B));
-                    sb.Freeze();
-                    inline.Foreground = sb;
+                    Xceed.Drawing.Color c = fmt.FontColor.Value;
+                    SolidColorBrush brush = new(Color.FromArgb(c.A, c.R, c.G, c.B));
+                    brush.Freeze();
+                    run.Foreground = brush;
                 }
 
-                if (formattedText.formatting.ShadingPattern is not null)
+                if (fmt.ShadingPattern?.Fill is not null)
                 {
-                    SolidColorBrush sb = new(Color.FromArgb(formattedText.formatting.ShadingPattern.Fill.A, formattedText.formatting.ShadingPattern.Fill.R, formattedText.formatting.ShadingPattern.Fill.G, formattedText.formatting.ShadingPattern.Fill.B));
-                    sb.Freeze();
-                    inline.Background = sb;
+                    Xceed.Drawing.Color c = fmt.ShadingPattern.Fill;
+                    SolidColorBrush brush = new(Color.FromArgb(c.A, c.R, c.G, c.B));
+                    brush.Freeze();
+                    run.Background = brush;
                 }
 
-                if (formattedText.formatting.Bold == true)
+                if (fmt.Bold == true)
                 {
-                    inline.FontWeight = FontWeights.Bold;
+                    run.FontWeight = FontWeights.Bold;
                 }
 
-                if (formattedText.formatting.Italic == true)
+                if (fmt.Italic == true)
                 {
-                    inline.FontStyle = FontStyles.Italic;
+                    run.FontStyle = FontStyles.Italic;
                 }
 
-                if (formattedText.formatting.StrikeThrough.HasValue)
+                TextDecorationCollection decorations = null;
+
+                if (fmt.UnderlineStyle.HasValue)
                 {
-                    inline.TextDecorations = TextDecorations.Strikethrough;
+                    decorations ??= [];
+                    decorations.Add(TextDecorations.Underline[0]);
                 }
 
-                if (formattedText.formatting.UnderlineStyle.HasValue)
+                if (fmt.StrikeThrough.HasValue)
                 {
-                    inline.TextDecorations = TextDecorations.Underline;
+                    decorations ??= [];
+                    decorations.Add(TextDecorations.Strikethrough[0]);
                 }
 
-                if (formattedText.formatting.Script.HasValue)
+                if (decorations is not null)
                 {
-                    if (formattedText.formatting.Script == Script.subscript)
-                    {
-                        inline.BaselineAlignment = BaselineAlignment.Subscript;
-                    }
+                    run.TextDecorations = decorations;
+                }
 
-                    if (formattedText.formatting.Script == Script.superscript)
-                    {
-                        inline.BaselineAlignment = BaselineAlignment.Superscript;
-                    }
+                if (fmt.Script == Script.subscript)
+                {
+                    run.BaselineAlignment = BaselineAlignment.Subscript;
+                }
+                else if (fmt.Script == Script.superscript)
+                {
+                    run.BaselineAlignment = BaselineAlignment.Superscript;
                 }
             }
 
-            paragraph.TextAlignment = docxparagraph.Alignment switch
+            wpfParagraph.TextAlignment = docxParagraph.Alignment switch
             {
                 Alignment.both => TextAlignment.Justify,
                 Alignment.center => TextAlignment.Center,
-                Alignment.left => TextAlignment.Left,
                 Alignment.right => TextAlignment.Right,
                 _ => TextAlignment.Left,
             };
 
-            return inline;
+            return run;
         }
 
         private FlowDocument GetFlowDocument(string uriString)

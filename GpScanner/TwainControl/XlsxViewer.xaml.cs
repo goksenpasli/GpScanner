@@ -117,10 +117,11 @@ namespace TwainControl
 
         public async Task<DataTableCollection> GetDataTableCollection(FileStream fs, string uriString)
         {
+            Progress<double> progress = new(v => Progress = v);
             return Path.GetExtension(uriString).ToLowerInvariant() switch
             {
-                ".csv" => (await StreamToDtAsync(fs, true)).Tables,
-                ".xls" or ".xlsx" or ".xlsb" => (await StreamToDtAsync(fs)).Tables,
+                ".csv" => (await StreamToDtAsync(fs, progress, true)).Tables,
+                ".xls" or ".xlsx" or ".xlsb" => (await StreamToDtAsync(fs, progress)).Tables,
                 ".ods" => (await OdsReader.ReadOdsFile(fs, uriString)).Tables,
                 _ => null,
             };
@@ -179,31 +180,49 @@ namespace TwainControl
             }
         }
 
-        private async Task<DataSet> StreamToDtAsync(FileStream stream, bool isCsv = false)
+        private async Task<DataSet> StreamToDtAsync(FileStream stream, IProgress<double> progress, bool isCsv = false)
         {
             return await Task.Run(
                 () =>
                 {
-                    IExcelDataReader reader = isCsv ? ExcelReaderFactory.CreateCsvReader(stream, new ExcelReaderConfiguration { FallbackEncoding = Encoding.GetEncoding(1254) }) : ExcelReaderFactory.CreateReader(stream);
-                    using (reader)
-                    {
-                        return reader.AsDataSet(
-                            new ExcelDataSetConfiguration
-                            {
-                                UseColumnDataType = true,
-                                ConfigureDataTable =
+                    using IExcelDataReader reader = isCsv ? ExcelReaderFactory.CreateCsvReader(stream, new ExcelReaderConfiguration { FallbackEncoding = Encoding.GetEncoding(1254) }) : ExcelReaderFactory.CreateReader(stream);
+
+                    int lastReported = -1;
+
+                    return reader.AsDataSet(
+                        new ExcelDataSetConfiguration
+                        {
+                            UseColumnDataType = true,
+                            ConfigureDataTable =
                                 _ => new ExcelDataTableConfiguration
                                 {
                                     FilterRow =
-                                    (rowReader) =>
+                                    r =>
                                     {
-                                        Progress = (rowReader.Depth + 1) / (double)rowReader.RowCount * 100;
+                                        int depth = r.Depth + 1;
+
+                                        if (depth == 1)
+                                        {
+                                            lastReported = 1;
+                                            progress.Report(0);
+                                            return true;
+                                        }
+
+                                        if (r.RowCount > 0)
+                                        {
+                                            int step = Math.Max(1, r.RowCount / 100);
+
+                                            if (depth - lastReported >= step || depth == r.RowCount)
+                                            {
+                                                lastReported = depth;
+                                                double value = depth * 100.0 / r.RowCount;
+                                                progress.Report(value);
+                                            }
+                                        }
                                         return true;
-                                    },
-                                    EmptyColumnNamePrefix = "Kolon"
+                                    }
                                 }
-                            });
-                    }
+                        });
                 });
         }
 
