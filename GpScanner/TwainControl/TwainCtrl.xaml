@@ -41,7 +41,7 @@
             <Converter:BitmapFrameToBitmapFrameConverter x:Key="BitmapFrameToBitmapFrameThumbConverter" DecodeHeight="{Binding Mode=OneWay, Source={x:Static SystemParameters.PrimaryScreenHeight}}" />
             <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
             <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
-            <local:BindingProxy x:Key="Proxy" Data="{Binding}" />
+            <Extensions:BindingProxy x:Key="Proxy" Data="{Binding}" />
             <Converter:MultiplyConverter x:Key="MultiplyConverter" />
             <DataTemplate x:Key="TimeIcon">
                 <Image Width="16" Height="16">

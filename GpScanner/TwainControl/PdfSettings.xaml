@@ -55,9 +55,11 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock VerticalAlignment="Center" Text="{local:Loc PASSWORD}" />
                 <PasswordBox Grid.Column="1"
+                    Margin="1"
                     local:Policy.PolicyName="PasswordProtect"
                     IsEnabled="{Binding Scanner.PasswordProtect}"
-                    PasswordChanged="PasswordBox_PasswordChanged" />
+                    PasswordChanged="PasswordBox_PasswordChanged"
+                    Tag="{Binding Scanner.PasswordProtect, ValidatesOnDataErrors=True}" />
             </Grid>
             <Separator />
             <StackPanel IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource StringNullableToBooleanConverter}}">

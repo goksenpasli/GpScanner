@@ -17,6 +17,7 @@
         <Style TargetType="ComboBox">
             <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
         </Style>
+        <Extensions:BindingProxy x:Key="Proxy" Data="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -224,8 +225,8 @@
             </Image>
             <Extensions:ContentToggleButton.OverContent>
                 <GroupBox>
-                    <ItemsControl Width="300"
-                        Height="400"
+                    <ItemsControl Width="{Binding Data.ActualWidth, Source={StaticResource Proxy}}"
+                        Height="{Binding Data.ActualHeight, Converter={StaticResource DivideConverter}, ConverterParameter=2, Source={StaticResource Proxy}}"
                         HorizontalContentAlignment="Stretch"
                         ItemsSource="{Binding TaramaGeçmiş, Mode=OneWay}">
                         <ItemsControl.ItemsPanel>

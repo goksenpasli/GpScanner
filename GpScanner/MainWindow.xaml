@@ -77,7 +77,7 @@
             Modifiers="Control+Shift" />
     </Window.InputBindings>
     <Window.Resources>
-        <ViewModel:BindingProxy x:Key="Proxy" Data="{Binding}" />
+        <Extensions:BindingProxy x:Key="Proxy" Data="{Binding}" />
         <ViewModel:FoldEffect x:Key="Fold" FoldAmount="{Binding Fold}" />
         <ViewModel:RippleEffect x:Key="Ripple" Progress="{Binding Ripple}" />
         <ViewModel:MirrorAngleEffect x:Key="Mirror" RelativeHeight="{Binding Mirror}" />

@@ -1349,6 +1349,7 @@ public class Scanner : InpcBase, IDataErrorInfo
         "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => "EMPTY",
         "AutoSave" when !AutoSave => "AUTOFOLDER",
         "SelectedTtsLanguage" when string.IsNullOrWhiteSpace(SelectedTtsLanguage) => "TESSLANGSELECT",
+        "PasswordProtect" when PasswordProtect => "ENCRYPT",
         _ => null
     };
 

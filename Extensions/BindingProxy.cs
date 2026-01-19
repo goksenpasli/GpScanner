@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace TwainControl
+namespace Extensions
 {
     public class BindingProxy : Freezable
     {

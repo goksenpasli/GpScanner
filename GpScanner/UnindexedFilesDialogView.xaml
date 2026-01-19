@@ -168,7 +168,8 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="12" />
                 <ColumnDefinition />
-                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <ToggleButton HorizontalAlignment="Left"
                 VerticalAlignment="Top"
@@ -257,20 +258,6 @@
                         BorderBrush="{StaticResource GroupBoxBackGround}"
                         BorderThickness="1">
                         <StackPanel>
-                            <MenuItem Header="{twainctrl:Loc CLOSECOMP}"
-                                IsCheckable="True"
-                                IsChecked="{Binding Shutdown}">
-                                <MenuItem.Icon>
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="27" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </MenuItem.Icon>
-                            </MenuItem>
                             <MenuItem IsCheckable="True"
                                 IsChecked="{Binding OcrAllPdfPages}"
                                 ToolTip="{twainctrl:Loc OCRALL}">
@@ -291,7 +278,20 @@
                     </Border>
                 </Extensions:SplitButton.InternalContent>
             </Extensions:SplitButton>
-            <Button Grid.Column="6"
+            <ToggleButton Grid.Column="6" IsChecked="{Binding Shutdown}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="32" Height="32">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="27" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc CLOSECOMP}" />
+                </StackPanel>
+            </ToggleButton>
+            <Button Grid.Column="7"
                 twainctrl:Policy.PolicyName="CancelUnindexedBatchOcr"
                 Command="{Binding CancelUnindexedBatchOcr}">
                 <StackPanel Orientation="Horizontal">
