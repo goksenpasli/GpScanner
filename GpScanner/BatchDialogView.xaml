@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="GpScanner.BatchDialogView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Converter="clr-namespace:GpScanner.Converter"
+    xmlns:Converter="clr-namespace:TwainControl.Converter;assembly=TwainControl"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:GpScanner"

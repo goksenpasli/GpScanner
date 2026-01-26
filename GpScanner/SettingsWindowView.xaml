@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Converter="clr-namespace:GpScanner.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:TwainConverter="clr-namespace:TwainControl.Converter;assembly=TwainControl"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -39,13 +40,13 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
-        <Converter:NumberRangeToColorConverter x:Key="ComboBoxNumberRangeToColorConverter"
+        <TwainConverter:NumberRangeToColorConverter x:Key="ComboBoxNumberRangeToColorConverter"
             MaxNumber="100"
             MinNumber="5" />
-        <Converter:NumberRangeToColorConverter x:Key="UpdateNumberRangeToColorConverter"
+        <TwainConverter:NumberRangeToColorConverter x:Key="UpdateNumberRangeToColorConverter"
             MaxNumber="120"
             MinNumber="1" />
-        <Converter:NumberRangeToColorConverter x:Key="ComboBoxPdfNumberRangeToColorConverter"
+        <TwainConverter:NumberRangeToColorConverter x:Key="ComboBoxPdfNumberRangeToColorConverter"
             MaxNumber="1200"
             MinNumber="12" />
         <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />

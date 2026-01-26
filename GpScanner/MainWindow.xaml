@@ -5,6 +5,7 @@
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:PdfViewer="clr-namespace:PdfViewer;assembly=PdfViewer"
     xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    xmlns:TwainConverter="clr-namespace:TwainControl.Converter;assembly=TwainControl"
     xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:GpScanner"
@@ -85,7 +86,7 @@
         <Converter:SelectedSizeToCacheLengthConverter x:Key="SelectedSizeToCacheLengthConverter" />
         <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
         <Converter:CustomSizeToSizeConverter x:Key="CustomSizeToSizeConverter" />
-        <Converter:NumberRangeToColorConverter x:Key="ComboBoxSizeToColorConverter"
+        <TwainConverter:NumberRangeToColorConverter x:Key="ComboBoxSizeToColorConverter"
             MaxNumber="425"
             MinNumber="190"
             ReverseColors="True" />

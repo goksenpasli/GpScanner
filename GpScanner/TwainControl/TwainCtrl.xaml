@@ -43,6 +43,12 @@
             <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
             <Extensions:BindingProxy x:Key="Proxy" Data="{Binding}" />
             <Converter:MultiplyConverter x:Key="MultiplyConverter" />
+            <Converter:NumberRangeToColorConverter x:Key="ComboBoxNumberRangeToColorConverter"
+                MaxNumber="1200"
+                MinNumber="72" />
+            <Converter:NumberRangeToColorConverter x:Key="RectanglePageSizeComboBoxNumberRangeToColorConverter"
+                MaxNumber="59"
+                MinNumber="14" />
             <DataTemplate x:Key="TimeIcon">
                 <Image Width="16" Height="16">
                     <Image.Source>
@@ -529,6 +535,7 @@
                                                             </Image>
                                                             <Rectangle Width="{Binding Width, Converter={StaticResource MultiplyConverter}, ConverterParameter=1.5}"
                                                                 Height="{Binding Height, Converter={StaticResource MultiplyConverter}, ConverterParameter=1.5}"
+                                                                Fill="{Binding Mode=OneWay, Path=Width, Converter={StaticResource RectanglePageSizeComboBoxNumberRangeToColorConverter}}"
                                                                 Stroke="#7F000000"
                                                                 StrokeThickness="2">
                                                                 <Rectangle.Effect>
@@ -605,6 +612,11 @@
                                                 StringFormat="{}{0} DPI"
                                                 Value="{Binding Path=CustomResolution, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </ComboBoxItem>
+                                        <ComboBox.ItemContainerStyle>
+                                            <Style TargetType="ComboBoxItem">
+                                                <Setter Property="Foreground" Value="{Binding Mode=OneWay, Path=Tag, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}" />
+                                            </Style>
+                                        </ComboBox.ItemContainerStyle>
                                     </ComboBox>
                                     <ToggleButton Grid.Column="2"
                                         IsChecked="{Binding Scanner.Duplex}"

@@ -4,6 +4,7 @@
     xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
     xmlns:Converter="clr-namespace:GpScanner.Converter"
     xmlns:Extension="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:TwainConverter="clr-namespace:TwainControl.Converter;assembly=TwainControl"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
@@ -18,7 +19,7 @@
     <UserControl.Resources>
         <Extension:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
         <Converter:TesseractDataFilesContentLengthConverter x:Key="TesseractDataFilesContentLengthConverter" />
-        <Converter:NumberRangeToColorConverter x:Key="ListBoxNumberRangeToColorConverter"
+        <TwainConverter:NumberRangeToColorConverter x:Key="ListBoxNumberRangeToColorConverter"
             MaxNumber="6"
             MinNumber="1" />
         <CollectionViewSource x:Key="Files" Source="{Binding OcrDatas}">
