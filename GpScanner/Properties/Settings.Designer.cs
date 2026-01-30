@@ -720,5 +720,17 @@ namespace GpScanner.Properties {
                 this["SimpleList"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SupportedExtensions {
+            get {
+                return ((string)(this["SupportedExtensions"]));
+            }
+            set {
+                this["SupportedExtensions"] = value;
+            }
+        }
     }
 }

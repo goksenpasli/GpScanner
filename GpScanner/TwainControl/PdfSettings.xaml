@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="TwainControl.PdfSettings"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converter="clr-namespace:TwainControl.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TwainControl"
@@ -22,6 +23,9 @@
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+            <Converter:NumberRangeToColorConverter x:Key="ComboBoxNumberRangeToColorConverter"
+                MaxNumber="51"
+                MinNumber="3" />
         </ResourceDictionary>
     </UserControl.Resources>
     <GroupBox Background="{StaticResource GroupBoxBackGround}">
@@ -278,7 +282,13 @@
                         </Image>
                     </InlineUIContainer>
                 </TextBlock>
-                <ComboBox ItemsSource="{Binding Jb2SaturationValues}" SelectedItem="{Binding Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=Jb2Saturation, Source={x:Static properties:Settings.Default}}" />
+                <ComboBox ItemsSource="{Binding Jb2SaturationValues}" SelectedItem="{Binding Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=Jb2Saturation, Source={x:Static properties:Settings.Default}}">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="Foreground" Value="{Binding Mode=OneWay, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}" />
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
                 <TextBlock VerticalAlignment="Center">
                     <Run Text="{local:Loc BW}" />
                     <Run Text="{local:Loc THRESHOLD}" />

@@ -83,6 +83,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         ScannerService = scannerService;
         CreateEmptySqliteDatabase();
         RegisterSimplePdfFileWatcher();
+        LoadFileFiltersCheckboxes();
         TesseractViewModel = new TesseractViewModel(windowService, twainService);
         TranslateViewModel = new TranslateViewModel();
         Settings.Default.PropertyChanged += Default_PropertyChanged;
@@ -178,7 +179,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 }
 
             },
-            parameter => !string.IsNullOrWhiteSpace(AramaMetni) && !SearchProgressIndeterminate);
+            parameter => !string.IsNullOrWhiteSpace(AramaMetni) && !SearchProgressIndeterminate && !NoneItemChecked);
 
         PdfBirleştir = new RelayCommand<object>(
             async parameter =>
@@ -1496,6 +1497,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
+    public bool NoneItemChecked
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(NoneItemChecked));
+            }
+        }
+    }
+
     public int AllPdfPage
     {
         get;
@@ -2744,7 +2758,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         "IsAdministrator" when !IsAdministrator => "FOLDERACCESS",
         "AllItemChecked" when !AllItemChecked => "WARNEXT",
-        "SqlText" when sqlitedangerouscommands.Any(SqlText.ToLower().Contains) => "ERROR",
+        "NoneItemChecked" when NoneItemChecked => "WARNEXT",
+        "SqlText" when !string.IsNullOrWhiteSpace(SqlText) && sqlitedangerouscommands.Any(z => SqlText.Contains(z, StringComparison.OrdinalIgnoreCase)) => "ERROR",
         _ => null
     };
 
@@ -3483,7 +3498,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
         if (e.PropertyName is "SearchDocumentFilterDialogIsOpen" && !SearchDocumentFilterDialogIsOpen)
         {
-            AllItemChecked = SupportedExtensions.FileCategories?.SelectMany(z => z.Extensions).All(item => item.IsChecked) == true;
+            LoadFileFiltersCheckboxes();
             if (!string.IsNullOrWhiteSpace(AramaMetni))
             {
                 OnPropertyChanged(nameof(AramaMetni));
@@ -3525,6 +3540,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         Version os = Environment.OSVersion.Version;
         return os?.Major > 6 || (os?.Major == 6 && os?.Minor >= 1);
+    }
+
+    private void LoadFileFiltersCheckboxes()
+    {
+        List<ExtendenCheckBoxItem> checkboxstates = SupportedExtensions?.FileCategories?.SelectMany(z => z.Extensions)?.ToList();
+        AllItemChecked = checkboxstates.All(item => item.IsChecked);
+        NoneItemChecked = checkboxstates.All(item => !item.IsChecked);
     }
 
     private async Task LoadRemainderDatas()

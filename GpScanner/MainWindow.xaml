@@ -1101,19 +1101,21 @@
                                 Suggestions="{Binding HistoryList}"
                                 Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Watermark="{twainctrl:Loc DOCUMENT}" />
-                            <Button Grid.Row="3"
-                                Grid.Column="6"
-                                Command="{Binding SearchDocument}"
-                                IsDefault="True">
-                                <Image Width="24" Height="24">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="22" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                            </Button>
+                            <AdornerDecorator Grid.Row="3" Grid.Column="6">
+                                <Button Command="{Binding SearchDocument}"
+                                    IsDefault="True"
+                                    Tag="{Binding NoneItemChecked, ValidatesOnDataErrors=True}"
+                                    Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
+                                    <Image Width="24" Height="24">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="22" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Button>
+                            </AdornerDecorator>
                             <AdornerDecorator Grid.Row="3"
                                 Grid.Column="7"
                                 Margin="1">
