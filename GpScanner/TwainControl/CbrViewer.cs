@@ -18,7 +18,7 @@ public class CbrViewer : SimpleArchiveViewer
         using ArchiveFile archive = new(ArchiveFilePath);
         if (archive is not null)
         {
-            string[] supportedImageExts = [".jpg", ".png", ".gif", ".jb2", ".webp"];
+            string[] supportedImageExts = [ ".jpg", ".png", ".gif", ".jb2", ".webp" ];
             Arşivİçerik = [];
             List<Entry> list = archive.Entries?.Where(z => z.Size > 0 && supportedImageExts.Contains(Path.GetExtension(z.FileName.ToLowerInvariant()))).ToList() ?? [];
             for (int i = 0; i < list.Count; i++)

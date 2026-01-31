@@ -732,5 +732,17 @@ namespace GpScanner.Properties {
                 this["SupportedExtensions"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".tiff|.tif|.jpg|.jpe|.gif|.jpeg|.jfif|.png|.bmp|.jb2")]
+        public string BatchImageExtensions {
+            get {
+                return ((string)(this["BatchImageExtensions"]));
+            }
+            set {
+                this["BatchImageExtensions"] = value;
+            }
+        }
     }
 }

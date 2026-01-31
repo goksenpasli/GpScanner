@@ -191,9 +191,9 @@ namespace TwainControl
 
                     return reader.AsDataSet(
                         new ExcelDataSetConfiguration
-                        {
-                            UseColumnDataType = true,
-                            ConfigureDataTable =
+                            {
+                                UseColumnDataType = true,
+                                ConfigureDataTable =
                                 _ => new ExcelDataTableConfiguration
                                 {
                                     FilterRow =
@@ -222,7 +222,7 @@ namespace TwainControl
                                         return true;
                                     }
                                 }
-                        });
+                            });
                 });
         }
 

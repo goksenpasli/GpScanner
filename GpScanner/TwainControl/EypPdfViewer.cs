@@ -150,7 +150,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                         twainCtrl.PdfToolBarControlIsEnabled = false;
                         string oldpdfpath = PdfFilePath;
                         using PdfDocument document = PdfReader.Open(PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
-                        if ((document is null) || (currentpage < 1 || currentpage > ToplamSayfa))
+                        if ((document is null) || currentpage < 1 || currentpage > ToplamSayfa)
                         {
                             return;
                         }

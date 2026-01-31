@@ -262,14 +262,16 @@
                         VerticalContentAlignment="Center"
                         IsChecked="{Binding Seçili}"
                         IsEnabled="{Binding ElementName=HypFile, Path=IsEnabled}">
-                        <TextBlock><InlineUIContainer BaselineAlignment="Center">
-                                <Image Width="16"
-                                    Height="16"
-                                    d:Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}"
-                                    Source="{Binding FileName, Converter={StaticResource FilePathToIconConverter}, IsAsync=True, Mode=OneWay}" />
-                            </InlineUIContainer><Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" /><LineBreak /><Run d:Text="FileSize" Text="{Binding FileSize, Mode=OneWay, StringFormat=\{0:F\} MB}" /><Run d:Text="FileName"
-                                Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}"
-                                ToolTip="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" /></TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="32"
+                                Height="32"
+                                d:Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}"
+                                Source="{Binding FileName, Converter={StaticResource FilePathToIconConverter}, IsAsync=True, Mode=OneWay}" />
+                            <TextBlock><Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" /><LineBreak /><Run d:Text="FileSize" Text="{Binding FileSize, Mode=OneWay, StringFormat=\{0:F\} MB}" />
+                                <Run d:Text="FileName"
+                                    Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}"
+                                    ToolTip="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" /></TextBlock>
+                        </StackPanel>
                     </CheckBox>
                     <TextBlock Grid.Column="2"
                         HorizontalAlignment="Right"
@@ -1104,7 +1106,7 @@
                             <AdornerDecorator Grid.Row="3" Grid.Column="6">
                                 <Button Command="{Binding SearchDocument}"
                                     IsDefault="True"
-                                    Tag="{Binding NoneItemChecked, ValidatesOnDataErrors=True}"
+                                    Tag="{Binding SupportedExtensions.NoneItemChecked, ValidatesOnDataErrors=True}"
                                     Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
                                     <Image Width="24" Height="24">
                                         <Image.Source>
@@ -1119,7 +1121,7 @@
                             <AdornerDecorator Grid.Row="3"
                                 Grid.Column="7"
                                 Margin="1">
-                                <Extensions:ContentToggleButton IsChecked="{Binding SearchDocumentFilterDialogIsOpen}" Tag="{Binding AllItemChecked, ValidatesOnDataErrors=True}">
+                                <Extensions:ContentToggleButton IsChecked="{Binding SearchDocumentFilterDialogIsOpen}" Tag="{Binding SupportedExtensions.AllItemChecked, ValidatesOnDataErrors=True}">
                                     <Image Width="24" Height="24">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

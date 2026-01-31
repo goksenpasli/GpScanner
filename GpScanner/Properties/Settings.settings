@@ -182,5 +182,8 @@
     <Setting Name="SupportedExtensions" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="BatchImageExtensions" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.tiff|.tif|.jpg|.jpe|.gif|.jpeg|.jfif|.png|.bmp|.jb2</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

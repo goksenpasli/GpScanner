@@ -30,7 +30,7 @@ public class AngleGauge : Control
         ArcSegment arc = new() { Size = new Size(radius, radius), Point = PointOnCircle(center, radius, 0), SweepDirection = SweepDirection.Clockwise, IsLargeArc = false };
 
         fig.Segments.Add(arc);
-        PathGeometry geo = new([fig]);
+        PathGeometry geo = new([ fig ]);
 
         dc.DrawGeometry(null, new Pen(Brushes.Gray, 5), geo);
 

@@ -297,7 +297,7 @@
                                             <ListBoxItem HorizontalAlignment="Center"
                                                 VerticalAlignment="Center"
                                                 VerticalContentAlignment="Center"
-                                                IsEnabled="{Binding Path=AutoSave, Source={x:Static twainctrl:ToolBox.Scanner}}">
+                                                IsEnabled="{Binding TwainCtrl.Scanner.AutoSave}">
                                                 <ListBoxItem.Content>
                                                     <StackPanel Orientation="Horizontal">
                                                         <Canvas Width="32" Height="32">

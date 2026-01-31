@@ -1361,7 +1361,7 @@ namespace TwainControl
         {
             int bits = 0, nx, ny, cbX, cbY, sb, j, i, ttVal, level, n;
             JPXTile tile = img.tiles[tileIdx];
-            for (; ;)
+            for (; ; )
             {         // read all packets from this tile-part
                 if (tile.done)          // if the tile is finished, skip any remaining data
                 {

@@ -177,6 +177,8 @@
     <Compile Include="SkinColorChooseDialog.xaml.cs">
       <DependentUpon>SkinColorChooseDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\BatchSupportedExtensions.cs" />
+    <Compile Include="ViewModel\ExtendenCheckBoxItem.cs" />
     <Compile Include="ViewModel\ITwainService.cs" />
     <Compile Include="MiniDocumentView.xaml.cs">
       <DependentUpon>MiniDocumentView.xaml</DependentUpon>

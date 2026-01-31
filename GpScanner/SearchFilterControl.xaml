@@ -32,19 +32,37 @@
             ItemsSource="{Binding Mode=OneWay, Source={StaticResource SupportedFilesExt}}">
             <ListBox.GroupStyle>
                 <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center"
-                                d:Text="Name"
-                                FontWeight="Bold"
-                                Text="{Binding Name}" />
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
                     <GroupStyle.Panel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel Orientation="Horizontal" />
                         </ItemsPanelTemplate>
                     </GroupStyle.Panel>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="GroupItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="GroupItem">
+                                        <StackPanel>
+                                            <ToggleButton x:Name="Header"
+                                                Padding="6"
+                                                BorderThickness="0,0,0,1"
+                                                Content="{Binding Name}"
+                                                FontWeight="SemiBold"
+                                                IsChecked="True" />
+                                            <Border x:Name="Content" Visibility="Visible">
+                                                <ItemsPresenter />
+                                            </Border>
+                                        </StackPanel>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger SourceName="Header" Property="IsChecked" Value="False">
+                                                <Setter TargetName="Content" Property="Visibility" Value="Collapsed" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
                 </GroupStyle>
             </ListBox.GroupStyle>
             <ListBox.ItemTemplate>

@@ -69,6 +69,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private readonly string AppName;
     private readonly IdleTimeIndexer ıdleTimeIndexer;
     private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter", "delete"];
+    private readonly string[] drawcontrolimages = [".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp"];
     private int cycleIndex;
     private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
     private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
@@ -83,7 +84,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         ScannerService = scannerService;
         CreateEmptySqliteDatabase();
         RegisterSimplePdfFileWatcher();
-        LoadFileFiltersCheckboxes();
         TesseractViewModel = new TesseractViewModel(windowService, twainService);
         TranslateViewModel = new TranslateViewModel();
         Settings.Default.PropertyChanged += Default_PropertyChanged;
@@ -179,7 +179,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 }
 
             },
-            parameter => !string.IsNullOrWhiteSpace(AramaMetni) && !SearchProgressIndeterminate && !NoneItemChecked);
+            parameter => !string.IsNullOrWhiteSpace(AramaMetni) && !SearchProgressIndeterminate && !SupportedExtensions.NoneItemChecked);
 
         PdfBirleştir = new RelayCommand<object>(
             async parameter =>
@@ -703,7 +703,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         SetBatchFolder = new RelayCommand<object>(
             parameter =>
             {
-                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("GRAPHFOLDER")}\n{string.Join(" ", BatchImageFileExtensions.Where(z => z.Checked).Select(z => z.Name))}", null);
+                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("GRAPHFOLDER")}\n{string.Join(" ", BatchSupportedExtensions?.BatchImageFileExtensions.Where(z => z.Checked).Select(z => z.Name))}", null);
                 if (!string.IsNullOrEmpty(path))
                 {
                     BatchFolder = path;
@@ -1456,7 +1456,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         mainWindow.twainCtrl.SelectedTabIndex = 2;
                         return;
                     }
-                    if (BatchImageFileExtensions?.Select(z => z.Name)?.Contains(Path.GetExtension(filepath).ToLowerInvariant()) == true)
+                    if (drawcontrolimages.Any(z => string.Equals(z, Path.GetExtension(filepath), StringComparison.InvariantCultureIgnoreCase)))
                     {
                         BitmapImage bitmapImage = new(new Uri(filepath));
                         bitmapImage?.Freeze();
@@ -1483,32 +1483,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public ICommand AddToCalendar { get; }
 
     public RelayCommand<object> IgnoreUnindexedFileError { get; }
-
-    public bool AllItemChecked
-    {
-        get;
-        set
-        {
-            if (field != value)
-            {
-                field = value;
-                OnPropertyChanged(nameof(AllItemChecked));
-            }
-        }
-    }
-
-    public bool NoneItemChecked
-    {
-        get;
-        set
-        {
-            if (field != value)
-            {
-                field = value;
-                OnPropertyChanged(nameof(NoneItemChecked));
-            }
-        }
-    }
 
     public int AllPdfPage
     {
@@ -1543,6 +1517,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
         }
     }
+
+    public BatchSupportedExtensions BatchSupportedExtensions { get; } = new();
 
     public ICommand AssociateExtension { get; }
 
@@ -1630,27 +1606,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public RelayCommand<object> BatchFolderTümünüKaydet { get; }
 
     public RelayCommand<object> BatchFolderTümünüSil { get; }
-
-    public ObservableCollection<TessFiles> BatchImageFileExtensions
-    {
-        get;
-        set
-        {
-            if (field != value)
-            {
-                field = value;
-                OnPropertyChanged(nameof(BatchImageFileExtensions));
-            }
-        }
-    } = [ new TessFiles() { Name = ".tiff", Checked = true }, new TessFiles() { Name = ".tif", Checked = true }, new TessFiles() { Name = ".jpg", Checked = true }, new TessFiles() { Name = ".jpe", Checked = true }, new TessFiles()
-    {
-        Name = ".gif",
-        Checked = true
-    }, new TessFiles() { Name = ".jpeg", Checked = true }, new TessFiles() { Name = ".jfif", Checked = true }, new TessFiles() { Name = ".png", Checked = true }, new TessFiles() { Name = ".bmp", Checked = true }, new TessFiles()
-    {
-        Name = ".jb2",
-        Checked = true
-    }, new TessFiles() { Name = ".webp", Checked = false, Enabled = WebP.WebpDllExists }, ];
 
     public RelayCommand<object> BatchMergeSelectedFiles { get; }
 
@@ -2616,7 +2571,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> StopFlagAnimation { get; }
 
-    public SupportedExtensions SupportedExtensions { get; set; } = new();
+    public SupportedExtensions SupportedExtensions { get; } = new();
 
     public ICommand Tersiniİşaretle { get; }
 
@@ -2757,8 +2712,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public string this[string columnName] => columnName switch
     {
         "IsAdministrator" when !IsAdministrator => "FOLDERACCESS",
-        "AllItemChecked" when !AllItemChecked => "WARNEXT",
-        "NoneItemChecked" when NoneItemChecked => "WARNEXT",
         "SqlText" when !string.IsNullOrWhiteSpace(SqlText) && sqlitedangerouscommands.Any(z => SqlText.Contains(z, StringComparison.OrdinalIgnoreCase)) => "ERROR",
         _ => null
     };
@@ -2894,7 +2847,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
                                try
                                {
-                                   if (File.Exists(currentfilepath) && BatchImageFileExtensions.Any(z => z.Checked && z.Name == Path.GetExtension(currentfilename).ToLowerInvariant()))
+                                   if (File.Exists(currentfilepath) && BatchSupportedExtensions?.BatchImageFileExtensions.Any(z => z.Checked && z.Name == Path.GetExtension(currentfilename).ToLowerInvariant()) == true)
                                    {
                                        await FileSystemWatcherOcrFile(paper, batchsavefolder, currentfilepath, currentfilename);
                                        await Application.Current?.Dispatcher?.InvokeAsync(
@@ -3498,7 +3451,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
         if (e.PropertyName is "SearchDocumentFilterDialogIsOpen" && !SearchDocumentFilterDialogIsOpen)
         {
-            LoadFileFiltersCheckboxes();
+            SupportedExtensions.LoadFileFiltersCheckboxes();
             if (!string.IsNullOrWhiteSpace(AramaMetni))
             {
                 OnPropertyChanged(nameof(AramaMetni));
@@ -3508,7 +3461,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     private void InitializeBatchFiles(out List<string> files, out int slicecount, out Scanner scanner, out List<Task> Tasks)
     {
-        files = [.. FastFileSearch.EnumerateFilepaths(BatchFolder).Where(file => BatchImageFileExtensions.Any(z => z.Checked && z.Name == Path.GetExtension(file).ToLowerInvariant()))];
+        files = [.. FastFileSearch.EnumerateFilepaths(BatchFolder).Where(file => BatchSupportedExtensions?.BatchImageFileExtensions.Any(z => z.Checked && z.Name == Path.GetExtension(file).ToLowerInvariant()) == true)];
         slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
         scanner = ScannerService.GetScanner();
         scanner.ProgressState = TaskbarItemProgressState.Normal;
@@ -3542,12 +3495,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         return os?.Major > 6 || (os?.Major == 6 && os?.Minor >= 1);
     }
 
-    private void LoadFileFiltersCheckboxes()
-    {
-        List<ExtendenCheckBoxItem> checkboxstates = SupportedExtensions?.FileCategories?.SelectMany(z => z.Extensions)?.ToList();
-        AllItemChecked = checkboxstates.All(item => item.IsChecked);
-        NoneItemChecked = checkboxstates.All(item => !item.IsChecked);
-    }
 
     private async Task LoadRemainderDatas()
     {

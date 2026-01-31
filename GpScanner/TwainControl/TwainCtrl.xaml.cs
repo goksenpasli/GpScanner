@@ -90,13 +90,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private bool encodeAsJb2;
     private bool encodeAsWebp;
     private CancellationTokenSource fileloadcancellationToken;
-    private Task fileloadtask;
     private double height;
     private bool isMouseDown;
     private bool isRightMouseDown;
     private Window maximizedWindow;
     private Point mousedowncoord;
-    private bool setShutdown;
     private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
     private double width;
 
@@ -1397,28 +1395,26 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     try
                     {
                         string oldpdfpath = pdfViewer.PdfFilePath;
-                        using (PdfDocument pdfdocument = PdfReader.Open(oldpdfpath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider))
+                        using PdfDocument pdfdocument = PdfReader.Open(oldpdfpath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
+                        if (pdfdocument is null)
                         {
-                            if (pdfdocument is null)
+                            return;
+                        }
+                        PdfToolBarControlIsEnabled = false;
+                        if (Keyboard.Modifiers == ModifierKeys.Alt)
+                        {
+                            PdfDocument listDocument = null;
+                            for (int i = 0; i < pdfdocument.PageCount; i++)
                             {
-                                return;
+                                listDocument = pdfdocument.GenerateWatermarkedPdf(i, PdfWatermarkFontAngle, PdfWatermarkColor, PdfWatermarkFontSize, PdfWaterMarkText, PdfWatermarkFont);
                             }
-                            PdfToolBarControlIsEnabled = false;
-                            if (Keyboard.Modifiers == ModifierKeys.Alt)
-                            {
-                                PdfDocument listDocument = null;
-                                for (int i = 0; i < pdfdocument.PageCount; i++)
-                                {
-                                    listDocument = pdfdocument.GenerateWatermarkedPdf(i, PdfWatermarkFontAngle, PdfWatermarkColor, PdfWatermarkFontSize, PdfWaterMarkText, PdfWatermarkFont);
-                                }
-                                listDocument?.Save(oldpdfpath);
-                                listDocument?.Dispose();
-                            }
-                            else
-                            {
-                                using PdfDocument document = pdfdocument.GenerateWatermarkedPdf(pdfViewer.Sayfa - 1, PdfWatermarkFontAngle, PdfWatermarkColor, PdfWatermarkFontSize, PdfWaterMarkText, PdfWatermarkFont);
-                                document.Save(oldpdfpath);
-                            }
+                            listDocument?.Save(oldpdfpath);
+                            listDocument?.Dispose();
+                        }
+                        else
+                        {
+                            using PdfDocument document = pdfdocument.GenerateWatermarkedPdf(pdfViewer.Sayfa - 1, PdfWatermarkFontAngle, PdfWatermarkColor, PdfWatermarkFontSize, PdfWaterMarkText, PdfWatermarkFont);
+                            document.Save(oldpdfpath);
                         }
                     }
                     finally
@@ -3147,12 +3143,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public Task FileLoadTask
     {
-        get => fileloadtask;
+        get;
         set
         {
-            if (fileloadtask != value)
+            if (field != value)
             {
-                fileloadtask = value;
+                field = value;
                 OnPropertyChanged(nameof(FileLoadTask));
             }
         }
@@ -3935,13 +3931,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public bool SetShutdown
     {
-        get => setShutdown;
+        get;
 
         set
         {
-            if (setShutdown != value)
+            if (field != value)
             {
-                setShutdown = value;
+                field = value;
                 OnPropertyChanged(nameof(SetShutdown));
             }
         }

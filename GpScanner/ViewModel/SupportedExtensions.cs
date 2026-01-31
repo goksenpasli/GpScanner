@@ -1,19 +1,37 @@
 ﻿using Extensions;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using TwainControl;
 
 namespace GpScanner.ViewModel
 {
-    public class SupportedExtensions : InpcBase
+    public class SupportedExtensions : InpcBase, IDataErrorInfo
     {
         public SupportedExtensions()
         {
             LoadFromSettings();
             AttachAutoSave();
+            LoadFileFiltersCheckboxes();
         }
+
+        public bool AllItemChecked
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(AllItemChecked));
+                }
+            }
+        }
+
+        public string Error => string.Empty;
 
         public ObservableCollection<FileCategory> FileCategories
         {
@@ -72,6 +90,33 @@ namespace GpScanner.ViewModel
                 IsChecked = true
             }, new() { Name = ".mpeg", IsChecked = true } ]
         }, ];
+
+        public bool NoneItemChecked
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(NoneItemChecked));
+                }
+            }
+        }
+
+        public string this[string columnName] => columnName switch
+        {
+            "AllItemChecked" when !AllItemChecked => "WARNEXT",
+            "NoneItemChecked" when NoneItemChecked => "WARNEXT",
+            _ => null
+        };
+
+        public void LoadFileFiltersCheckboxes()
+        {
+            List<ExtendenCheckBoxItem> checkboxstates = FileCategories?.SelectMany(z => z.Extensions)?.ToList();
+            AllItemChecked = checkboxstates.All(item => item.IsChecked);
+            NoneItemChecked = checkboxstates.All(item => !item.IsChecked);
+        }
 
         public void LoadFromSettings()
         {

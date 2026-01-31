@@ -49,18 +49,11 @@ public class LocExtension : MarkupExtension
 
     private ResourceManager GetResourceManager(object control)
     {
-        if (control is DependencyObject dependencyObject)
+        if (control is DependencyObject d && d.GetValue(Translation.ResourceManagerProperty) is ResourceManager rm)
         {
-            object localValue = dependencyObject.ReadLocalValue(Translation.ResourceManagerProperty);
-
-            if (localValue != DependencyProperty.UnsetValue && localValue is ResourceManager resourceManager)
-            {
-                TranslationSource.Instance.AddResourceManager(resourceManager);
-
-                return resourceManager;
-            }
+            TranslationSource.Instance.AddResourceManager(rm);
+            return rm;
         }
-
         return null;
     }
 }
@@ -68,7 +61,7 @@ public class LocExtension : MarkupExtension
 public class Translation : DependencyObject
 {
     public static readonly DependencyProperty DesignCultureProperty = DependencyProperty.RegisterAttached("DesignCulture", typeof(string), typeof(Translation), new PropertyMetadata("en-EN", CultureChanged));
-    public static readonly DependencyProperty ResourceManagerProperty = DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
+    public static readonly DependencyProperty ResourceManagerProperty = DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
 
     public static string GetDesignCulture(DependencyObject obj) => (string)obj.GetValue(DesignCultureProperty);
 

@@ -530,14 +530,12 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         {
             Color source = (Color)ColorConverter.ConvertFromString(Scanner.SourceColor);
             Color target = (Color)ColorConverter.ConvertFromString(Scanner.TargetColor);
-            Scanner.CroppedImage =
-                ((BitmapSource)Scanner.CopyCroppedImage).ReplaceColor(source, target, (int)Scanner.Threshold);
+            Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).ReplaceColor(source, target, (int)Scanner.Threshold);
         }
 
         if (e.PropertyName is "Hue" or "Saturation" or "Lightness" && Scanner.CopyCroppedImage is not null)
         {
-            Scanner.CroppedImage =
-                ((BitmapSource)Scanner.CopyCroppedImage).ApplyHueSaturationLightness(Scanner.Hue, Scanner.Saturation, Scanner.Lightness);
+            Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).ApplyHueSaturationLightness(Scanner.Hue, Scanner.Saturation, Scanner.Lightness);
         }
 
         if (e.PropertyName is "MedianValue" && Scanner.CopyCroppedImage is not null)
