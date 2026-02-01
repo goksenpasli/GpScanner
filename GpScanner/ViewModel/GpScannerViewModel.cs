@@ -768,8 +768,9 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 }
                 if (path == Twainsettings.Settings.Default.AutoFolder)
                 {
+                    BatchDialogOpen = false;
                     ExtendedMessageBox extendedMessageBox = new();
-                    extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), Translation.GetResStringValue("NO ACTION"), AppName);
+                    extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), $"{Translation.GetResStringValue("AUTOPATH")} {Translation.GetResStringValue("NO ACTION")}", AppName);
                     return;
                 }
                 Settings.Default.BatchFolder = path;

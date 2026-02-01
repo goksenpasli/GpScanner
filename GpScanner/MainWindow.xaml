@@ -8,6 +8,7 @@
     xmlns:TwainConverter="clr-namespace:TwainControl.Converter;assembly=TwainControl"
     xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
     xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:GpScanner.Properties"
@@ -20,6 +21,7 @@
     d:DataContext="{d:DesignInstance Type={x:Type ViewModel:GpScannerViewModel}}"
     d:Height="600"
     d:Width="1280"
+    twainctrl:Translation.DesignCulture="{Binding Source={x:Static globalization:CultureInfo.CurrentCulture}}"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
     Closing="Window_Closing"
     ContentRendered="MW_ContentRendered"
@@ -267,10 +269,8 @@
                                 Height="32"
                                 d:Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}"
                                 Source="{Binding FileName, Converter={StaticResource FilePathToIconConverter}, IsAsync=True, Mode=OneWay}" />
-                            <TextBlock><Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" /><LineBreak /><Run d:Text="FileSize" Text="{Binding FileSize, Mode=OneWay, StringFormat=\{0:F\} MB}" />
-                                <Run d:Text="FileName"
-                                    Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}"
-                                    ToolTip="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" /></TextBlock>
+                            <TextBlock><Run Text="{Binding FolderName, Mode=OneWay}" /><LineBreak /><Run Text="{Binding FileSize, Mode=OneWay, StringFormat=\{0:F\} MB}" />
+                                <Run Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" ToolTip="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" /></TextBlock>
                         </StackPanel>
                     </CheckBox>
                     <TextBlock Grid.Column="2"

@@ -490,14 +490,14 @@
                                     </ListBox>
                                     <Grid Grid.Column="1">
                                         <twainctrl:EypPdfViewer DpiListVisibility="Collapsed"
-                                            PdfFilePath="{Binding SelectedItem, Mode=OneWay, Source={x:Reference Lb}}"
+                                            PdfFilePath="{Binding SelectedItem, Mode=OneWay, ElementName=Lb}"
                                             PdfTextContentVisibility="Collapsed"
                                             SearchTextContentVisibility="Collapsed"
                                             TifNavigasyonButtonEtkin="Collapsed" />
                                         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top">
                                             <Hyperlink twainctrl:Policy.PolicyName="OpenOriginalFile"
                                                 Command="{Binding OpenOriginalFile}"
-                                                CommandParameter="{Binding SelectedItem, Mode=OneWay, Source={x:Reference Lb}}"
+                                                CommandParameter="{Binding SelectedItem, Mode=OneWay, ElementName=Lb}"
                                                 TextDecorations="None">
                                                 <Run FontFamily="Wingdings 2"
                                                     FontSize="18"

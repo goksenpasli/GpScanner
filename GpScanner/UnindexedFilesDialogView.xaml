@@ -158,7 +158,7 @@
             Background="{DynamicResource GroupBoxBackGround}" />
         <ContentControl Grid.Column="2"
             Margin="1"
-            Content="{Binding SelectedItem.FileName, IsAsync=True, Mode=OneWay, Source={x:Reference LbUnindexed}}"
+            Content="{Binding SelectedItem.FileName, IsAsync=True, Mode=OneWay, ElementName=LbUnindexed}"
             ContentTemplateSelector="{StaticResource UnIndexedThumbViewerSelector}" />
         <Grid Grid.Row="1" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
@@ -250,7 +250,7 @@
                         Background="{x:Null}"
                         BorderBrush="{x:Null}"
                         Foreground="Red"
-                        Maximum="{Binding Source={x:Reference LbUnindexed}, Path=Items.Count, Mode=OneWay}"
+                        Maximum="{Binding ElementName=LbUnindexed, Path=Items.Count, Mode=OneWay}"
                         Value="{Binding IndexedFileCount}" />
                 </Grid>
                 <Extensions:SplitButton.InternalContent>

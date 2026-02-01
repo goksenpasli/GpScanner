@@ -18,6 +18,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Extensions:BindingProxy x:Key="Proxy" Data="{Binding ElementName=TbLic}" />
         </ResourceDictionary>
     </UserControl.Resources>
     <GroupBox Background="{StaticResource GroupBoxBackGround}">
@@ -185,7 +186,7 @@
                     VerticalScrollBarVisibility="Auto" />
                 <Extensions:ContentToggleButton HorizontalAlignment="Left" VerticalAlignment="Top">
                     <Extensions:ContentToggleButton.OverContent>
-                        <GroupBox Width="{Binding Path=ActualWidth, Source={x:Reference TbLic}}" Height="{Binding Path=ActualHeight, Source={x:Reference TbLic}}">
+                        <GroupBox Width="{Binding Path=Data.ActualWidth, Source={StaticResource Proxy}}" Height="{Binding Path=Data.ActualHeight, Source={StaticResource Proxy}}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />

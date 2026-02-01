@@ -278,7 +278,7 @@
                     <TextBlock VerticalAlignment="Center" Text="{local:Loc SRC}" />
                     <TextBlock HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        d:Text="AutoFolder"
+                        d:Text="{local:Loc Auto}"
                         FontWeight="Bold">
                         <InlineUIContainer BaselineAlignment="Center">
                             <Image Width="16"
@@ -1279,7 +1279,7 @@
                                 </Grid.ColumnDefinitions>
                                 <AdornerDecorator>
                                     <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
-                                        d:Text="FileName"
+                                        d:Text="{local:Loc FILE}"
                                         local:Policy.PolicyName="SaveFileName"
                                         GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus"
                                         IsEnabled="{Binding Scanner.ArayüzEtkin}"
@@ -2490,9 +2490,7 @@
                                             </Image.Source>
                                         </Image>
                                         <TextBlock VerticalAlignment="Center" FontWeight="Bold">
-                                            <Run d:Text="FILE"
-                                                BaselineAlignment="Center"
-                                                Text="{local:Loc FILE}" />
+                                            <Run BaselineAlignment="Center" Text="{local:Loc FILE}" />
                                             <LineBreak />
                                             <Run d:Text="0"
                                                 BaselineAlignment="Center"

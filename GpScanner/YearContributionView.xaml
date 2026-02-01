@@ -20,6 +20,7 @@
         <converter:ContributionOptimalViewportConverter x:Key="ContributionOptimalViewportConverter" />
         <converter:ContributionDataToGraphConverter x:Key="ContributionDataToGraphConverter" />
         <Extensions:ContributionToColorConverter x:Key="ContributionToColorConverter" />
+        <Extensions:BindingProxy x:Key="Proxy" Data="{Binding}" />
     </UserControl.Resources>
     <GroupBox>
         <GroupBox.Header>
@@ -205,7 +206,7 @@
                                                             <ListBox.ItemsSource>
                                                                 <MultiBinding Converter="{StaticResource ContributionOptimalViewportConverter}">
                                                                     <Binding Path="Name" />
-                                                                    <Binding Path="DataContext.ContributionPreviewSize" Source="{x:Reference UserControl}" />
+                                                                    <Binding Path="Data.ContributionPreviewSize" Source="{StaticResource Proxy}" />
                                                                 </MultiBinding>
                                                             </ListBox.ItemsSource>
                                                             <ListBox.Style>
