@@ -46,7 +46,7 @@
                 Width="580"
                 Height="400"
                 Background="{StaticResource BorderBackground}">
-                <TabItem>
+                <TabItem AutomationProperties.Name="{twainctrl:Loc GRAPH}">
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <Image Width="16" Height="16">
@@ -58,8 +58,8 @@
                                 </Image.Source>
                             </Image>
                             <TextBlock VerticalAlignment="Center">
-                                <Run Text="{twainctrl:Loc GRAPH}" />
-                                <Run Text="{twainctrl:Loc BATCH}" />
+                                <Run AutomationProperties.Name="{twainctrl:Loc GRAPH}" Text="{twainctrl:Loc GRAPH}" />
+                                <Run AutomationProperties.Name="{twainctrl:Loc BATCH}" Text="{twainctrl:Loc BATCH}" />
                             </TextBlock>
                         </StackPanel>
                     </TabItem.Header>
@@ -93,6 +93,7 @@
                                     <Button Grid.RowSpan="2"
                                         Grid.Column="1"
                                         twainctrl:Policy.PolicyName="SetBatchFolder"
+                                        AutomationProperties.Name="{twainctrl:Loc SRC}"
                                         Command="{Binding SetBatchFolder}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="32" Height="32">
@@ -111,7 +112,9 @@
                                     <UniformGrid Grid.RowSpan="2"
                                         Grid.Column="2"
                                         Rows="3">
-                                        <Button twainctrl:Policy.PolicyName="StartPdfBatch" Command="{Binding StartPdfBatch}">
+                                        <Button twainctrl:Policy.PolicyName="StartPdfBatch"
+                                            AutomationProperties.Name="{twainctrl:Loc START}"
+                                            Command="{Binding StartPdfBatch}">
                                             <Button.Content>
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="16"
@@ -121,7 +124,9 @@
                                                 </StackPanel>
                                             </Button.Content>
                                         </Button>
-                                        <Button twainctrl:Policy.PolicyName="StartTxtBatch" Command="{Binding StartTxtBatch}">
+                                        <Button twainctrl:Policy.PolicyName="StartTxtBatch"
+                                            AutomationProperties.Name="{twainctrl:Loc START}"
+                                            Command="{Binding StartTxtBatch}">
                                             <Button.Content>
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="16"
@@ -131,7 +136,7 @@
                                                 </StackPanel>
                                             </Button.Content>
                                         </Button>
-                                        <Button Command="{Binding BatchMergeSelectedFiles}">
+                                        <Button AutomationProperties.Name="{twainctrl:Loc MERGE}" Command="{Binding BatchMergeSelectedFiles}">
                                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                                 <Image Width="16"
                                                     Height="16"
@@ -180,6 +185,7 @@
                                             </Canvas>
                                             <ToggleButton VerticalAlignment="Center"
                                                 VerticalContentAlignment="Center"
+                                                AutomationProperties.Name="{twainctrl:Loc COMPRESS}"
                                                 IsChecked="{Binding PdfBatchCompress, Source={x:Static properties:Settings.Default}}">
                                                 <ToggleButton.Content>
                                                     <StackPanel Orientation="Horizontal">
@@ -201,6 +207,7 @@
                                             </ToggleButton>
                                             <ToggleButton VerticalAlignment="Center"
                                                 VerticalContentAlignment="Center"
+                                                AutomationProperties.Name="{twainctrl:Loc OCR}"
                                                 IsChecked="{Binding TwainCtrl.Scanner.ApplyPdfSaveOcr}"
                                                 IsEnabled="{Binding Path=TwainCtrl.Scanner.SelectedTtsLanguage, Converter={StaticResource StringNullableToBooleanConverter}, ValidatesOnDataErrors=True}"
                                                 Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
@@ -210,14 +217,18 @@
                                                             Height="32"
                                                             Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                                                         <TextBlock VerticalAlignment="Center">
-                                                            <Run BaselineAlignment="Center" Text="{twainctrl:Loc FILE}" />
+                                                            <Run AutomationProperties.Name="{twainctrl:Loc FILE}"
+                                                                BaselineAlignment="Center"
+                                                                Text="{twainctrl:Loc FILE}" />
                                                             <LineBreak />
-                                                            <Run BaselineAlignment="Center" Text="{twainctrl:Loc OCR}" />
+                                                            <Run AutomationProperties.Name="{twainctrl:Loc OCR}"
+                                                                BaselineAlignment="Center"
+                                                                Text="{twainctrl:Loc OCR}" />
                                                         </TextBlock>
                                                     </StackPanel>
                                                 </ToggleButton.Content>
                                             </ToggleButton>
-                                            <ToggleButton IsChecked="{Binding Shutdown}">
+                                            <ToggleButton AutomationProperties.Name="{twainctrl:Loc CLOSECOMP}" IsChecked="{Binding Shutdown}">
                                                 <Canvas Width="32" Height="32">
                                                     <Image Width="32" Height="32">
                                                         <Image.Source>
@@ -333,7 +344,7 @@
                         </GroupBox>
                     </AdornerDecorator>
                 </TabItem>
-                <TabItem>
+                <TabItem AutomationProperties.Name="{twainctrl:Loc AUTOROTATE}">
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <Image Width="16"
@@ -341,13 +352,14 @@
                                 Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                             <TextBlock VerticalAlignment="Center">
                                 <sys:String>PDF</sys:String>
-                                <Run Text="{twainctrl:Loc AUTOROTATE}" />
-                                <Run Text="{twainctrl:Loc BATCH}" />
+                                <Run AutomationProperties.Name="{twainctrl:Loc AUTOROTATE}" Text="{twainctrl:Loc AUTOROTATE}" />
+                                <Run AutomationProperties.Name="{twainctrl:Loc BATCH}" Text="{twainctrl:Loc BATCH}" />
                             </TextBlock>
                         </StackPanel>
                     </TabItem.Header>
                     <AdornerDecorator>
-                        <GroupBox IsEnabled="{Binding BatchSupportedExtensions.NoneItemChecked, Converter={StaticResource ReverseBooleanConverter}}"
+                        <GroupBox AutomationProperties.Name="{twainctrl:Loc BATCHDESC}"
+                            IsEnabled="{Binding BatchSupportedExtensions.NoneItemChecked, Converter={StaticResource ReverseBooleanConverter}}"
                             Tag="{Binding BatchSupportedExtensions.NoneItemChecked, ValidatesOnDataErrors=True}"
                             Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
                             <Grid>
@@ -371,7 +383,9 @@
                                             ResetButtonVisibility="Visible"
                                             Text="{Binding BatchFolder, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                         <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <Button twainctrl:Policy.PolicyName="SetBatchWatchFolder" Command="{Binding SetBatchWatchFolder}">
+                                            <Button twainctrl:Policy.PolicyName="SetBatchWatchFolder"
+                                                AutomationProperties.Name="{twainctrl:Loc SRC}"
+                                                Command="{Binding SetBatchWatchFolder}">
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="32" Height="32">
                                                         <Image.Source>
@@ -388,6 +402,7 @@
                                             </Button>
                                             <ToggleButton VerticalAlignment="Center"
                                                 VerticalContentAlignment="Center"
+                                                AutomationProperties.Name="{twainctrl:Loc COMPRESS}"
                                                 IsChecked="{Binding PdfBatchCompress, Source={x:Static properties:Settings.Default}}">
                                                 <ToggleButton.Content>
                                                     <StackPanel Orientation="Horizontal">
@@ -407,7 +422,9 @@
                                                     </StackPanel>
                                                 </ToggleButton.Content>
                                             </ToggleButton>
-                                            <ToggleButton VerticalContentAlignment="Center" IsChecked="{Binding RegisterBatchWatcher, Source={x:Static properties:Settings.Default}}">
+                                            <ToggleButton VerticalContentAlignment="Center"
+                                                AutomationProperties.Name="{twainctrl:Loc APPLY}"
+                                                IsChecked="{Binding RegisterBatchWatcher, Source={x:Static properties:Settings.Default}}">
                                                 <TextBlock Foreground="Blue" Text="{twainctrl:Loc APPLY}" />
                                                 <ToggleButton.Style>
                                                     <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="ToggleButton">
@@ -437,7 +454,9 @@
                                             PasteButtonVisibility="Collapsed"
                                             ResetButtonVisibility="Visible"
                                             Text="{Binding BatchSaveFolder, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                        <Button Grid.Column="1" Command="{Binding SetBatchSaveFolder}">
+                                        <Button Grid.Column="1"
+                                            AutomationProperties.Name="{twainctrl:Loc SAVEPDF}"
+                                            Command="{Binding SetBatchSaveFolder}">
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Width="32" Height="32">
                                                     <Image.Source>
@@ -512,7 +531,7 @@
                         </GroupBox>
                     </AdornerDecorator>
                 </TabItem>
-                <TabItem Header="{twainctrl:Loc FILE}">
+                <TabItem AutomationProperties.Name="{twainctrl:Loc FILE}" Header="{twainctrl:Loc FILE}">
                     <GroupBox>
                         <ItemsControl d:ItemsSource="{d:SampleData ItemCount=10}"
                             Background="{StaticResource BorderBackground}"
@@ -565,6 +584,7 @@
             <Button Grid.Row="1"
                 Grid.Column="1"
                 twainctrl:Policy.PolicyName="CancelBatchOcr"
+                AutomationProperties.Name="{twainctrl:Loc STOP}"
                 Command="{Binding CancelBatchOcr}">
                 <StackPanel Orientation="Horizontal">
                     <Image Width="32"

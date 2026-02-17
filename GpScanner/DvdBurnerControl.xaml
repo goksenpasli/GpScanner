@@ -211,6 +211,7 @@
                     </ComboBox>
                 </UniformGrid>
                 <Extensions:ButtonedTextBox Grid.Row="5"
+                    AutomationProperties.Name="{twainctrl:Loc TAG}"
                     CopyButtonVisibility="Visible"
                     Description="{twainctrl:Loc TAG}"
                     OpenButtonVisibility="Collapsed"
@@ -218,6 +219,7 @@
                     ResetButtonVisibility="Collapsed"
                     Text="{Binding CdLabel, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                 <CheckBox Grid.Row="6"
+                    AutomationProperties.Name="{twainctrl:Loc REMOVECD}"
                     Content="{twainctrl:Loc REMOVECD}"
                     IsChecked="{Binding Eject, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </Grid>

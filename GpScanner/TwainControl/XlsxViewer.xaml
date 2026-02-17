@@ -25,7 +25,8 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Extensions:ButtonedTextBox IsEnabled="{Binding SelectedTable, Mode=OneWay, Converter={StaticResource NullableToBooleanConverter}}"
+            <Extensions:ButtonedTextBox AutomationProperties.Name="{twaincontrol:Loc TEXT}"
+                IsEnabled="{Binding SelectedTable, Mode=OneWay, Converter={StaticResource NullableToBooleanConverter}}"
                 OpenButtonVisibility="Collapsed"
                 Text="{Binding Search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Watermark="{twaincontrol:Loc TEXT}" />
@@ -45,7 +46,8 @@
                 VirtualizingPanel.VirtualizationMode="Recycling">
                 <DataGrid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Command="{Binding CopyRows}"
+                        <MenuItem AutomationProperties.Name="{twaincontrol:Loc COPY}"
+                            Command="{Binding CopyRows}"
                             CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                             Header="{twaincontrol:Loc COPY}">
                             <MenuItem.Icon>

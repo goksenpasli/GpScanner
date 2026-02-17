@@ -61,6 +61,7 @@
                     Ticks="0,90,180,270,360"
                     Value="{Binding Rotation}" />
                 <CheckBox VerticalAlignment="Center"
+                    AutomationProperties.Name="{local:Loc QRDETECT}"
                     Content="{local:Loc QRDETECT}"
                     IsChecked="{Binding DetectQRCode}" />
             </UniformGrid>

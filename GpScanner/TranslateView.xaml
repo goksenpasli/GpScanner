@@ -37,10 +37,12 @@
         <TextBlock Grid.Row="0"
             Grid.Column="0"
             HorizontalAlignment="Center"
+            AutomationProperties.Name="{twainctrl:Loc SOURCELANG}"
             Text="{twainctrl:Loc SOURCELANG}" />
         <TextBlock Grid.Row="0"
             Grid.Column="2"
             HorizontalAlignment="Center"
+            AutomationProperties.Name="{twainctrl:Loc DESTLANG}"
             Text="{twainctrl:Loc DESTLANG}" />
         <ComboBox Grid.Row="1"
             Grid.Column="0"
@@ -201,6 +203,7 @@
         <Button Grid.Row="5"
             Grid.ColumnSpan="3"
             twainctrl:Policy.PolicyName="Sıfırla"
+            AutomationProperties.Name="{twainctrl:Loc RESET}"
             Command="{Binding Sıfırla}">
             <StackPanel Orientation="Horizontal">
                 <Image Width="32" Height="32">

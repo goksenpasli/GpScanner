@@ -75,6 +75,7 @@
                                         <Run Text="DPI" />
                                     </TextBlock>
                                     <Slider AutoToolTipPlacement="TopLeft"
+                                        AutomationProperties.Name="{twainctrl:Loc JPEGQUALITY}"
                                         Background="{Binding Dpi, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource NumberRangeToColorConverter}}"
                                         IsSnapToTickEnabled="True"
                                         Maximum="4800"
@@ -95,7 +96,8 @@
                                         SmallChange="1"
                                         Style="{DynamicResource Slider}"
                                         Value="{Binding Quality, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
-                                    <ComboBox ItemsSource="{Binding CompressorList}"
+                                    <ComboBox AutomationProperties.Name="{twainctrl:Loc JPEGQUALITY}"
+                                        ItemsSource="{Binding CompressorList}"
                                         SelectedItem="{Binding Path=SelectedCompressorProfile, NotifyOnSourceUpdated=True}"
                                         SourceUpdated="ComboBox_CompressorListSourceUpdated">
                                         <ComboBox.ItemTemplate>
@@ -109,7 +111,8 @@
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
-                                    <Button Command="{Binding ClearPdfCompressorBatchList}"
+                                    <Button AutomationProperties.Name="{twainctrl:Loc CLEARLIST}"
+                                        Command="{Binding ClearPdfCompressorBatchList}"
                                         CommandParameter="{Binding BatchPdfList, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                         IsEnabled="{Binding CompressFinished, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                         <StackPanel Orientation="Horizontal">
@@ -122,7 +125,7 @@
                                                 </Image.Source>
                                             </Image>
                                             <TextBlock VerticalAlignment="Center">
-                                                <Run Text="{twainctrl:Loc ALL}" />
+                                                <Run AutomationProperties.Name="{twainctrl:Loc ALL}" Text="{twainctrl:Loc ALL}" />
                                                 <Run Text="{twainctrl:Loc CLEARLIST}" />
                                             </TextBlock>
                                         </StackPanel>
@@ -186,21 +189,27 @@
                                             VirtualizingPanel.VirtualizationMode="Recycling">
                                             <ListBox.ContextMenu>
                                                 <ContextMenu>
-                                                    <MenuItem Command="{Binding Parent.Parent.SelectAllFile, RelativeSource={RelativeSource Mode=TemplatedParent}}" Header="{twainctrl:Loc ALL}">
+                                                    <MenuItem AutomationProperties.Name="{twainctrl:Loc ALL}"
+                                                        Command="{Binding Parent.Parent.SelectAllFile, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                        Header="{twainctrl:Loc ALL}">
                                                         <MenuItem.Icon>
                                                             <Image Width="16"
                                                                 Height="16"
                                                                 Source="/TwainControl;component/Icons/selectall.png" />
                                                         </MenuItem.Icon>
                                                     </MenuItem>
-                                                    <MenuItem Command="{Binding Parent.Parent.DeselectAllFile, RelativeSource={RelativeSource Mode=TemplatedParent}}" Header="{twainctrl:Loc NONE}">
+                                                    <MenuItem AutomationProperties.Name="{twainctrl:Loc NONE}"
+                                                        Command="{Binding Parent.Parent.DeselectAllFile, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                        Header="{twainctrl:Loc NONE}">
                                                         <MenuItem.Icon>
                                                             <Image Width="16"
                                                                 Height="16"
                                                                 Source="/TwainControl;component/Icons/none.png" />
                                                         </MenuItem.Icon>
                                                     </MenuItem>
-                                                    <MenuItem Command="{Binding Parent.Parent.InverseSelectFile, RelativeSource={RelativeSource Mode=TemplatedParent}}" Header="{twainctrl:Loc REVERSE}">
+                                                    <MenuItem AutomationProperties.Name="{twainctrl:Loc REVERSE}"
+                                                        Command="{Binding Parent.Parent.InverseSelectFile, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                        Header="{twainctrl:Loc REVERSE}">
                                                         <MenuItem.Icon>
                                                             <Image Width="16"
                                                                 Height="16"
@@ -287,6 +296,7 @@
                                         IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}" />
                                     <CheckBox VerticalAlignment="Center"
                                         VerticalContentAlignment="Center"
+                                        AutomationProperties.Name="{twainctrl:Loc BW}"
                                         IsChecked="{Binding BlackAndWhite, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                         <TextBlock>
                                             <Run Text="PDF" />

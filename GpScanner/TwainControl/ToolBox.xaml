@@ -166,7 +166,8 @@
                             <UniformGrid Columns="2" IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}">
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc DESPECKLE}" />
-                                    <Extensions:NumericUpDown Interval="1"
+                                    <Extensions:NumericUpDown AutomationProperties.Name="{local:Loc DESPECKLE}"
+                                        Interval="1"
                                         Maximum="10"
                                         Minimum="0"
                                         Value="{Binding Scanner.MedianValue, Delay=150, UpdateSourceTrigger=PropertyChanged}" />
@@ -176,7 +177,7 @@
                                         Maximum="50"
                                         Minimum="1"
                                         Value="{Binding Scanner.VerticalLineThreshold, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Button Command="{Binding RemoveVerticalLine, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                                    <Button AutomationProperties.Name="{local:Loc DELETE}" Command="{Binding RemoveVerticalLine, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                         <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
                                         <Button.ToolTip>
                                             <ToolTip>
@@ -192,12 +193,14 @@
                                 </StackPanel>
                             </UniformGrid>
                             <Button local:Policy.PolicyName="InvertImage"
+                                AutomationProperties.Name="{local:Loc REVERSE}"
                                 Command="{Binding InvertImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                                 Content="{local:Loc REVERSE}" />
                         </StackPanel>
                         <UniformGrid Columns="2">
                             <StackPanel>
                                 <Slider AutoToolTipPlacement="TopLeft"
+                                    AutomationProperties.Name="{local:Loc BW}"
                                     IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
                                     IsSnapToTickEnabled="True"
                                     Maximum="255"
@@ -213,12 +216,14 @@
                                     </Slider.Background>
                                 </Slider>
                                 <Button local:Policy.PolicyName="InvertImage"
+                                    AutomationProperties.Name="{local:Loc BW}"
                                     BorderBrush="Cyan"
                                     Command="{Binding BlackAndWhiteImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                                     Content="{local:Loc BW}" />
                             </StackPanel>
                             <Button x:Name="BtnPreview"
                                 local:Policy.PolicyName="LoadCroppedImage"
+                                AutomationProperties.Name="{local:Loc PREVIEWFILE}"
                                 Background="Green"
                                 Command="{Binding LoadCroppedImage}">
                                 <StackPanel Orientation="Horizontal">
@@ -239,14 +244,16 @@
                         <UniformGrid Columns="2">
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />
-                                <Extensions:NumericUpDown Interval="1"
+                                <Extensions:NumericUpDown AutomationProperties.Name="{local:Loc WIDTHCOUNT}"
+                                    Interval="1"
                                     Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                                     Minimum="1"
                                     Value="{Binding Scanner.EnAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc HEIGHTCOUNT}" />
-                                <Extensions:NumericUpDown Interval="1"
+                                <Extensions:NumericUpDown AutomationProperties.Name="{local:Loc HEIGHTCOUNT}"
+                                    Interval="1"
                                     Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                                     Minimum="1"
                                     Value="{Binding Scanner.BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -254,6 +261,7 @@
                         </UniformGrid>
                         <UniformGrid Columns="2">
                             <Button local:Policy.PolicyName="SplitImage"
+                                AutomationProperties.Name="{local:Loc SLICE}"
                                 BorderBrush="Cyan"
                                 Command="{Binding SplitImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <StackPanel Orientation="Horizontal">
@@ -264,6 +272,7 @@
                                 </StackPanel>
                             </Button>
                             <Button local:Policy.PolicyName="MergeHorizontal"
+                                AutomationProperties.Name="{local:Loc MERGE}"
                                 BorderBrush="Cyan"
                                 Command="{Binding MergeHorizontal, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <StackPanel Orientation="Horizontal">
@@ -291,6 +300,7 @@
                                 Value="{Binding Scanner.SliceCountHeight}" />
                             <Button Grid.Column="2"
                                 local:Policy.PolicyName="SplitAllImage"
+                                AutomationProperties.Name="{local:Loc SLICE}"
                                 BorderBrush="Cyan"
                                 Command="{Binding SplitAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <Button.Content>
@@ -421,6 +431,7 @@
                             </Border>
                             <Button Grid.Column="6"
                                 local:Policy.PolicyName="MergeAllImage"
+                                AutomationProperties.Name="{local:Loc MERGE}"
                                 BorderBrush="Cyan"
                                 Command="{Binding MergeAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <Button.Content>
@@ -448,6 +459,7 @@
                             </Grid.ColumnDefinitions>
                             <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                                 d:Text="Watermark"
+                                AutomationProperties.Name="{local:Loc TEXT}"
                                 CopyButtonVisibility="Collapsed"
                                 Description="{local:Loc TEXT}"
                                 OpenButtonVisibility="Collapsed"
@@ -470,6 +482,7 @@
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />
                                 <Slider Width="50"
                                     AutoToolTipPlacement="TopLeft"
+                                    AutomationProperties.Name="{local:Loc TEXTSIZE}"
                                     Maximum="1024"
                                     Minimum="12"
                                     SmallChange="1"
@@ -479,6 +492,7 @@
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTANGLE}" />
                                 <Slider Width="50"
                                     AutoToolTipPlacement="TopLeft"
+                                    AutomationProperties.Name="{local:Loc TEXTANGLE}"
                                     Maximum="360"
                                     Minimum="0"
                                     SmallChange="1"
@@ -492,6 +506,7 @@
                             <ComboBox Margin="0,0,-1,0"
                                 VerticalContentAlignment="Center"
                                 local:Policy.PolicyName="WatermarkFont"
+                                AutomationProperties.Name="{local:Loc FONT}"
                                 ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}"
                                 SelectedValue="{Binding Scanner.WatermarkFont}"
                                 SelectedValuePath="Source">
@@ -508,13 +523,16 @@
                             </ComboBox>
                         </UniformGrid>
                         <Button local:Policy.PolicyName="SetWatermark"
+                            AutomationProperties.Name="{local:Loc DRAWTEXT}"
                             Command="{Binding SetWatermark, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                             Content="{local:Loc DRAWTEXT}" />
                         <UniformGrid Columns="2">
-                            <Button local:Policy.PolicyName="AutoCropImage" Command="{Binding AutoCropImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                            <Button local:Policy.PolicyName="AutoCropImage"
+                                AutomationProperties.Name="{local:Loc TRIMIMAGE}"
+                                Command="{Binding AutoCropImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock VerticalAlignment="Center">
-                                        <Run Text="{local:Loc Auto}" />
+                                        <Run AutomationProperties.Name="{local:Loc Auto}" Text="{local:Loc Auto}" />
                                         <Run Text="{local:Loc TRIMIMAGE}" />
                                     </TextBlock>
                                     <Image Width="16" Height="16">
@@ -543,13 +561,16 @@
                                 Minimum="-3"
                                 Value="{Binding CustomDeskewAngle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                             <Button local:Policy.PolicyName="ToolBoxManualDeskewImage"
+                                AutomationProperties.Name="{local:Loc DESKEW}"
                                 Command="{Binding ToolBoxManualDeskewImage}"
                                 CommandParameter="{Binding Scanner.CroppedImage}"
                                 Content="{local:Loc DESKEW}" />
                         </UniformGrid>
                         <UniformGrid Columns="2">
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc SRCCOLOR}" />
-                            <Extensions:ContentToggleButton local:Policy.PolicyName="SourceColor" Background="{Binding Scanner.SourceColor, Mode=OneWay}">
+                            <Extensions:ContentToggleButton local:Policy.PolicyName="SourceColor"
+                                AutomationProperties.Name="{local:Loc SRCCOLOR}"
+                                Background="{Binding Scanner.SourceColor, Mode=OneWay}">
                                 <TextBlock d:Text="Red" Text="{Binding Scanner.SourceColor, Mode=OneWay}" />
                                 <Extensions:ContentToggleButton.OverContent>
                                     <Extensions:ColorPicker Width="350"
@@ -561,7 +582,9 @@
                         </UniformGrid>
                         <UniformGrid Columns="2">
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc DSTCOLOR}" />
-                            <Extensions:ContentToggleButton local:Policy.PolicyName="TargetColor" Background="{Binding Scanner.TargetColor, Mode=OneWay}">
+                            <Extensions:ContentToggleButton local:Policy.PolicyName="TargetColor"
+                                AutomationProperties.Name="{local:Loc DSTCOLOR}"
+                                Background="{Binding Scanner.TargetColor, Mode=OneWay}">
                                 <TextBlock d:Text="Blue" Text="{Binding Scanner.TargetColor, Mode=OneWay}" />
                                 <Extensions:ContentToggleButton.OverContent>
                                     <Extensions:ColorPicker Width="350"
@@ -575,6 +598,7 @@
                             <TextBlock Text="{local:Loc THRESHOLD}" />
                             <Slider VerticalAlignment="Center"
                                 local:Policy.PolicyName="Threshold"
+                                AutomationProperties.Name="{local:Loc THRESHOLD}"
                                 IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
                                 Maximum="128"
                                 Minimum="0"
@@ -583,6 +607,7 @@
                         <UniformGrid Columns="2">
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc HUE}" />
                             <Slider local:Policy.PolicyName="Hue"
+                                AutomationProperties.Name="{local:Loc HUE}"
                                 Background="{DynamicResource Colorfull}"
                                 IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
                                 Maximum="1"
@@ -592,6 +617,7 @@
                         <UniformGrid Columns="2">
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc SATURATION}" />
                             <Slider local:Policy.PolicyName="Saturation"
+                                AutomationProperties.Name="{local:Loc SATURATION}"
                                 IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
                                 Maximum="2"
                                 Minimum="0"
@@ -607,6 +633,7 @@
                         <UniformGrid Columns="2">
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc LIGHTNESS}" />
                             <Slider local:Policy.PolicyName="Lightness"
+                                AutomationProperties.Name="{local:Loc LIGHTNESS}"
                                 IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
                                 Maximum="1"
                                 Minimum="0"
@@ -620,10 +647,12 @@
                             </Slider>
                         </UniformGrid>
                         <Button local:Policy.PolicyName="ResetCroppedImage"
+                            AutomationProperties.Name="{local:Loc RESET}"
                             Command="{Binding ResetCroppedImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                             Content="{local:Loc RESET}" />
                         <Button x:Name="BtnApply"
                             local:Policy.PolicyName="ApplyColorChange"
+                            AutomationProperties.Name="{local:Loc APPLY}"
                             Command="{Binding ApplyColorChange, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                             Content="{local:Loc APPLY}"
                             ToolTip="{local:Loc COLORCHANGETIP}" />

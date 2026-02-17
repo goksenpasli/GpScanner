@@ -18,8 +18,8 @@
     <Grid>
         <UniformGrid Columns="2" Rows="6">
             <TextBlock VerticalAlignment="Center">
-                <Run Text="{twainctrl:Loc DOCUMENT}" />
-                <Run Text="{twainctrl:Loc SELECTCOLOR}" />
+                <Run AutomationProperties.Name="{twainctrl:Loc DOCUMENT}" Text="{twainctrl:Loc DOCUMENT}" />
+                <Run AutomationProperties.Name="{twainctrl:Loc SELECTCOLOR}" Text="{twainctrl:Loc SELECTCOLOR}" />
             </TextBlock>
             <Extensions:ContentToggleButton Background="{Binding Path=BorderColor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
                 <Extensions:ContentToggleButton.OverContent>
@@ -29,8 +29,8 @@
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
             <TextBlock VerticalAlignment="Center">
-                <Run Text="{twainctrl:Loc THEME}" />
-                <Run Text="{twainctrl:Loc SELECTCOLOR}" />
+                <Run AutomationProperties.Name="{twainctrl:Loc THEME}" Text="{twainctrl:Loc THEME}" />
+                <Run AutomationProperties.Name="{twainctrl:Loc SELECTCOLOR}" Text="{twainctrl:Loc SELECTCOLOR}" />
             </TextBlock>
             <Extensions:ContentToggleButton Background="{Binding Path=BorderBackground1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
                 <Extensions:ContentToggleButton.OverContent>
@@ -40,8 +40,8 @@
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
             <TextBlock VerticalAlignment="Center">
-                <Run Text="{twainctrl:Loc THEME}" />
-                <Run Text="{twainctrl:Loc SELECTCOLOR}" />
+                <Run AutomationProperties.Name="{twainctrl:Loc THEME}" Text="{twainctrl:Loc THEME}" />
+                <Run AutomationProperties.Name="{twainctrl:Loc SELECTCOLOR}" Text="{twainctrl:Loc SELECTCOLOR}" />
             </TextBlock>
             <Extensions:ContentToggleButton Background="{Binding Path=BorderBackground2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
                 <Extensions:ContentToggleButton.OverContent>
@@ -51,8 +51,8 @@
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
             <TextBlock VerticalAlignment="Center">
-                <Run Text="{twainctrl:Loc THEME}" />
-                <Run Text="{twainctrl:Loc SELECTCOLOR}" />
+                <Run AutomationProperties.Name="{twainctrl:Loc THEME}" Text="{twainctrl:Loc THEME}" />
+                <Run AutomationProperties.Name="{twainctrl:Loc SELECTCOLOR}" Text="{twainctrl:Loc SELECTCOLOR}" />
             </TextBlock>
             <Extensions:ContentToggleButton Background="{Binding Path=GroupBoxBackGround1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
                 <Extensions:ContentToggleButton.OverContent>
@@ -62,8 +62,8 @@
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
             <TextBlock VerticalAlignment="Center">
-                <Run Text="{twainctrl:Loc THEME}" />
-                <Run Text="{twainctrl:Loc SELECTCOLOR}" />
+                <Run AutomationProperties.Name="{twainctrl:Loc THEME}" Text="{twainctrl:Loc THEME}" />
+                <Run AutomationProperties.Name="{twainctrl:Loc SELECTCOLOR}" Text="{twainctrl:Loc SELECTCOLOR}" />
             </TextBlock>
             <Extensions:ContentToggleButton Background="{Binding Path=GroupBoxBackGround2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
                 <Extensions:ContentToggleButton.OverContent>
@@ -73,7 +73,9 @@
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
             <TextBlock />
-            <Button Command="{Binding Path=ResetThemeColor, Mode=OneWay}" Content="{twainctrl:Loc RESET}" />
+            <Button AutomationProperties.Name="{twainctrl:Loc RESET}"
+                Command="{Binding Path=ResetThemeColor, Mode=OneWay}"
+                Content="{twainctrl:Loc RESET}" />
         </UniformGrid>
     </Grid>
 </UserControl>

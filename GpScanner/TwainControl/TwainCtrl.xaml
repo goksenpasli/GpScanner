@@ -74,7 +74,7 @@
                             </MultiBinding>
                         </Image.Source>
                     </Image>
-                </InlineUIContainer><Run Text="{local:Loc BW}" />
+                </InlineUIContainer><Run AutomationProperties.Name="{local:Loc BW}" Text="{local:Loc BW}" />
             </TextBlock>
             <TextBlock x:Key="grey"
                 Margin="0,1,0,1"
@@ -93,7 +93,7 @@
                             </MultiBinding>
                         </Image.Source>
                     </Image>
-                </InlineUIContainer><Run Text="{local:Loc GRAY}" />
+                </InlineUIContainer><Run AutomationProperties.Name="{local:Loc GRAY}" Text="{local:Loc GRAY}" />
             </TextBlock>
             <TextBlock x:Key="color"
                 Margin="0,1,0,1"
@@ -112,7 +112,7 @@
                             </MultiBinding>
                         </Image.Source>
                     </Image>
-                </InlineUIContainer><Run Text="{local:Loc COLOR}" />
+                </InlineUIContainer><Run AutomationProperties.Name="{local:Loc COLOR}" Text="{local:Loc COLOR}" />
             </TextBlock>
             <Style x:Key="ToggleButtonAnimationStyle" TargetType="{x:Type ToggleButton}">
                 <Style.Triggers>
@@ -275,10 +275,13 @@
         <GroupBox Grid.Column="0">
             <GroupBox.Header>
                 <UniformGrid Columns="3">
-                    <TextBlock VerticalAlignment="Center" Text="{local:Loc SRC}" />
+                    <TextBlock VerticalAlignment="Center"
+                        AutomationProperties.Name="{local:Loc SRC}"
+                        Text="{local:Loc SRC}" />
                     <TextBlock HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         d:Text="{local:Loc Auto}"
+                        AutomationProperties.Name="{local:Loc Auto}"
                         FontWeight="Bold">
                         <InlineUIContainer BaselineAlignment="Center">
                             <Image Width="16"
@@ -307,7 +310,9 @@
                                 </Image.Source>
                             </Image>
                             <Extensions:ContentToggleButton.OverContent>
-                                <GroupBox Width="450" Header="{local:Loc HELP}">
+                                <GroupBox Width="450"
+                                    AutomationProperties.Name="{local:Loc HELP}"
+                                    Header="{local:Loc HELP}">
                                     <FlowDocumentScrollViewer IsSelectionEnabled="False" VerticalScrollBarVisibility="Auto">
                                         <FlowDocument IsOptimalParagraphEnabled="True">
                                             <Paragraph>
@@ -318,28 +323,28 @@
                                                     </Style>
                                                 </Paragraph.Resources>
                                                 <Rectangle Stroke="Cyan" />
-                                                <Run Text="{local:Loc CYANCONTROL}" />
+                                                <Run AutomationProperties.Name="{local:Loc CYANCONTROL}" Text="{local:Loc CYANCONTROL}" />
                                                 <LineBreak />
                                                 <Rectangle Visibility="{Binding ScanSettingsExpanderIsExpanded, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static properties:Settings.Default}}">
                                                     <Rectangle.Fill>
                                                         <VisualBrush Stretch="Fill" Visual="{Binding Source={x:Reference CbFolderFormat}}" />
                                                     </Rectangle.Fill>
                                                 </Rectangle>
-                                                <Run Text="{local:Loc FOLDERFORMAT}" />
+                                                <Run AutomationProperties.Name="{local:Loc FOLDERFORMAT}" Text="{local:Loc FOLDERFORMAT}" />
                                                 <LineBreak />
                                                 <Rectangle>
                                                     <Rectangle.Fill>
                                                         <VisualBrush Stretch="Fill" Visual="{Binding Source={x:Reference AutoScanPathBtn}}" />
                                                     </Rectangle.Fill>
                                                 </Rectangle>
-                                                <Run Text="{local:Loc AUTOFOLDERHELP}" />
+                                                <Run AutomationProperties.Name="{local:Loc AUTOFOLDERHELP}" Text="{local:Loc AUTOFOLDERHELP}" />
                                                 <LineBreak />
                                                 <Rectangle Visibility="{Binding ScanSettingsExpanderIsExpanded, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static properties:Settings.Default}}">
                                                     <Rectangle.Fill>
                                                         <VisualBrush Stretch="Fill" Visual="{Binding Source={x:Reference SpDelay}}" />
                                                     </Rectangle.Fill>
                                                 </Rectangle>
-                                                <Run Text="{local:Loc SCANDELAYHELP}" />
+                                                <Run AutomationProperties.Name="{local:Loc SCANDELAYHELP}" Text="{local:Loc SCANDELAYHELP}" />
                                             </Paragraph>
                                         </FlowDocument>
                                     </FlowDocumentScrollViewer>
@@ -677,6 +682,7 @@
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <ToggleButton d:IsChecked="True"
+                                        AutomationProperties.Name="{local:Loc ADF}"
                                         IsChecked="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
                                         IsEnabled="{Binding Scanner.ArayüzEtkin}">
                                         <ToggleButton.Style>
@@ -690,6 +696,7 @@
                                                                         Source="/TwainControl;component/Icons/adf.png"
                                                                         Visibility="{Binding Adf, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                                                     <TextBlock VerticalAlignment="Center"
+                                                                        AutomationProperties.Name="{local:Loc ADF}"
                                                                         Text="{local:Loc ADF}"
                                                                         TextWrapping="Wrap" />
                                                                 </StackPanel>
@@ -702,6 +709,7 @@
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <Image Height="32" Source="/TwainControl;component/Icons/flatbed.png" />
                                                                     <TextBlock VerticalAlignment="Center"
+                                                                        AutomationProperties.Name="{local:Loc FLATBED}"
                                                                         Text="{local:Loc FLATBED}"
                                                                         TextWrapping="Wrap" />
                                                                 </StackPanel>
@@ -714,6 +722,7 @@
                                     </ToggleButton>
                                     <Extensions:SplitButton Grid.Column="1"
                                         local:Policy.PolicyName="ScanImage"
+                                        AutomationProperties.Name="{local:Loc SCAN}"
                                         Command="{Binding ScanImage}"
                                         IsEnabled="{Binding Scanner.ArayüzEtkin}">
                                         <StackPanel Orientation="Horizontal">
@@ -752,7 +761,8 @@
                                                 BorderBrush="{StaticResource GroupBoxBackGround}"
                                                 BorderThickness="1">
                                                 <StackPanel>
-                                                    <MenuItem Header="{local:Loc SEPERATE}"
+                                                    <MenuItem AutomationProperties.Name="{local:Loc SEPERATE}"
+                                                        Header="{local:Loc SEPERATE}"
                                                         IsCheckable="True"
                                                         IsChecked="{Binding Scanner.ScanSeperate}"
                                                         Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
@@ -780,7 +790,8 @@
                                                             </Image>
                                                         </MenuItem.Icon>
                                                     </MenuItem>
-                                                    <MenuItem Header="{local:Loc SEPERATOR}"
+                                                    <MenuItem AutomationProperties.Name="{local:Loc SEPERATOR}"
+                                                        Header="{local:Loc SEPERATOR}"
                                                         IsCheckable="True"
                                                         IsChecked="{Binding Scanner.UsePageSeperator}"
                                                         IsEnabled="{Binding Scanner.ScanSeperate}">
@@ -796,16 +807,20 @@
                                                         </MenuItem.Icon>
                                                     </MenuItem>
                                                     <Separator />
-                                                    <MenuItem IsCheckable="True"
+                                                    <MenuItem AutomationProperties.Name="{local:Loc AUTOROTATE}"
+                                                        IsCheckable="True"
                                                         IsChecked="{Binding Path=AutoRotateBasedText, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         IsEnabled="{Binding TesseractOrientationFileExists}">
                                                         <MenuItem.Header>
                                                             <TextBlock>
-                                                                <Run BaselineAlignment="Center" Text="{local:Loc DOCUMENT}" />
+                                                                <Run AutomationProperties.Name="{local:Loc DOCUMENT}"
+                                                                    BaselineAlignment="Center"
+                                                                    Text="{local:Loc DOCUMENT}" />
                                                                 <Run BaselineAlignment="Center" Text="{local:Loc AUTOROTATE}" />
                                                                 <InlineUIContainer BaselineAlignment="Center">
                                                                     <Image Width="16"
                                                                         Height="16"
+                                                                        AutomationProperties.Name="{local:Loc TESSERACTORIENTATIONFILEWARNING}"
                                                                         ToolTip="{local:Loc TESSERACTORIENTATIONFILEWARNING}"
                                                                         ToolTipService.IsEnabled="{Binding IsEnabled, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource Mode=Self}}"
                                                                         ToolTipService.ShowOnDisabled="True">
@@ -838,6 +853,7 @@
                                     </Extensions:SplitButton>
                                     <Extensions:SplitButton Grid.Column="2"
                                         local:Policy.PolicyName="FastScanImage"
+                                        AutomationProperties.Name="{local:Loc FASTSCAN}"
                                         BorderBrush="Cyan"
                                         Command="{Binding FastScanImage}"
                                         IsEnabled="{Binding Scanner.ArayüzEtkin}">
@@ -881,7 +897,8 @@
                                                 BorderBrush="{StaticResource GroupBoxBackGround}"
                                                 BorderThickness="1">
                                                 <StackPanel>
-                                                    <MenuItem Header="{local:Loc SHOWFILE}"
+                                                    <MenuItem AutomationProperties.Name="{local:Loc SHOWFILE}"
+                                                        Header="{local:Loc SHOWFILE}"
                                                         IsCheckable="True"
                                                         IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}">
                                                         <MenuItem.Icon>
@@ -896,7 +913,8 @@
                                                         </MenuItem.Icon>
                                                     </MenuItem>
                                                     <Separator />
-                                                    <MenuItem Header="{local:Loc CLOSECOMP}"
+                                                    <MenuItem AutomationProperties.Name="{local:Loc CLOSECOMP}"
+                                                        Header="{local:Loc CLOSECOMP}"
                                                         IsCheckable="True"
                                                         IsChecked="{Binding SetShutdown}">
                                                         <MenuItem.Icon>
@@ -910,16 +928,22 @@
                                                             </Image>
                                                         </MenuItem.Icon>
                                                     </MenuItem>
-                                                    <MenuItem IsCheckable="True"
+                                                    <MenuItem AutomationProperties.Name="{local:Loc AUTOROTATE}"
+                                                        IsCheckable="True"
                                                         IsChecked="{Binding Path=AutoRotateBasedText, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         IsEnabled="{Binding TesseractOrientationFileExists}">
                                                         <MenuItem.Header>
                                                             <TextBlock>
-                                                                <Run BaselineAlignment="Center" Text="{local:Loc DOCUMENT}" />
-                                                                <Run BaselineAlignment="Center" Text="{local:Loc AUTOROTATE}" />
+                                                                <Run AutomationProperties.Name="{local:Loc DOCUMENT}"
+                                                                    BaselineAlignment="Center"
+                                                                    Text="{local:Loc DOCUMENT}" />
+                                                                <Run AutomationProperties.Name="{local:Loc AUTOROTATE}"
+                                                                    BaselineAlignment="Center"
+                                                                    Text="{local:Loc AUTOROTATE}" />
                                                                 <InlineUIContainer BaselineAlignment="Center">
                                                                     <Image Width="16"
                                                                         Height="16"
+                                                                        AutomationProperties.Name="{local:Loc TESSERACTORIENTATIONFILEWARNING}"
                                                                         ToolTip="{local:Loc TESSERACTORIENTATIONFILEWARNING}"
                                                                         ToolTipService.IsEnabled="{Binding IsEnabled, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource Mode=Self}}"
                                                                         ToolTipService.ShowOnDisabled="True">
@@ -953,6 +977,7 @@
                                     <Button x:Name="AutoScanPathBtn"
                                         Grid.Column="3"
                                         local:Policy.PolicyName="KayıtYoluBelirle"
+                                        AutomationProperties.Name="{local:Loc AUTOPATH}"
                                         Command="{Binding KayıtYoluBelirle}"
                                         IsEnabled="{Binding Scanner.ArayüzEtkin}">
                                         <StackPanel Orientation="Horizontal">
@@ -967,6 +992,7 @@
                                                     Source="/TwainControl;component/Icons/save.png" />
                                             </Canvas>
                                             <TextBlock VerticalAlignment="Center"
+                                                AutomationProperties.Name="{local:Loc AUTOPATH}"
                                                 Text="{local:Loc AUTOPATH}"
                                                 TextWrapping="Wrap" />
                                         </StackPanel>
@@ -1003,7 +1029,9 @@
                                                 <Viewbox Width="200" Height="100">
                                                     <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
                                                 </Viewbox>
-                                                <TextBlock Text="{local:Loc DELETE}" TextWrapping="Wrap" />
+                                                <TextBlock AutomationProperties.Name="{local:Loc DELETE}"
+                                                    Text="{local:Loc DELETE}"
+                                                    TextWrapping="Wrap" />
                                             </StackPanel>
                                         </ToolTip>
                                     </ToggleButton.ToolTip>
@@ -1019,6 +1047,7 @@
                                 </Image>
                                 <Extensions:NumericUpDown x:Name="SpDelay"
                                     local:Policy.PolicyName="ScanDelay"
+                                    AutomationProperties.Name="{local:Loc SECOND}"
                                     Interval="1"
                                     IsReadOnly="True"
                                     Maximum="120"
@@ -1034,6 +1063,7 @@
                                     </Image.Source>
                                 </Image>
                                 <Extensions:NumericUpDown local:Policy.PolicyName="ScanBetweenDelay"
+                                    AutomationProperties.Name="{local:Loc SECOND}"
                                     Interval="1"
                                     IsReadOnly="True"
                                     Maximum="120"
@@ -1068,7 +1098,9 @@
                                             </Image.Source>
                                         </Image>
                                     </ListBoxItem>
-                                    <ListBoxItem Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" ToolTip="{local:Loc Right}">
+                                    <ListBoxItem AutomationProperties.Name="{local:Loc Right}"
+                                        Tag="{Binding Path=[1], Source={StaticResource PageRotations}}"
+                                        ToolTip="{local:Loc Right}">
                                         <Image Width="16"
                                             Height="16"
                                             RenderTransformOrigin="0.5,0.5">
@@ -1085,7 +1117,9 @@
                                             </Image.Source>
                                         </Image>
                                     </ListBoxItem>
-                                    <ListBoxItem Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" ToolTip="{local:Loc Left}">
+                                    <ListBoxItem AutomationProperties.Name="{local:Loc Left}"
+                                        Tag="{Binding Path=[2], Source={StaticResource PageRotations}}"
+                                        ToolTip="{local:Loc Left}">
                                         <Image Width="16"
                                             Height="16"
                                             RenderTransformOrigin="0.5,0.5">
@@ -1130,7 +1164,8 @@
                                             </Image.Source>
                                         </Image>
                                     </ListBoxItem>
-                                    <ListBoxItem RenderTransformOrigin="0.5,0.5"
+                                    <ListBoxItem AutomationProperties.Name="{local:Loc Rotate180}"
+                                        RenderTransformOrigin="0.5,0.5"
                                         Tag="{Binding Path=[1], Source={StaticResource PageFlips}}"
                                         ToolTip="{local:Loc Rotate180}">
                                         <ListBoxItem.RenderTransform>
@@ -1147,7 +1182,8 @@
                                             </Image.Source>
                                         </Image>
                                     </ListBoxItem>
-                                    <ListBoxItem RenderTransformOrigin="0.5,0.5"
+                                    <ListBoxItem AutomationProperties.Name="{local:Loc FLIP}"
+                                        RenderTransformOrigin="0.5,0.5"
                                         Tag="{Binding Path=[2], Source={StaticResource PageFlips}}"
                                         ToolTip="{local:Loc FLIP}">
                                         <ListBoxItem.RenderTransform>
@@ -1179,6 +1215,7 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <CheckBox VerticalContentAlignment="Center"
+                                    AutomationProperties.Name="{local:Loc TWOSIDE}"
                                     Content="{local:Loc TWOSIDE}"
                                     IsChecked="{Binding Scanner.Duplex}"
                                     IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
@@ -1186,13 +1223,15 @@
                                     IsChecked="{Binding Scanner.PaperBackScan}"
                                     IsEnabled="{Binding Scanner.Duplex}">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc REVERSE}" />
+                                        <TextBlock VerticalAlignment="Center"
+                                            AutomationProperties.Name="{local:Loc REVERSE}"
+                                            Text="{local:Loc REVERSE}" />
                                         <ComboBox IsEnabled="{Binding Scanner.PaperBackScan}" SelectedIndex="{Binding BackMode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                            <ComboBoxItem Content="{local:Loc BW}" />
-                                            <ComboBoxItem>
+                                            <ComboBoxItem AutomationProperties.Name="{local:Loc BW}" Content="{local:Loc BW}" />
+                                            <ComboBoxItem AutomationProperties.Name="{local:Loc GRAY}">
                                                 <TextBlock Foreground="Gray" Text="{local:Loc GRAY}" />
                                             </ComboBoxItem>
-                                            <ComboBoxItem>
+                                            <ComboBoxItem AutomationProperties.Name="{local:Loc COLOR}">
                                                 <TextBlock Foreground="{StaticResource Colorfull}" Text="{local:Loc COLOR}" />
                                             </ComboBoxItem>
                                         </ComboBox>
@@ -1222,28 +1261,34 @@
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
                                 <CheckBox Grid.Row="1"
+                                    AutomationProperties.Name="{local:Loc GUI}"
                                     Content="{local:Loc GUI}"
                                     IsChecked="{Binding Scanner.ShowUi}" />
                                 <CheckBox Grid.Row="1"
                                     Grid.Column="1"
+                                    AutomationProperties.Name="{local:Loc FILMSCANNER}"
                                     Content="{local:Loc FILMSCANNER}"
                                     IsChecked="{Binding Scanner.UseFilmScanner}" />
                                 <CheckBox Grid.Row="1"
                                     Grid.Column="2"
+                                    AutomationProperties.Name="{local:Loc INVERTCOLOR}"
                                     Content="{local:Loc INVERTCOLOR}"
                                     IsChecked="{Binding Scanner.InvertImage}" />
                                 <CheckBox Grid.Row="2"
+                                    AutomationProperties.Name="{local:Loc SHOWPROGRESS}"
                                     Content="{local:Loc SHOWPROGRESS}"
                                     IsChecked="{Binding Scanner.ShowProgress}" />
                                 <CheckBox Grid.Row="2"
                                     Grid.Column="1"
                                     VerticalContentAlignment="Center"
+                                    AutomationProperties.Name="{local:Loc EMPTYPAGE}"
                                     IsChecked="{Binding Scanner.DetectEmptyPage}"
                                     IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                     <CheckBox.Content>
                                         <StackPanel>
                                             <TextBlock Text="{local:Loc EMPTYPAGE}" />
                                             <Extensions:NumericUpDown HorizontalAlignment="Left"
+                                                AutomationProperties.Name="{local:Loc THRESHOLD}"
                                                 Interval="1"
                                                 IsReadOnly="True"
                                                 Maximum="100"
@@ -1256,6 +1301,7 @@
                                 </CheckBox>
                                 <CheckBox Grid.Row="2"
                                     Grid.Column="2"
+                                    AutomationProperties.Name="{local:Loc DESPECKLE}"
                                     IsChecked="{Binding Scanner.ApplyMedian}">
                                     <StackPanel>
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc DESPECKLE}" />
@@ -1281,6 +1327,7 @@
                                     <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                                         d:Text="{local:Loc FILE}"
                                         local:Policy.PolicyName="SaveFileName"
+                                        AutomationProperties.Name="{local:Loc FILE}"
                                         GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus"
                                         IsEnabled="{Binding Scanner.ArayüzEtkin}"
                                         KeyBoardButtonVisibility="Visible"
@@ -1300,7 +1347,9 @@
                                                         <Setter Property="ToolTip" Value="{Binding CommandParameter, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource FileDateContextMenuConverter}}" />
                                                     </Style>
                                                 </ContextMenu.Resources>
-                                                <MenuItem Header="{local:Loc AutoText}" ToolTipService.IsEnabled="False">
+                                                <MenuItem AutomationProperties.Name="{local:Loc AutoText}"
+                                                    Header="{local:Loc AutoText}"
+                                                    ToolTipService.IsEnabled="False">
                                                     <MenuItem.Icon>
                                                         <Image Width="16" Height="16">
                                                             <Image.Source>
@@ -1317,12 +1366,12 @@
                                                         </MenuItem.Icon>
                                                         <MenuItem.Header>
                                                             <TextBlock>
-                                                                <Run Text="{local:Loc DAY}" />
-                                                                <Run Text="{local:Loc MONTH}" />
-                                                                <Run Text="{local:Loc YEAR}" />
-                                                                <Run Text="{local:Loc TIME}" />
-                                                                <Run Text="{local:Loc MINUTE}" />
-                                                                <Run Text="{local:Loc SECOND}" />
+                                                                <Run AutomationProperties.Name="{local:Loc DAY}" Text="{local:Loc DAY}" />
+                                                                <Run AutomationProperties.Name="{local:Loc MONTH}" Text="{local:Loc MONTH}" />
+                                                                <Run AutomationProperties.Name="{local:Loc YEAR}" Text="{local:Loc YEAR}" />
+                                                                <Run AutomationProperties.Name="{local:Loc TIME}" Text="{local:Loc TIME}" />
+                                                                <Run AutomationProperties.Name="{local:Loc MINUTE}" Text="{local:Loc MINUTE}" />
+                                                                <Run AutomationProperties.Name="{local:Loc SECOND}" Text="{local:Loc SECOND}" />
                                                             </TextBlock>
                                                         </MenuItem.Header>
                                                     </MenuItem>
@@ -1332,9 +1381,9 @@
                                                         </MenuItem.Icon>
                                                         <MenuItem.Header>
                                                             <TextBlock>
-                                                                <Run Text="{local:Loc DAY}" />
-                                                                <Run Text="{local:Loc MONTH}" />
-                                                                <Run Text="{local:Loc YEAR}" />
+                                                                <Run AutomationProperties.Name="{local:Loc DAY}" Text="{local:Loc DAY}" />
+                                                                <Run AutomationProperties.Name="{local:Loc MONTH}" Text="{local:Loc MONTH}" />
+                                                                <Run AutomationProperties.Name="{local:Loc YEAR}" Text="{local:Loc YEAR}" />
                                                             </TextBlock>
                                                         </MenuItem.Header>
                                                     </MenuItem>
@@ -1344,9 +1393,9 @@
                                                         </MenuItem.Icon>
                                                         <MenuItem.Header>
                                                             <TextBlock>
-                                                                <Run Text="{local:Loc MONTH}" />
-                                                                <Run Text="{local:Loc DAY}" />
-                                                                <Run Text="{local:Loc YEAR}" />
+                                                                <Run AutomationProperties.Name="{local:Loc MONTH}" Text="{local:Loc MONTH}" />
+                                                                <Run AutomationProperties.Name="{local:Loc DAY}" Text="{local:Loc DAY}" />
+                                                                <Run AutomationProperties.Name="{local:Loc YEAR}" Text="{local:Loc YEAR}" />
                                                             </TextBlock>
                                                         </MenuItem.Header>
                                                     </MenuItem>
@@ -1356,8 +1405,8 @@
                                                         </MenuItem.Icon>
                                                         <MenuItem.Header>
                                                             <TextBlock>
-                                                                <Run Text="{local:Loc USERNAME}" />
-                                                                <Run Text="{local:Loc RES}" />
+                                                                <Run AutomationProperties.Name="{local:Loc USERNAME}" Text="{local:Loc USERNAME}" />
+                                                                <Run AutomationProperties.Name="{local:Loc RES}" Text="{local:Loc RES}" />
                                                                 <System:String>DPI</System:String>
                                                             </TextBlock>
                                                         </MenuItem.Header>
@@ -1368,43 +1417,57 @@
                                                         </MenuItem.Icon>
                                                         <MenuItem.Header>
                                                             <TextBlock>
-                                                                <Run Text="{local:Loc COMPUTER}" />
-                                                                <Run Text="{local:Loc USERNAME}" />
+                                                                <Run AutomationProperties.Name="{local:Loc COMPUTER}" Text="{local:Loc COMPUTER}" />
+                                                                <Run AutomationProperties.Name="{local:Loc USERNAME}" Text="{local:Loc USERNAME}" />
                                                             </TextBlock>
                                                         </MenuItem.Header>
                                                     </MenuItem>
                                                 </MenuItem>
-                                                <MenuItem CommandParameter="[DATE]" Header="{local:Loc DAY}">
+                                                <MenuItem AutomationProperties.Name="{local:Loc DAY}"
+                                                    CommandParameter="[DATE]"
+                                                    Header="{local:Loc DAY}">
                                                     <MenuItem.Icon>
                                                         <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
                                                     </MenuItem.Icon>
                                                 </MenuItem>
-                                                <MenuItem CommandParameter="[MONTH]" Header="{local:Loc MONTH}">
+                                                <MenuItem AutomationProperties.Name="{local:Loc MONTH}"
+                                                    CommandParameter="[MONTH]"
+                                                    Header="{local:Loc MONTH}">
                                                     <MenuItem.Icon>
                                                         <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
                                                     </MenuItem.Icon>
                                                 </MenuItem>
-                                                <MenuItem CommandParameter="[YEAR]" Header="{local:Loc YEAR}">
+                                                <MenuItem AutomationProperties.Name="{local:Loc YEAR}"
+                                                    CommandParameter="[YEAR]"
+                                                    Header="{local:Loc YEAR}">
                                                     <MenuItem.Icon>
                                                         <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
                                                     </MenuItem.Icon>
                                                 </MenuItem>
-                                                <MenuItem CommandParameter="[HOUR]" Header="{local:Loc TIME}">
+                                                <MenuItem AutomationProperties.Name="{local:Loc TIME}"
+                                                    CommandParameter="[HOUR]"
+                                                    Header="{local:Loc TIME}">
                                                     <MenuItem.Icon>
                                                         <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
                                                     </MenuItem.Icon>
                                                 </MenuItem>
-                                                <MenuItem CommandParameter="[MINUTE]" Header="{local:Loc MINUTE}">
+                                                <MenuItem AutomationProperties.Name="{local:Loc MINUTE}"
+                                                    CommandParameter="[MINUTE]"
+                                                    Header="{local:Loc MINUTE}">
                                                     <MenuItem.Icon>
                                                         <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
                                                     </MenuItem.Icon>
                                                 </MenuItem>
-                                                <MenuItem CommandParameter="[SECOND]" Header="{local:Loc SECOND}">
+                                                <MenuItem AutomationProperties.Name="{local:Loc SECOND}"
+                                                    CommandParameter="[SECOND]"
+                                                    Header="{local:Loc SECOND}">
                                                     <MenuItem.Icon>
                                                         <ContentPresenter ContentTemplate="{StaticResource TimeIcon}" />
                                                     </MenuItem.Icon>
                                                 </MenuItem>
-                                                <MenuItem CommandParameter="[GUID]" Header="{local:Loc GUID}">
+                                                <MenuItem AutomationProperties.Name="{local:Loc GUID}"
+                                                    CommandParameter="[GUID]"
+                                                    Header="{local:Loc GUID}">
                                                     <MenuItem.Icon>
                                                         <Image Width="16" Height="16">
                                                             <Image.Source>
@@ -1416,7 +1479,9 @@
                                                         </Image>
                                                     </MenuItem.Icon>
                                                 </MenuItem>
-                                                <MenuItem CommandParameter="[USERNAME]" Header="{local:Loc USERNAME}">
+                                                <MenuItem AutomationProperties.Name="{local:Loc USERNAME}"
+                                                    CommandParameter="[USERNAME]"
+                                                    Header="{local:Loc USERNAME}">
                                                     <MenuItem.Icon>
                                                         <Image Width="16" Height="16">
                                                             <Image.Source>
@@ -1428,7 +1493,9 @@
                                                         </Image>
                                                     </MenuItem.Icon>
                                                 </MenuItem>
-                                                <MenuItem CommandParameter="[COMPUTER]" Header="{local:Loc COMPUTER}">
+                                                <MenuItem AutomationProperties.Name="{local:Loc COMPUTER}"
+                                                    CommandParameter="[COMPUTER]"
+                                                    Header="{local:Loc COMPUTER}">
                                                     <MenuItem.Icon>
                                                         <Image Width="16" Height="16">
                                                             <Image.Source>
@@ -1440,7 +1507,9 @@
                                                         </Image>
                                                     </MenuItem.Icon>
                                                 </MenuItem>
-                                                <MenuItem CommandParameter="[RESOLUTION]" Header="{local:Loc RES}">
+                                                <MenuItem AutomationProperties.Name="{local:Loc RES}"
+                                                    CommandParameter="[RESOLUTION]"
+                                                    Header="{local:Loc RES}">
                                                     <MenuItem.Icon>
                                                         <Image Width="16" Height="16">
                                                             <Image.Source>
@@ -1541,7 +1610,7 @@
                                                 Foreground="Red"
                                                 Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
                                         </Extensions:BadgeControl.BadgeContent>
-                                        <Extensions:ContentToggleButton>
+                                        <Extensions:ContentToggleButton AutomationProperties.Name="{local:Loc CLEARLIST}">
                                             <Extensions:ContentToggleButton.OverContent>
                                                 <Border Background="{StaticResource BorderBackground}"
                                                     BorderBrush="{StaticResource GroupBoxBackGround}"
@@ -1555,21 +1624,24 @@
                                                             </MenuItem.Icon>
                                                             <MenuItem.Header>
                                                                 <TextBlock VerticalAlignment="Center">
-                                                                    <Run Text="{local:Loc FILE}" />
+                                                                    <Run AutomationProperties.Name="{local:Loc FILE}" Text="{local:Loc FILE}" />
                                                                     <Run Text="{local:Loc CLEARLIST}" />
                                                                 </TextBlock>
                                                             </MenuItem.Header>
                                                         </MenuItem>
                                                         <Separator />
-                                                        <MenuItem IsCheckable="True" IsChecked="{Binding DirectRemoveImage, Source={x:Static properties:Settings.Default}}">
+                                                        <MenuItem AutomationProperties.Name="{local:Loc DELETE}"
+                                                            IsCheckable="True"
+                                                            IsChecked="{Binding DirectRemoveImage, Source={x:Static properties:Settings.Default}}">
                                                             <MenuItem.Header>
                                                                 <TextBlock>
-                                                                    <Run Text="{local:Loc FILE}" />
+                                                                    <Run AutomationProperties.Name="{local:Loc FILE}" Text="{local:Loc FILE}" />
                                                                     <Run Text="{local:Loc DELETE}" />
                                                                 </TextBlock>
                                                             </MenuItem.Header>
                                                         </MenuItem>
-                                                        <MenuItem FontWeight="Bold"
+                                                        <MenuItem AutomationProperties.Name="{local:Loc REMOVEPROCESSEDIMAGE}"
+                                                            FontWeight="Bold"
                                                             Foreground="Red"
                                                             Header="{local:Loc REMOVEPROCESSEDIMAGE}"
                                                             IsCheckable="True"
@@ -1606,6 +1678,7 @@
                                     </Button>
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                     <Button local:Policy.PolicyName="Tümünüİşaretle"
+                                        AutomationProperties.Name="{local:Loc ALL}"
                                         BorderBrush="Cyan"
                                         Command="{Binding Tümünüİşaretle}"
                                         ToolTip="{local:Loc ALL}">
@@ -1614,6 +1687,7 @@
                                             Source="/TwainControl;component/Icons/selectall.png" />
                                     </Button>
                                     <Button local:Policy.PolicyName="TümününİşaretiniKaldır"
+                                        AutomationProperties.Name="{local:Loc NONE}"
                                         Command="{Binding TümününİşaretiniKaldır}"
                                         ToolTip="{local:Loc NONE}">
                                         <Image Width="24"
@@ -1621,6 +1695,7 @@
                                             Source="/TwainControl;component/Icons/none.png" />
                                     </Button>
                                     <Extensions:SplitButton local:Policy.PolicyName="Tersiniİşaretle"
+                                        AutomationProperties.Name="{local:Loc REVERSE}"
                                         Command="{Binding Tersiniİşaretle}"
                                         ToolTip="{local:Loc REVERSE}">
                                         <Image Width="24"
@@ -1687,11 +1762,13 @@
                                                 Foreground="Red"
                                                 Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
                                         </Extensions:BadgeControl.BadgeContent>
-                                        <Button local:Policy.PolicyName="DetectEmptyPages" Command="{Binding DetectEmptyPages}">
+                                        <Button local:Policy.PolicyName="DetectEmptyPages"
+                                            AutomationProperties.Name="{local:Loc EMPTYPAGE}"
+                                            Command="{Binding DetectEmptyPages}">
                                             <Button.ToolTip>
                                                 <TextBlock>
                                                     <Run Text="{local:Loc EMPTYPAGE}" />
-                                                    <Run Text="{local:Loc THRESHOLD}" />
+                                                    <Run AutomationProperties.Name="{local:Loc THRESHOLD}" Text="{local:Loc THRESHOLD}" />
                                                     <Run Text="{Binding EmptyThreshold, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat=%{0}}" />
                                                 </TextBlock>
                                             </Button.ToolTip>
@@ -1725,11 +1802,11 @@
                                         ToolTipService.ShowOnDisabled="True">
                                         <Button.ToolTip>
                                             <TextBlock>
-                                                <Run Text="{local:Loc Rotate90}" />
-                                                <Run Text="{local:Loc Rotate180}" />
-                                                <Run Text="{local:Loc Rotate270}" />
+                                                <Run AutomationProperties.Name="{local:Loc Rotate90}" Text="{local:Loc Rotate90}" />
+                                                <Run AutomationProperties.Name="{local:Loc Rotate180}" Text="{local:Loc Rotate180}" />
+                                                <Run AutomationProperties.Name="{local:Loc Rotate270}" Text="{local:Loc Rotate270}" />
                                                 <LineBreak />
-                                                <Run Text="{local:Loc TESSERACTORIENTATIONFILEWARNING}" />
+                                                <Run AutomationProperties.Name="{local:Loc TESSERACTORIENTATIONFILEWARNING}" Text="{local:Loc TESSERACTORIENTATIONFILEWARNING}" />
                                             </TextBlock>
                                         </Button.ToolTip>
                                         <Canvas Width="24" Height="24">
@@ -1831,6 +1908,7 @@
                                         Value="{Binding Scanner.VerticalLineThreshold, UpdateSourceTrigger=PropertyChanged}" />
                                     <Button Width="24"
                                         Height="24"
+                                        AutomationProperties.Name="{local:Loc DELETE}"
                                         Command="{Binding RemoveVerticalLines}">
                                         <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
                                         <Button.ToolTip>
@@ -1931,7 +2009,7 @@
                                                                                                 <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
                                                                                             </MenuItem.Icon>
                                                                                         </MenuItem>
-                                                                                        <MenuItem Command="{Binding Data.SaveSingleBwPdfFile, Source={StaticResource Proxy}}">
+                                                                                        <MenuItem AutomationProperties.Name="{local:Loc BW}" Command="{Binding Data.SaveSingleBwPdfFile, Source={StaticResource Proxy}}">
                                                                                             <MenuItem.Header>
                                                                                                 <StackPanel Orientation="Horizontal">
                                                                                                     <TextBlock VerticalAlignment="Center">
@@ -1972,7 +2050,7 @@
                                                                                                 <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.tif}" />
                                                                                             </MenuItem.Icon>
                                                                                         </MenuItem>
-                                                                                        <MenuItem Command="{Binding Data.SaveSingleBlackWhiteJb2File, Source={StaticResource Proxy}}">
+                                                                                        <MenuItem AutomationProperties.Name="{local:Loc BW}" Command="{Binding Data.SaveSingleBlackWhiteJb2File, Source={StaticResource Proxy}}">
                                                                                             <MenuItem.Header>
                                                                                                 <TextBlock VerticalAlignment="Center">
                                                                                                     <Run Text="{local:Loc BW}" />
@@ -2011,7 +2089,7 @@
                                                                                             </MenuItem.Icon>
                                                                                         </MenuItem>
                                                                                         <Separator />
-                                                                                        <Expander Header="{local:Loc DESKEW}">
+                                                                                        <Expander AutomationProperties.Name="{local:Loc DESKEW}" Header="{local:Loc DESKEW}">
                                                                                             <StackPanel>
                                                                                                 <UniformGrid Columns="2">
                                                                                                     <Button local:Policy.PolicyName="ResimSilGeriAl"
@@ -2037,6 +2115,7 @@
                                                                                                     Minimum="-3"
                                                                                                     Value="{Binding Data.CustomDeskewAngle, Source={StaticResource Proxy}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                                                                                                 <Button local:Policy.PolicyName="ManualDeskewImage"
+                                                                                                    AutomationProperties.Name="{local:Loc DESKEW}"
                                                                                                     Command="{Binding Data.ManualDeskewImage, Source={StaticResource Proxy}}"
                                                                                                     CommandParameter="{Binding Mode=OneWay}"
                                                                                                     Content="{local:Loc DESKEW}" />
@@ -2283,6 +2362,7 @@
                                                 Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" />
                                         </TextBlock>
                                         <Button Grid.Column="1"
+                                            AutomationProperties.Name="{local:Loc REVERSE}"
                                             Command="{Binding ReverseData}"
                                             ToolTip="{local:Loc REVERSE}">
                                             <TextBlock FontFamily="Wingdings 3"
@@ -2291,6 +2371,7 @@
                                                 Text="E" />
                                         </Button>
                                         <Button Grid.Column="2"
+                                            AutomationProperties.Name="{local:Loc HORIZONTAL}"
                                             Command="{Binding ReverseDataHorizontal}"
                                             ToolTip="{local:Loc HORIZONTAL}">
                                             <TextBlock FontFamily="Wingdings 3"
@@ -2299,6 +2380,7 @@
                                                 Text="D" />
                                         </Button>
                                         <Button Grid.Column="3"
+                                            AutomationProperties.Name="{local:Loc FIRSTLAST}"
                                             BorderBrush="Cyan"
                                             BorderThickness="1"
                                             Command="{Binding FirstLastSortSequenceData}"
@@ -2309,6 +2391,7 @@
                                                 Text="G" />
                                         </Button>
                                         <Button Grid.Column="4"
+                                            AutomationProperties.Name="{local:Loc RANDOM}"
                                             BorderBrush="Cyan"
                                             BorderThickness="1"
                                             Command="{Binding ShuffleData}"
@@ -2327,6 +2410,7 @@
                                             </Canvas>
                                         </Button>
                                         <Button Grid.Column="5"
+                                            AutomationProperties.Name="{local:Loc SPLITSORT}"
                                             Command="{Binding FirstLastGroup}"
                                             ToolTip="{local:Loc SPLITSORT}">
                                             <TextBlock FontFamily="Wingdings 3"
@@ -2342,6 +2426,7 @@
                                             Value="{Binding GroupSplitCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <Extensions:SplitButton Grid.Column="7"
                                             local:Policy.PolicyName="AddSplitListsIndex"
+                                            AutomationProperties.Name="{local:Loc SLICE}"
                                             Command="{Binding AddSplitListsIndex}">
                                             <TextBlock FontFamily="Wingdings 2"
                                                 FontSize="16"
@@ -2380,7 +2465,9 @@
                                                             ItemsSource="{Binding SplittedIndexImages}">
                                                             <ItemsControl.ItemTemplate>
                                                                 <DataTemplate>
-                                                                    <Button Command="{Binding SelectSplittedIndexImages, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" CommandParameter="{Binding Mode=OneWay}">
+                                                                    <Button AutomationProperties.Name="{local:Loc FILE}"
+                                                                        Command="{Binding SelectSplittedIndexImages, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}"
+                                                                        CommandParameter="{Binding Mode=OneWay}">
                                                                         <Button.Content>
                                                                             <TextBlock VerticalAlignment="Center">
                                                                                 <Run Text="{Binding Mode=OneWay, Path=Length}" />
@@ -2393,7 +2480,8 @@
                                                         </ItemsControl>
                                                         <UniformGrid Grid.Row="1" Rows="2">
                                                             <TextBox Text="{Binding TextSplitList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="1,2,4,8,16" />
-                                                            <Button BorderBrush="Cyan"
+                                                            <Button AutomationProperties.Name="{local:Loc SLICE}"
+                                                                BorderBrush="Cyan"
                                                                 Command="{Binding SplitImagesByIndex}"
                                                                 Content="{local:Loc SLICE}" />
                                                         </UniformGrid>
@@ -2404,6 +2492,7 @@
                                         <Slider Grid.Column="8"
                                             VerticalAlignment="Center"
                                             AutoToolTipPlacement="TopLeft"
+                                            AutomationProperties.Name="{local:Loc PREVIEWSIZE}"
                                             Maximum="{Binding MaxPreviewWidth}"
                                             Minimum="{Binding MinPreviewWidth}"
                                             SmallChange="1"
@@ -2474,6 +2563,7 @@
                             <Button HorizontalContentAlignment="Stretch"
                                 VerticalContentAlignment="Stretch"
                                 local:Policy.PolicyName="LoadImage"
+                                AutomationProperties.Name="{local:Loc FILE}"
                                 Command="{Binding LoadImage}">
                                 <Grid>
                                     <ProgressBar Background="{x:Null}"
@@ -2513,6 +2603,7 @@
                             HorizontalContentAlignment="Stretch"
                             VerticalContentAlignment="Stretch"
                             local:Policy.PolicyName="SeçiliKaydet"
+                            AutomationProperties.Name="{local:Loc SAVESELECTED}"
                             Command="{Binding SaveSelectedFilesPdfFile}">
                             <Grid>
                                 <ProgressBar d:Foreground="#FF06B025"
@@ -2576,7 +2667,7 @@
                                                 <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
                                             </MenuItem.Icon>
                                         </MenuItem>
-                                        <MenuItem Command="{Binding SaveSelectedFilesBwPdfFile}">
+                                        <MenuItem AutomationProperties.Name="{local:Loc BW}" Command="{Binding SaveSelectedFilesBwPdfFile}">
                                             <MenuItem.Header>
                                                 <TextBlock>
                                                     <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
@@ -2695,6 +2786,7 @@
                             HorizontalContentAlignment="Stretch"
                             VerticalContentAlignment="Stretch"
                             local:Policy.PolicyName="SeçiliDirektPdfKaydet"
+                            AutomationProperties.Name="{local:Loc AUTOPATH}"
                             Command="{Binding SeçiliDirektPdfKaydet}">
                             <Grid>
                                 <ProgressBar d:Foreground="#FF06B025"
@@ -2740,6 +2832,7 @@
                                     </Canvas>
                                     <TextBlock Grid.Column="1"
                                         VerticalAlignment="Center"
+                                        AutomationProperties.Name="{local:Loc AUTOPATH}"
                                         FontWeight="Bold"
                                         Text="{local:Loc AUTOPATH}"
                                         TextWrapping="Wrap">
@@ -2766,6 +2859,7 @@
         <GridSplitter Grid.Column="1"
             Width="3"
             HorizontalAlignment="Stretch"
+            AutomationProperties.Name="{local:Loc SPLITTERTOOLTIP}"
             Background="{StaticResource GroupBoxBackGround}"
             ToolTip="{local:Loc SPLITTERTOOLTIP}">
             <GridSplitter.InputBindings>

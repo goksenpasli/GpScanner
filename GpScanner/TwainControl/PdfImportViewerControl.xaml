@@ -61,6 +61,7 @@
                 IsMainMenu="False">
                 <MenuItem>
                     <MenuItem Name="Clear"
+                        AutomationProperties.Name="{local:Loc CLEARLIST}"
                         Command="{Binding ClearPdfHistory, Mode=OneWay}"
                         Header="{local:Loc CLEARLIST}">
                         <MenuItem.Icon>
@@ -69,7 +70,8 @@
                                 Source="/TwainControl;component/Icons/delete.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Command="{Binding ClosePdfFile, Mode=OneWay}"
+                    <MenuItem AutomationProperties.Name="{local:Loc CLOSEFILE}"
+                        Command="{Binding ClosePdfFile, Mode=OneWay}"
                         CommandParameter="{Binding Source={x:Reference PdfViewer}}"
                         Header="{local:Loc CLOSEFILE}">
                         <MenuItem.Icon>
@@ -84,7 +86,9 @@
                         </MenuItem.Icon>
                     </MenuItem>
                     <Separator />
-                    <MenuItem IsEnabled="{Binding ElementName=Clear, Path=IsEnabled}" ItemsSource="{Binding PdfLoadHistory, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                    <MenuItem AutomationProperties.Name="{local:Loc DOCUMENT}"
+                        IsEnabled="{Binding ElementName=Clear, Path=IsEnabled}"
+                        ItemsSource="{Binding PdfLoadHistory, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc DOCUMENT}" />
@@ -92,7 +96,9 @@
                                     Maximum="100"
                                     Minimum="1"
                                     Value="{Binding PdfLoadHistoryCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
+                                <TextBlock VerticalAlignment="Center"
+                                    AutomationProperties.Name="{local:Loc FILE}"
+                                    Text="{local:Loc FILE}" />
                             </StackPanel>
                         </MenuItem.Header>
                         <MenuItem.Icon>
@@ -252,7 +258,9 @@
                                                 <ControlTemplate>
                                                     <StackPanel>
                                                         <TextBlock>
-                                                            <Run d:Text="DOCUMENT" Text="{local:Loc DOCUMENT}" />
+                                                            <Run d:Text="DOCUMENT"
+                                                                AutomationProperties.Name="{local:Loc DOCUMENT}"
+                                                                Text="{local:Loc DOCUMENT}" />
                                                             <Run Text="{Binding PageNumber, Mode=OneTime}" />
                                                         </TextBlock>
                                                         <Extensions:NumericUpDown BorderBrush="{Binding BorderBrush}"
@@ -288,11 +296,12 @@
                                 </ListBox.ItemTemplate>
                             </ListBox>
                             <CheckBox Grid.Row="1"
+                                AutomationProperties.Name="{local:Loc ADDFIRST}"
                                 Content="{local:Loc ADDFIRST}"
                                 IsChecked="{Binding MergePdfFileToFirst}"
                                 IsEnabled="{Binding Source={x:Reference MergePdf}, Path=IsEnabled}" />
                             <UniformGrid Grid.Row="2" Columns="3">
-                                <Button Command="{Binding MergePdfListAddFile}">
+                                <Button AutomationProperties.Name="{local:Loc FILE}" Command="{Binding MergePdfListAddFile}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="32"
                                             Height="32"
@@ -300,7 +309,9 @@
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
                                     </StackPanel>
                                 </Button>
-                                <Button x:Name="MergePdf" Command="{Binding MergePdfListToCurrentFile}">
+                                <Button x:Name="MergePdf"
+                                    AutomationProperties.Name="{local:Loc MERGEPDF}"
+                                    Command="{Binding MergePdfListToCurrentFile}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
@@ -317,12 +328,12 @@
                                         <TextBlock Grid.Column="1"
                                             VerticalAlignment="Center"
                                             TextWrapping="Wrap">
-                                            <Run Text="{local:Loc FILE}" />
+                                            <Run AutomationProperties.Name="{local:Loc FILE}" Text="{local:Loc FILE}" />
                                             <Run Text="{local:Loc MERGEPDF}" />
                                         </TextBlock>
                                     </Grid>
                                 </Button>
-                                <Button Command="{Binding MergePdfListToFile}">
+                                <Button AutomationProperties.Name="{local:Loc SAVEPDF}" Command="{Binding MergePdfListToFile}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="32" Height="32">
                                             <Image.Source>
@@ -393,7 +404,8 @@
                                             IsChecked="{Binding Selected}">
                                             <CheckBox.Content>
                                                 <StackPanel>
-                                                    <Extensions:NumericUpDown BorderBrush="{Binding BorderBrush}"
+                                                    <Extensions:NumericUpDown AutomationProperties.Name="{local:Loc PAGENUMBER}"
+                                                        BorderBrush="{Binding BorderBrush}"
                                                         Maximum="{Binding Items.Count, Mode=OneWay, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                                         Minimum="1"
                                                         Value="{Binding PageNumber}" />
@@ -484,7 +496,7 @@
                                         Source="/TwainControl;component/Icons/selectall.png" />
                                     <Extensions:ContentToggleButton.OverContent>
                                         <UniformGrid Width="{Binding Path=ActualWidth, Source={x:Reference BtnMarkReverse}}" Rows="3">
-                                            <Button Command="{Binding PdfImportViewerTümünüİşaretle}">
+                                            <Button AutomationProperties.Name="{local:Loc ALL}" Command="{Binding PdfImportViewerTümünüİşaretle}">
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="24"
                                                         Height="24"
@@ -492,7 +504,7 @@
                                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc ALL}" />
                                                 </StackPanel>
                                             </Button>
-                                            <Button Command="{Binding PdfImportViewerTekİşaretle}">
+                                            <Button AutomationProperties.Name="{local:Loc ODD}" Command="{Binding PdfImportViewerTekİşaretle}">
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="24"
                                                         Height="24"
@@ -500,7 +512,7 @@
                                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc ODD}" />
                                                 </StackPanel>
                                             </Button>
-                                            <Button Command="{Binding PdfImportViewerÇiftİşaretle}">
+                                            <Button AutomationProperties.Name="{local:Loc EVEN}" Command="{Binding PdfImportViewerÇiftİşaretle}">
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="24"
                                                         Height="24"
@@ -511,7 +523,9 @@
                                         </UniformGrid>
                                     </Extensions:ContentToggleButton.OverContent>
                                 </Extensions:ContentToggleButton>
-                                <Button x:Name="BtnMarkReverse" Command="{Binding PdfImportViewerTersiniİşaretle}">
+                                <Button x:Name="BtnMarkReverse"
+                                    AutomationProperties.Name="{local:Loc REVERSE}"
+                                    Command="{Binding PdfImportViewerTersiniİşaretle}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="24"
                                             Height="24"
@@ -519,7 +533,7 @@
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc REVERSE}" />
                                     </StackPanel>
                                 </Button>
-                                <Button Command="{Binding ShufflePdfPages}">
+                                <Button AutomationProperties.Name="{local:Loc RANDOM}" Command="{Binding ShufflePdfPages}">
                                     <StackPanel Orientation="Horizontal">
                                         <Canvas Width="16"
                                             Height="16"
@@ -536,7 +550,9 @@
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc RANDOM}" />
                                     </StackPanel>
                                 </Button>
-                                <Button Command="{Binding ExtractMultiplePdfFile}" CommandParameter="{Binding Source={x:Reference PdfViewer}}">
+                                <Button AutomationProperties.Name="{local:Loc SAVESELECTED}"
+                                    Command="{Binding ExtractMultiplePdfFile}"
+                                    CommandParameter="{Binding Source={x:Reference PdfViewer}}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="24"
                                             Height="24"
@@ -550,6 +566,7 @@
                                 </Button>
                                 <Button HorizontalContentAlignment="Stretch"
                                     VerticalContentAlignment="Stretch"
+                                    AutomationProperties.Name="{local:Loc SORT}"
                                     Command="{Binding LoadArrangedPdfFile}"
                                     CommandParameter="{Binding Source={x:Reference PdfViewer}}">
                                     <Grid>
@@ -565,7 +582,7 @@
                                             <TextBlock VerticalAlignment="Center">
                                                 <Run Text="{local:Loc SORT}" />
                                                 <LineBreak />
-                                                <Run Text="{local:Loc SAVEPDF}" />
+                                                <Run AutomationProperties.Name="{local:Loc SAVEPDF}" Text="{local:Loc SAVEPDF}" />
                                             </TextBlock>
                                         </StackPanel>
                                     </Grid>
@@ -573,6 +590,7 @@
                                 <Button HorizontalContentAlignment="Stretch"
                                     VerticalContentAlignment="Stretch"
                                     local:Policy.PolicyName="RemoveArrangedPdfFile"
+                                    AutomationProperties.Name="{local:Loc DELETE}"
                                     Command="{Binding RemoveArrangedPdfFile}"
                                     CommandParameter="{Binding Source={x:Reference PdfViewer}}">
                                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
@@ -707,6 +725,7 @@
                         <StackPanel>
                             <Extensions:ButtonedTextBox VerticalAlignment="Center"
                                 VerticalContentAlignment="Center"
+                                AutomationProperties.Name="{local:Loc WATERMARK}"
                                 CopyButtonVisibility="Collapsed"
                                 FontSizeButtonVisibility="Collapsed"
                                 OpenButtonVisibility="Collapsed"
@@ -745,7 +764,8 @@
                             <UniformGrid Columns="2">
                                 <StackPanel>
                                     <TextBlock Text="{local:Loc TEXTSIZE}" />
-                                    <Extensions:NumericUpDown Interval="1"
+                                    <Extensions:NumericUpDown AutomationProperties.Name="{local:Loc TEXTSIZE}"
+                                        Interval="1"
                                         IsReadOnly="True"
                                         Maximum="512"
                                         Minimum="1"
@@ -753,6 +773,7 @@
                                     <TextBlock Text="{local:Loc TEXTANGLE}" />
                                     <Slider Width="50"
                                         AutoToolTipPlacement="TopLeft"
+                                        AutomationProperties.Name="{local:Loc TEXTANGLE}"
                                         Maximum="360"
                                         Minimum="0"
                                         SmallChange="1"
@@ -785,7 +806,8 @@
                                     </TextBlock>
                                 </Border>
                             </UniformGrid>
-                            <Button BorderBrush="Cyan"
+                            <Button AutomationProperties.Name="{local:Loc WATERMARK}"
+                                BorderBrush="Cyan"
                                 Command="{Binding PdfWaterMark}"
                                 CommandParameter="{Binding Source={x:Reference PdfViewer}}">
                                 <StackPanel Orientation="Horizontal">
@@ -799,7 +821,7 @@
                                     </Image>
                                     <TextBlock VerticalAlignment="Center">
                                         <Run Text="{local:Loc WATERMARK}" />
-                                        <Run Text="{local:Loc APPLY}" />
+                                        <Run AutomationProperties.Name="{local:Loc APPLY}" Text="{local:Loc APPLY}" />
                                     </TextBlock>
                                 </StackPanel>
                             </Button>
@@ -880,20 +902,21 @@
                             </Extensions:ButtonedTextBox>
                             <UniformGrid Columns="2">
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />
-                                <Extensions:NumericUpDown Interval="1"
+                                <Extensions:NumericUpDown AutomationProperties.Name="{local:Loc TEXTSIZE}"
+                                    Interval="1"
                                     IsReadOnly="True"
                                     Maximum="512"
                                     Minimum="1"
                                     Value="{Binding Scanner.PdfPageNumberSize, UpdateSourceTrigger=PropertyChanged}" />
                             </UniformGrid>
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox IsChecked="{Binding IsOdd}">
+                                <CheckBox AutomationProperties.Name="{local:Loc PAGENUMBER}" IsChecked="{Binding IsOdd}">
                                     <TextBlock>
                                         <Run Text="{local:Loc PAGENUMBER}" />
                                         <System:String>1,3,5,7...</System:String>
                                     </TextBlock>
                                 </CheckBox>
-                                <CheckBox IsChecked="{Binding IsEven}">
+                                <CheckBox AutomationProperties.Name="{local:Loc PAGENUMBER}" IsChecked="{Binding IsEven}">
                                     <TextBlock>
                                         <Run Text="{local:Loc PAGENUMBER}" />
                                         <System:String>2,4,6,8...</System:String>
@@ -929,7 +952,8 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                            <Button BorderBrush="Cyan"
+                            <Button AutomationProperties.Name="{local:Loc APPLY}"
+                                BorderBrush="Cyan"
                                 Command="{Binding AddPageNumber}"
                                 CommandParameter="{Binding Source={x:Reference PdfViewer}}">
                                 <StackPanel Orientation="Horizontal">
@@ -957,15 +981,18 @@
                         BorderBrush="{DynamicResource GroupBoxBackGround}"
                         BorderThickness="1">
                         <StackPanel>
-                            <Button Command="{Binding BlackAndWhitePdfPage}"
+                            <Button AutomationProperties.Name="{local:Loc BW}"
+                                Command="{Binding BlackAndWhitePdfPage}"
                                 CommandParameter="{Binding Source={x:Reference PdfViewer}}"
                                 Content="{local:Loc BW}" />
-                            <Button Command="{Binding InvertPdfPage}"
+                            <Button AutomationProperties.Name="{local:Loc INVERTCOLOR}"
+                                Command="{Binding InvertPdfPage}"
                                 CommandParameter="{Binding Source={x:Reference PdfViewer}}"
                                 Content="{local:Loc INVERTCOLOR}" />
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc DESPECKLE}" />
-                                <Extensions:NumericUpDown Interval="1"
+                                <Extensions:NumericUpDown AutomationProperties.Name="{local:Loc DESPECKLE}"
+                                    Interval="1"
                                     IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, Source={x:Reference PdfViewer}}"
                                     IsReadOnly="True"
                                     Maximum="10"
@@ -984,7 +1011,8 @@
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-            <Extensions:NumericUpDown Interval="1"
+            <Extensions:NumericUpDown AutomationProperties.Name="{local:Loc SLICE}"
+                Interval="1"
                 IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
                 IsReadOnly="True"
                 Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
@@ -992,9 +1020,9 @@
                 Value="{Binding PdfSplitCount}">
                 <Extensions:NumericUpDown.ToolTip>
                     <TextBlock>
-                        <Run Text="{local:Loc DOCUMENT}" />
-                        <Run Text="{local:Loc SLICE}" />
-                        <Run Text="{local:Loc PAGENUMBER}" />
+                        <Run AutomationProperties.Name="{local:Loc DOCUMENT}" Text="{local:Loc DOCUMENT}" />
+                        <Run AutomationProperties.Name="{local:Loc SLICE}" Text="{local:Loc SLICE}" />
+                        <Run AutomationProperties.Name="{local:Loc PAGENUMBER}" Text="{local:Loc PAGENUMBER}" />
                         <Run Text="{Binding PdfSplitCount, Mode=OneWay}" />
                     </TextBlock>
                 </Extensions:NumericUpDown.ToolTip>
@@ -1137,8 +1165,8 @@
                             <Expander Grid.Row="1">
                                 <Expander.Header>
                                     <TextBlock>
-                                        <Run Text="{local:Loc DOCUMENT}" />
-                                        <Run Text="{local:Loc CONTENT}" />
+                                        <Run AutomationProperties.Name="{local:Loc DOCUMENT}" Text="{local:Loc DOCUMENT}" />
+                                        <Run AutomationProperties.Name="{local:Loc CONTENT}" Text="{local:Loc CONTENT}" />
                                     </TextBlock>
                                 </Expander.Header>
                                 <ListBox ItemsSource="{Binding EypNonSuportedAttachments, Source={x:Reference PdfViewer}}"
@@ -1211,6 +1239,7 @@
                                 <Run Text="{Binding PdfQuality, Mode=OneWay, StringFormat={}{0}%}" />
                             </TextBlock>
                             <Slider AutoToolTipPlacement="TopLeft"
+                                AutomationProperties.Name="{local:Loc JPEGQUALITY}"
                                 LargeChange="1"
                                 Maximum="100"
                                 Minimum="1"
@@ -1230,6 +1259,7 @@
                             </CheckBox>
                             <CheckBox VerticalAlignment="Center"
                                 VerticalContentAlignment="Center"
+                                AutomationProperties.Name="{local:Loc BW}"
                                 IsChecked="{Binding EncodeAsJb2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <TextBlock>
                                     <Run Text="{Binding Source='.jb2', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
@@ -1297,7 +1327,7 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <Extensions:ContentToggleButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                    <Extensions:ContentToggleButton AutomationProperties.Name="{local:Loc LINEARFILL}" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <Extensions:ContentToggleButton.OverContent>
                             <GroupBox Header="{local:Loc LINEARFILL}">
                                 <Grid>
@@ -1309,11 +1339,11 @@
                                     </Grid.RowDefinitions>
                                     <UniformGrid Columns="2" Rows="2">
                                         <TextBlock>
-                                            <Run Text="{local:Loc HUE}" />
+                                            <Run AutomationProperties.Name="{local:Loc HUE}" Text="{local:Loc HUE}" />
                                             <System:String>1</System:String>
                                         </TextBlock>
                                         <TextBlock>
-                                            <Run Text="{local:Loc HUE}" />
+                                            <Run AutomationProperties.Name="{local:Loc HUE}" Text="{local:Loc HUE}" />
                                             <System:String>2</System:String>
                                         </TextBlock>
                                         <ComboBox ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}" SelectedItem="{Binding GraphObjectFirstGradientColor}">
@@ -1350,6 +1380,7 @@
                                         SelectedItem="{Binding SelectedGradientMode}" />
                                     <CheckBox Grid.Row="2"
                                         VerticalContentAlignment="Center"
+                                        AutomationProperties.Name="{local:Loc APPLYCOLOR}"
                                         Content="{local:Loc APPLYCOLOR}"
                                         IsChecked="{Binding IsLinearDraw}" />
                                     <Rectangle Grid.Row="3"
@@ -1602,7 +1633,7 @@
                             </Image>
                         </Button.Content>
                     </Button>
-                    <Extensions:ContentToggleButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                    <Extensions:ContentToggleButton AutomationProperties.Name="{local:Loc DRAWTEXT}" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <Extensions:ContentToggleButton.OverContent>
                             <Extensions:ResizablePanel Width="300"
                                 Height="200"
@@ -1617,7 +1648,7 @@
                                         <ColumnDefinition Width="2*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <GroupBox Header="{local:Loc DRAWTEXT}">
+                                    <GroupBox AutomationProperties.Name="{local:Loc DRAWTEXT}" Header="{local:Loc DRAWTEXT}">
                                         <InkCanvas x:Name="Ink" Background="Transparent">
                                             <InkCanvas.DefaultDrawingAttributes>
                                                 <DrawingAttributes x:Name="DrawingAttribute" />
@@ -1633,9 +1664,15 @@
                                         SelectorLength="0*"
                                         SliderVisibility="Collapsed" />
                                     <StackPanel Grid.Row="1">
-                                        <Button Command="{Binding LoadInkDrawImage}" Content="{local:Loc LOAD}" />
-                                        <Button Command="{Binding ClearInkDrawImage}" Content="{local:Loc DELETE}" />
-                                        <Button Command="{Binding SaveInkDrawImage}" Content="{local:Loc SAVESELECTED}" />
+                                        <Button AutomationProperties.Name="{local:Loc LOAD}"
+                                            Command="{Binding LoadInkDrawImage}"
+                                            Content="{local:Loc LOAD}" />
+                                        <Button AutomationProperties.Name="{local:Loc DELETE}"
+                                            Command="{Binding ClearInkDrawImage}"
+                                            Content="{local:Loc DELETE}" />
+                                        <Button AutomationProperties.Name="{local:Loc SAVESELECTED}"
+                                            Command="{Binding SaveInkDrawImage}"
+                                            Content="{local:Loc SAVESELECTED}" />
                                         <ComboBox Height="20"
                                             ItemsSource="{Binding InkCollection, Source={x:Static properties:Settings.Default}}"
                                             SelectedItem="{Binding SelectedInk}">
@@ -1655,7 +1692,7 @@
                             </Extensions:ResizablePanel>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
-                    <Extensions:ContentToggleButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                    <Extensions:ContentToggleButton AutomationProperties.Name="{local:Loc DRAWTEXT}" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <TextBlock FontFamily="Wingdings"
                             FontSize="16"
                             Text="7" />
@@ -1664,7 +1701,9 @@
                                 BorderBrush="{DynamicResource GroupBoxBackGround}"
                                 BorderThickness="1">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc DRAWTEXT}" />
+                                    <TextBlock VerticalAlignment="Center"
+                                        AutomationProperties.Name="{local:Loc DRAWTEXT}"
+                                        Text="{local:Loc DRAWTEXT}" />
                                     <TextBox Width="200"
                                         VerticalContentAlignment="Center"
                                         BorderThickness="2"
@@ -1694,7 +1733,7 @@
                             </Border>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
-                    <Extensions:ContentToggleButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                    <Extensions:ContentToggleButton AutomationProperties.Name="{local:Loc TAG}" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <Image Width="16" Height="16">
                             <Image.Source>
                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -1708,7 +1747,9 @@
                                 BorderBrush="{DynamicResource GroupBoxBackGround}"
                                 BorderThickness="1">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc TAG}" />
+                                    <TextBlock VerticalAlignment="Center"
+                                        AutomationProperties.Name="{local:Loc TAG}"
+                                        Text="{local:Loc TAG}" />
                                     <TextBox Width="64"
                                         VerticalContentAlignment="Center"
                                         Text="{Binding AnnotationText}" />
@@ -1724,7 +1765,7 @@
                                             </Image>
                                         </ToggleButton.Content>
                                     </ToggleButton>
-                                    <Extensions:ContentToggleButton Command="{Binding ReadAnnotation}">
+                                    <Extensions:ContentToggleButton AutomationProperties.Name="{local:Loc TAG}" Command="{Binding ReadAnnotation}">
                                         <Extensions:ContentToggleButton.OverContent>
                                             <GroupBox Width="200"
                                                 Height="200"
@@ -1756,7 +1797,9 @@
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
+                        AutomationProperties.Name="{local:Loc APPLY}"
+                        DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="16" Height="16">
                                 <Image.Source>
@@ -1775,7 +1818,7 @@
                                 BorderBrush="{DynamicResource GroupBoxBackGround}"
                                 BorderThickness="1">
                                 <StackPanel>
-                                    <ToggleButton IsChecked="{Binding SinglePage}">
+                                    <ToggleButton AutomationProperties.Name="{local:Loc APPLY}" IsChecked="{Binding SinglePage}">
                                         <ToggleButton.Style>
                                             <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="ToggleButton">
                                                 <Style.Triggers>
@@ -1807,8 +1850,8 @@
                                                                             Text="3" />
                                                                     </Canvas>
                                                                     <TextBlock VerticalAlignment="Center" FontSize="10">
-                                                                        <Run Text="{local:Loc ALL}" />
-                                                                        <Run Text="{local:Loc APPLY}" />
+                                                                        <Run AutomationProperties.Name="{local:Loc ALL}" Text="{local:Loc ALL}" />
+                                                                        <Run AutomationProperties.Name="{local:Loc APPLY}" Text="{local:Loc APPLY}" />
                                                                     </TextBlock>
                                                                 </StackPanel>
                                                             </Setter.Value>

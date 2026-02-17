@@ -111,7 +111,9 @@
                 OpenButtonVisibility="Collapsed"
                 ResetButtonVisibility="Collapsed"
                 Text="{Binding Scanner.ProfileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Button local:Policy.PolicyName="SaveProfile" Command="{Binding SaveProfile}">
+            <Button local:Policy.PolicyName="SaveProfile"
+                AutomationProperties.Name="{local:Loc SAVEPROFILE}"
+                Command="{Binding SaveProfile}">
                 <StackPanel Orientation="Horizontal">
                     <Image Width="16"
                         Height="16"
@@ -121,6 +123,7 @@
             </Button>
             <CheckBox VerticalAlignment="Center"
                 VerticalContentAlignment="Stretch"
+                AutomationProperties.Name="{local:Loc LOAD}"
                 Content="{local:Loc LOAD}"
                 IsChecked="{Binding UseSelectedProfile, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
                 IsEnabled="{Binding Scanner.SelectedProfile, Converter={StaticResource NullableToBooleanConverter}}" />

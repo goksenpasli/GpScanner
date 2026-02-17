@@ -26,6 +26,7 @@
             <TextBlock VerticalAlignment="Center">
                 <TextBlock d:Text="ERROR"
                     d:Visibility="Visible"
+                    AutomationProperties.Name="{twainctrl:Loc ERROR}"
                     FontWeight="Bold"
                     Foreground="Red"
                     Text="{twainctrl:Loc ERROR}"
@@ -242,8 +243,8 @@
                             </Image.Source>
                         </Image>
                         <TextBlock VerticalAlignment="Center">
-                            <Run Text="{twainctrl:Loc ALL}" />
-                            <Run Text="{twainctrl:Loc UNINDEXED}" />
+                            <Run AutomationProperties.Name="{twainctrl:Loc ALL}" Text="{twainctrl:Loc ALL}" />
+                            <Run AutomationProperties.Name="{twainctrl:Loc UNINDEXED}" Text="{twainctrl:Loc UNINDEXED}" />
                         </TextBlock>
                     </StackPanel>
                     <ProgressBar Grid.Row="1"
@@ -258,14 +259,15 @@
                         BorderBrush="{StaticResource GroupBoxBackGround}"
                         BorderThickness="1">
                         <StackPanel>
-                            <MenuItem IsCheckable="True"
+                            <MenuItem AutomationProperties.Name="{twainctrl:Loc OCRALL}"
+                                IsCheckable="True"
                                 IsChecked="{Binding OcrAllPdfPages}"
                                 ToolTip="{twainctrl:Loc OCRALL}">
                                 <MenuItem.Header>
                                     <TextBlock VerticalAlignment="Center">
-                                        <Run Text="{twainctrl:Loc ALL}" />
+                                        <Run AutomationProperties.Name="{twainctrl:Loc ALL}" Text="{twainctrl:Loc ALL}" />
                                         <Run Text="PDF" />
-                                        <Run Text="{twainctrl:Loc OCR}" />
+                                        <Run AutomationProperties.Name="{twainctrl:Loc OCR}" Text="{twainctrl:Loc OCR}" />
                                     </TextBlock>
                                 </MenuItem.Header>
                                 <MenuItem.Icon>
@@ -278,7 +280,9 @@
                     </Border>
                 </Extensions:SplitButton.InternalContent>
             </Extensions:SplitButton>
-            <ToggleButton Grid.Column="6" IsChecked="{Binding Shutdown}">
+            <ToggleButton Grid.Column="6"
+                AutomationProperties.Name="{twainctrl:Loc CLOSECOMP}"
+                IsChecked="{Binding Shutdown}">
                 <StackPanel Orientation="Horizontal">
                     <Image Width="32" Height="32">
                         <Image.Source>
@@ -293,6 +297,7 @@
             </ToggleButton>
             <Button Grid.Column="7"
                 twainctrl:Policy.PolicyName="CancelUnindexedBatchOcr"
+                AutomationProperties.Name="{twainctrl:Loc STOP}"
                 Command="{Binding CancelUnindexedBatchOcr}">
                 <StackPanel Orientation="Horizontal">
                     <Image Width="32"

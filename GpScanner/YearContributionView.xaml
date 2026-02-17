@@ -26,6 +26,7 @@
         <GroupBox.Header>
             <StackPanel Orientation="Horizontal">
                 <ComboBox VerticalContentAlignment="Center"
+                    AutomationProperties.Name="{twainctrl:Loc YEAR}"
                     ItemsSource="{Binding Years}"
                     SelectedItem="{Binding SelectedContributionYear}">
                     <ComboBox.ItemTemplate>
@@ -39,10 +40,12 @@
                 </ComboBox>
                 <TextBlock VerticalAlignment="Center">
                     <Run Text="{Binding ContributionDocumentCount, Mode=OneWay}" />
-                    <Run Text="{twainctrl:Loc DOCUMENT}" />
+                    <Run AutomationProperties.Name="{twainctrl:Loc DOCUMENT}" Text="{twainctrl:Loc DOCUMENT}" />
                 </TextBlock>
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWSIZE}" />
+                <TextBlock VerticalAlignment="Center"
+                    AutomationProperties.Name="{twainctrl:Loc PREVIEWSIZE}"
+                    Text="{twainctrl:Loc PREVIEWSIZE}" />
                 <UniformGrid Rows="2">
                     <Slider Width="400"
                         AutoToolTipPlacement="TopLeft"

@@ -23,7 +23,9 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DOCUMENT}" />
+                    <TextBlock VerticalAlignment="Center"
+                        AutomationProperties.Name="{twainctrl:Loc DOCUMENT}"
+                        Text="{twainctrl:Loc DOCUMENT}" />
                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     <Button twainctrl:Policy.PolicyName="ResimSilGeriAl" Command="{Binding TwainCtrl.ResimSilGeriAl}">
                         <Image Width="16"
@@ -31,6 +33,7 @@
                             Source="/TwainControl;component/Icons/undo.png" />
                     </Button>
                     <Button twainctrl:Policy.PolicyName="Tümünüİşaretle"
+                        AutomationProperties.Name="{twainctrl:Loc ALL}"
                         BorderBrush="Cyan"
                         Command="{Binding TwainCtrl.Tümünüİşaretle}"
                         ToolTip="{twainctrl:Loc ALL}">
@@ -39,6 +42,7 @@
                             Source="/TwainControl;component/Icons/selectall.png" />
                     </Button>
                     <Button twainctrl:Policy.PolicyName="TümününİşaretiniKaldır"
+                        AutomationProperties.Name="{twainctrl:Loc NONE}"
                         Command="{Binding TwainCtrl.TümününİşaretiniKaldır}"
                         ToolTip="{twainctrl:Loc NONE}">
                         <Image Width="16"
@@ -46,6 +50,7 @@
                             Source="/TwainControl;component/Icons/none.png" />
                     </Button>
                     <Button twainctrl:Policy.PolicyName="Tersiniİşaretle"
+                        AutomationProperties.Name="{twainctrl:Loc REVERSE}"
                         Command="{Binding TwainCtrl.Tersiniİşaretle}"
                         ToolTip="{twainctrl:Loc REVERSE}">
                         <Image Width="16"
@@ -173,6 +178,7 @@
                                                 </Grid.RowDefinitions>
                                                 <twainctrl:DrawControl x:Name="DrawControl" SilentApply="True" />
                                                 <Button Grid.Row="1"
+                                                    AutomationProperties.Name="{twainctrl:Loc LOAD}"
                                                     Command="{Binding LoadMiniDraw}"
                                                     Content="{twainctrl:Loc LOAD}">
                                                     <Button.CommandParameter>

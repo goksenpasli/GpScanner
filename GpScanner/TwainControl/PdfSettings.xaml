@@ -33,6 +33,7 @@
             <CheckBox VerticalAlignment="Center"
                 VerticalContentAlignment="Center"
                 local:Policy.PolicyName="PasswordProtect"
+                AutomationProperties.Name="{local:Loc ENCRYPT}"
                 IsChecked="{Binding Scanner.PasswordProtect}">
                 <CheckBox.Content>
                     <StackPanel>
@@ -42,6 +43,7 @@
                             Foreground="Red"
                             Text="{local:Loc ENCRYPT}" />
                         <TextBlock VerticalAlignment="Center"
+                            AutomationProperties.Name="{local:Loc PDFWARN}"
                             FontSize="14"
                             FontStyle="Italic"
                             Foreground="Red"
@@ -57,7 +59,9 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <TextBlock VerticalAlignment="Center" Text="{local:Loc PASSWORD}" />
+                <TextBlock VerticalAlignment="Center"
+                    AutomationProperties.Name="{local:Loc PASSWORD}"
+                    Text="{local:Loc PASSWORD}" />
                 <PasswordBox Grid.Column="1"
                     Margin="1"
                     local:Policy.PolicyName="PasswordProtect"
@@ -68,12 +72,15 @@
             <Separator />
             <StackPanel IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource StringNullableToBooleanConverter}}">
                 <CheckBox local:Policy.PolicyName="AllowPrint"
+                    AutomationProperties.Name="{local:Loc ALLOWPRINT}"
                     Content="{local:Loc ALLOWPRINT}"
                     IsChecked="{Binding Scanner.AllowPrint}" />
                 <CheckBox local:Policy.PolicyName="AllowCopy"
+                    AutomationProperties.Name="{local:Loc ALLOWCOPY}"
                     Content="{local:Loc ALLOWCOPY}"
                     IsChecked="{Binding Scanner.AllowCopy}" />
                 <CheckBox local:Policy.PolicyName="AllowEdit"
+                    AutomationProperties.Name="{local:Loc ALLOWEDIT}"
                     Content="{local:Loc ALLOWEDIT}"
                     IsChecked="{Binding Scanner.AllowEdit}" />
             </StackPanel>
@@ -120,11 +127,13 @@
                         </Image>
                         <UniformGrid Columns="2" Rows="2">
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc CWIDTH}" />
-                            <Extensions:NumericUpDown Minimum="1"
+                            <Extensions:NumericUpDown AutomationProperties.Name="{local:Loc CWIDTH}"
+                                Minimum="1"
                                 StringFormat="{}{0} CM"
                                 Value="{Binding Path=CustomPaperWidth, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc CHEIGHT}" />
-                            <Extensions:NumericUpDown Minimum="1"
+                            <Extensions:NumericUpDown AutomationProperties.Name="{local:Loc CHEIGHT}"
+                                Minimum="1"
                                 StringFormat="{}{0} CM"
                                 Value="{Binding Path=CustomPaperHeight, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </UniformGrid>
@@ -137,7 +146,7 @@
                     <HeaderedContentControl.Header>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock>
-                                <Run Text="{local:Loc RES}" />
+                                <Run AutomationProperties.Name="{local:Loc RES}" Text="{local:Loc RES}" />
                                 <Run Text="{Binding Path=ImgLoadResolution, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}{0} DPI}" />
                             </TextBlock>
                             <ToggleButton Content="°"
@@ -145,7 +154,8 @@
                                 IsChecked="{Binding DpiSnap}" />
                         </StackPanel>
                     </HeaderedContentControl.Header>
-                    <Slider IsSnapToTickEnabled="{Binding DpiSnap, Mode=OneWay}"
+                    <Slider AutomationProperties.Name="{local:Loc RES}"
+                        IsSnapToTickEnabled="{Binding DpiSnap, Mode=OneWay}"
                         Maximum="1200"
                         Minimum="72"
                         SmallChange="1"
@@ -156,9 +166,9 @@
                 <HeaderedContentControl Margin="1">
                     <HeaderedContentControl.Header>
                         <TextBlock>
-                            <Run Text="{local:Loc BW}" />
-                            <Run Text="{local:Loc SETTİNGS}" />
-                            <Run Text="{local:Loc THRESHOLD}" />
+                            <Run AutomationProperties.Name="{local:Loc BW}" Text="{local:Loc BW}" />
+                            <Run AutomationProperties.Name="{local:Loc SETTİNGS}" Text="{local:Loc SETTİNGS}" />
+                            <Run AutomationProperties.Name="{local:Loc THRESHOLD}" Text="{local:Loc THRESHOLD}" />
                             <Run Text="{Binding Path=BwThreshold, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}{0}}" />
                         </TextBlock>
                     </HeaderedContentControl.Header>
@@ -172,22 +182,26 @@
             </UniformGrid>
             <Separator />
             <CheckBox local:Policy.PolicyName="ApplyPdfSaveOcr"
+                AutomationProperties.Name="{local:Loc OCR}"
                 IsChecked="{Binding Scanner.ApplyPdfSaveOcr}"
                 IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
                 <CheckBox.Content>
                     <TextBlock TextWrapping="Wrap">
-                        <Run Text="{local:Loc FILE}" />
+                        <Run AutomationProperties.Name="{local:Loc FILE}" Text="{local:Loc FILE}" />
                         <Run Text="{local:Loc OCR}" />
-                        <Run FontWeight="Bold"
+                        <Run AutomationProperties.Name="{local:Loc OCRTIME}"
+                            FontWeight="Bold"
                             Foreground="Red"
                             Text="{local:Loc OCRTIME}" />
                     </TextBlock>
                 </CheckBox.Content>
             </CheckBox>
-            <CheckBox local:Policy.PolicyName="ApplyPdfInternalOcr" IsChecked="{Binding Path=UsePdfInternalTextData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+            <CheckBox local:Policy.PolicyName="ApplyPdfInternalOcr"
+                AutomationProperties.Name="{local:Loc PDFINTERNALDESC}"
+                IsChecked="{Binding Path=UsePdfInternalTextData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                 <CheckBox.Content>
                     <TextBlock TextWrapping="Wrap">
-                        <Run Text="{local:Loc PDFINTERNAL}" />
+                        <Run AutomationProperties.Name="{local:Loc PDFINTERNAL}" Text="{local:Loc PDFINTERNAL}" />
                         <Run FontWeight="Bold"
                             Foreground="Red"
                             Text="{local:Loc PDFINTERNALDESC}" />
@@ -196,12 +210,14 @@
             </CheckBox>
             <Separator />
             <CheckBox local:Policy.PolicyName="ApplyDataBaseOcr"
+                AutomationProperties.Name="{local:Loc ADDOCRTODB}"
                 IsChecked="{Binding Scanner.ApplyDataBaseOcr}"
                 IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
                 <CheckBox.Content>
                     <TextBlock TextWrapping="Wrap">
                         <Run Text="{local:Loc ADDOCRTODB}" />
-                        <Run FontWeight="Bold"
+                        <Run AutomationProperties.Name="{local:Loc ADDOCRTOOLTIP}"
+                            FontWeight="Bold"
                             Foreground="Red"
                             Text="{local:Loc ADDOCRTOOLTIP}" />
                     </TextBlock>
@@ -226,20 +242,24 @@
                                 Margin="1"
                                 Angle="90" />
                         </InlineUIContainer>
-                        <Run BaselineAlignment="Subscript" Text="{local:Loc FILE}" />
-                        <Run BaselineAlignment="Subscript" Text="{local:Loc LOAD}" />
+                        <Run AutomationProperties.Name="{local:Loc FILE}"
+                            BaselineAlignment="Subscript"
+                            Text="{local:Loc FILE}" />
+                        <Run AutomationProperties.Name="{local:Loc LOAD}"
+                            BaselineAlignment="Subscript"
+                            Text="{local:Loc LOAD}" />
                     </TextBlock>
                 </CheckBox.Content>
             </CheckBox>
             <Separator />
             <TextBlock HorizontalAlignment="Center">
                 <Run Text="JB2/JB2ZIP" />
-                <Run Text="{local:Loc SETTİNGS}" />
+                <Run AutomationProperties.Name="{local:Loc SETTİNGS}" Text="{local:Loc SETTİNGS}" />
             </TextBlock>
             <UniformGrid Columns="2">
                 <TextBlock VerticalAlignment="Center">
-                    <Run Text="{local:Loc BW}" />
-                    <Run Text="{local:Loc SATURATION}" />
+                    <Run AutomationProperties.Name="{local:Loc BW}" Text="{local:Loc BW}" />
+                    <Run AutomationProperties.Name="{local:Loc SATURATION}" Text="{local:Loc SATURATION}" />
                     <InlineUIContainer BaselineAlignment="Center">
                         <Image Width="16" Height="16">
                             <Image.ToolTip>
@@ -282,7 +302,9 @@
                         </Image>
                     </InlineUIContainer>
                 </TextBlock>
-                <ComboBox ItemsSource="{Binding Jb2SaturationValues}" SelectedItem="{Binding Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=Jb2Saturation, Source={x:Static properties:Settings.Default}}">
+                <ComboBox AutomationProperties.Name="{local:Loc BW}"
+                    ItemsSource="{Binding Jb2SaturationValues}"
+                    SelectedItem="{Binding Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=Jb2Saturation, Source={x:Static properties:Settings.Default}}">
                     <ComboBox.ItemContainerStyle>
                         <Style TargetType="ComboBoxItem">
                             <Setter Property="Foreground" Value="{Binding Mode=OneWay, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}" />
@@ -291,7 +313,7 @@
                 </ComboBox>
                 <TextBlock VerticalAlignment="Center">
                     <Run Text="{local:Loc BW}" />
-                    <Run Text="{local:Loc THRESHOLD}" />
+                    <Run AutomationProperties.Name="{local:Loc THRESHOLD}" Text="{local:Loc THRESHOLD}" />
                 </TextBlock>
                 <ComboBox ItemsSource="{Binding Jb2ThresholdValues}" SelectedItem="{Binding Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=Jb2Threshold, Source={x:Static properties:Settings.Default}}" />
             </UniformGrid>

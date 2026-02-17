@@ -97,7 +97,7 @@
                                     </Grid.RowDefinitions>
                                     <TextBlock HorizontalAlignment="Center">
                                         <Run Text="{Binding Mode=OneWay, Path=Tag.Count, RelativeSource={RelativeSource AncestorType=Grid}}" />
-                                        <Run Text="{twainctrl:Loc DOCUMENT}" />
+                                        <Run AutomationProperties.Name="{twainctrl:Loc DOCUMENT}" Text="{twainctrl:Loc DOCUMENT}" />
                                     </TextBlock>
                                     <ListBox Grid.Row="1"
                                         ItemTemplateSelector="{StaticResource DocumentViewerMonthPreviewSelector}"
