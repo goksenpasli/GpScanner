@@ -545,15 +545,10 @@
                                     </Image>
                                 </StackPanel>
                             </Button>
-                            <Extensions:ContentToggleButton Background="{Binding Scanner.AutoCropColor, Mode=OneWay}">
-                                <TextBlock d:Text="Black" Text="{Binding Scanner.AutoCropColor, Mode=OneWay}" />
-                                <Extensions:ContentToggleButton.OverContent>
-                                    <Extensions:ColorPicker Width="350"
-                                        Height="250"
-                                        HexCode="{Binding Scanner.AutoCropColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        PredefinedColorVisibility="Visible" />
-                                </Extensions:ContentToggleButton.OverContent>
-                            </Extensions:ContentToggleButton>
+                            <Extensions:NumericUpDown Interval="1"
+                                Maximum="255"
+                                Minimum="0"
+                                Value="{Binding Path=AutoCropThreshold, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </UniformGrid>
                         <UniformGrid Columns="2">
                             <Extensions:NumericUpDown IsReadOnly="True"

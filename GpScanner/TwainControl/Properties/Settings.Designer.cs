@@ -314,13 +314,13 @@ namespace TwainControl.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
-        public string AutoCropColor {
+        [global::System.Configuration.DefaultSettingValueAttribute("140")]
+        public byte AutoCropThreshold {
             get {
-                return ((string)(this["AutoCropColor"]));
+                return ((byte)(this["AutoCropThreshold"]));
             }
             set {
-                this["AutoCropColor"] = value;
+                this["AutoCropThreshold"] = value;
             }
         }
         

@@ -64,14 +64,11 @@
                             <Run Text="{local:Loc SCAN}" />
                             <Run Text="{local:Loc TRIMIMAGE}" />
                         </TextBlock>
-                        <Extensions:ContentToggleButton Background="{Binding AutoCropColor, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Content="{Binding AutoCropColor, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
-                            <Extensions:ContentToggleButton.OverContent>
-                                <Extensions:ColorPicker Width="350"
-                                    Height="250"
-                                    HexCode="{Binding AutoCropColor, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
-                                    PredefinedColorVisibility="Visible" />
-                            </Extensions:ContentToggleButton.OverContent>
-                        </Extensions:ContentToggleButton>
+                        <Extensions:NumericUpDown Interval="1"
+                            Maximum="255"
+                            Minimum="1"
+                            Value="{Binding Path=AutoCropThreshold, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock VerticalAlignment="Center" Text="{local:Loc THRESHOLD}" />
                     </StackPanel>
                 </CheckBox>
                 <Separator />
@@ -335,13 +332,13 @@
                             Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                             d:Height="295"
                             d:Width="242"
-                            BorderThickness="5">
+                            BorderThickness="3">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="BorderBrush" Value="Transparent" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding AutoCropImage, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="true">
-                                            <Setter Property="BorderBrush" Value="{Binding AutoCropColor, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                                            <Setter Property="BorderBrush" Value="Black" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>

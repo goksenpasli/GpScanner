@@ -65,58 +65,76 @@ public static class BitmapMethods
         return modifiedBitmap;
     }
 
-    public static CroppedBitmap AutoCropImage(this BitmapSource bitmapSource, Color color)
+    public static BitmapSource AutoCropImage(this BitmapSource source, byte threshold = 140)
     {
-        int maxX = 0;
-        int maxY = 0;
+        if (source.Format != PixelFormats.Bgra32)
+        {
+            source = new FormatConvertedBitmap(source, PixelFormats.Bgra32, null, 0);
+        }
 
-        int minX = bitmapSource.PixelWidth;
-        int minY = bitmapSource.PixelHeight;
+        WriteableBitmap wb = new(source);
 
-        int bytesPerPixel = (bitmapSource.Format.BitsPerPixel + 7) / 8;
-        int stride = bytesPerPixel * bitmapSource.PixelWidth;
-        byte[] pixelData = new byte[bitmapSource.PixelHeight * stride];
-        bitmapSource.CopyPixels(pixelData, stride, 0);
-        bitmapSource.Freeze();
-        _ = Parallel.For(
-            0,
-            bitmapSource.PixelHeight,
-            y =>
+        int width = wb.PixelWidth;
+        int height = wb.PixelHeight;
+        int stride = width * 4;
+
+        byte[] pixels = new byte[height * stride];
+        wb.CopyPixels(pixels, stride, 0);
+
+        bool IsRowWhite(int y)
+        {
+            int row = y * stride;
+            for (int x = 0; x < width; x++)
             {
-                for (int x = 0; x < bitmapSource.PixelWidth; x++)
+                int i = row + (x * 4);
+                byte gray = (byte)((pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3);
+                if (gray < threshold)
                 {
-                    int offset = (y * stride) + (x * bytesPerPixel);
-                    Color pixelColor = Color.FromArgb(bytesPerPixel == 4 ? pixelData[offset + 3] : (byte)255, pixelData[offset + 2], pixelData[offset + 1], pixelData[offset]);
-                    if (pixelColor != color)
-                    {
-                        if (x > maxX)
-                        {
-                            maxX = x;
-                        }
-
-                        if (x < minX)
-                        {
-                            minX = x;
-                        }
-
-                        if (y > maxY)
-                        {
-                            maxY = y;
-                        }
-
-                        if (y < minY)
-                        {
-                            minY = y;
-                        }
-                    }
+                    return false;
                 }
-            });
-        maxX += 2;
-        CroppedBitmap croppedimage = new(bitmapSource, new Int32Rect(minX, minY, maxX - minX - 1, maxY - minY - 1));
-        croppedimage.Freeze();
-        bitmapSource = null;
-        pixelData = null;
-        return croppedimage;
+            }
+            return true;
+        }
+
+        bool IsColumnWhite(int x)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                int i = (y * stride) + (x * 4);
+                byte gray = (byte)((pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3);
+                if (gray < threshold)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        int top = 0;
+        while (top < height && IsRowWhite(top))
+        {
+            top++;
+        }
+
+        int bottom = height - 1;
+        while (bottom > top && IsRowWhite(bottom))
+        {
+            bottom--;
+        }
+
+        int left = 0;
+        while (left < width && IsColumnWhite(left))
+        {
+            left++;
+        }
+
+        int right = width - 1;
+        while (right > left && IsColumnWhite(right))
+        {
+            right--;
+        }
+
+        return left >= right || top >= bottom ? source : new CroppedBitmap(source, new Int32Rect(left, top, right - left, bottom - top));
     }
 
     public static Bitmap BitmapSourceToBitmap(this BitmapSource bitmapsource) => Compressor.BitmapSourceToBitmap(bitmapsource);

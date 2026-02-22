@@ -6066,8 +6066,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         if (Settings.Default.AutoCropImage)
         {
-            Color color = (Color)ColorConverter.ConvertFromString(Settings.Default.AutoCropColor);
-            evrak = evrak.AutoCropImage(color);
+            evrak = evrak.AutoCropImage(Settings.Default.AutoCropThreshold);
         }
 
         if (Scanner.InvertImage)

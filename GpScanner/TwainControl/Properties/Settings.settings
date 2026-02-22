@@ -75,8 +75,8 @@
     <Setting Name="AutoCropImage" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="AutoCropColor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Black</Value>
+    <Setting Name="AutoCropThreshold" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">140</Value>
     </Setting>
     <Setting Name="CustomPaperHeight" Type="System.Double" Scope="User">
       <Value Profile="(Default)">29.7</Value>
