@@ -65,76 +65,87 @@ public static class BitmapMethods
         return modifiedBitmap;
     }
 
-    public static BitmapSource AutoCropImage(this BitmapSource source, byte threshold = 140)
+    public static Task<BitmapSource> AutoCropImage(this BitmapSource source, byte threshold = 140)
     {
-        if (source.Format != PixelFormats.Bgra32)
-        {
-            source = new FormatConvertedBitmap(source, PixelFormats.Bgra32, null, 0);
-        }
-
-        WriteableBitmap wb = new(source);
-
-        int width = wb.PixelWidth;
-        int height = wb.PixelHeight;
-        int stride = width * 4;
-
-        byte[] pixels = new byte[height * stride];
-        wb.CopyPixels(pixels, stride, 0);
-
-        bool IsRowWhite(int y)
-        {
-            int row = y * stride;
-            for (int x = 0; x < width; x++)
+        return Task.Run(
+            () =>
             {
-                int i = row + (x * 4);
-                byte gray = (byte)((pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3);
-                if (gray < threshold)
+                if (source.Format != PixelFormats.Bgra32)
                 {
-                    return false;
+                    source = new FormatConvertedBitmap(source, PixelFormats.Bgra32, null, 0);
+                    source.Freeze();
                 }
-            }
-            return true;
-        }
 
-        bool IsColumnWhite(int x)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                int i = (y * stride) + (x * 4);
-                byte gray = (byte)((pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3);
-                if (gray < threshold)
+                int width = source.PixelWidth;
+                int height = source.PixelHeight;
+                int stride = width * 4;
+
+                byte[] pixels = new byte[height * stride];
+                source.CopyPixels(pixels, stride, 0);
+
+                bool IsRowWhite(int y)
                 {
-                    return false;
+                    int row = y * stride;
+                    for (int x = 0; x < width; x++)
+                    {
+                        int i = row + (x * 4);
+                        byte gray = (byte)((pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3);
+                        if (gray < threshold)
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
                 }
-            }
-            return true;
-        }
 
-        int top = 0;
-        while (top < height && IsRowWhite(top))
-        {
-            top++;
-        }
+                bool IsColumnWhite(int x)
+                {
+                    for (int y = 0; y < height; y++)
+                    {
+                        int i = (y * stride) + (x * 4);
+                        byte gray = (byte)((pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3);
+                        if (gray < threshold)
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
 
-        int bottom = height - 1;
-        while (bottom > top && IsRowWhite(bottom))
-        {
-            bottom--;
-        }
+                int top = 0;
+                while (top < height && IsRowWhite(top))
+                {
+                    top++;
+                }
 
-        int left = 0;
-        while (left < width && IsColumnWhite(left))
-        {
-            left++;
-        }
+                int bottom = height - 1;
+                while (bottom > top && IsRowWhite(bottom))
+                {
+                    bottom--;
+                }
 
-        int right = width - 1;
-        while (right > left && IsColumnWhite(right))
-        {
-            right--;
-        }
+                int left = 0;
+                while (left < width && IsColumnWhite(left))
+                {
+                    left++;
+                }
 
-        return left >= right || top >= bottom ? source : new CroppedBitmap(source, new Int32Rect(left, top, right - left, bottom - top));
+                int right = width - 1;
+                while (right > left && IsColumnWhite(right))
+                {
+                    right--;
+                }
+
+                if (left >= right || top >= bottom)
+                {
+                    return source;
+                }
+
+                CroppedBitmap cropped = new(source, new Int32Rect(left, top, right - left, bottom - top));
+
+                cropped.Freeze();
+                return cropped;
+            });
     }
 
     public static Bitmap BitmapSourceToBitmap(this BitmapSource bitmapsource) => Compressor.BitmapSourceToBitmap(bitmapsource);

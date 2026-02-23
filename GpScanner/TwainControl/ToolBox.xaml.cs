@@ -34,9 +34,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
         InvertImage = new RelayCommand<object>(parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap().ToBitmapImage(), parameter => Scanner?.CroppedImage is not null);
 
-        AutoCropImage = new RelayCommand<object>(
-            parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).AutoCropImage(Settings.Default.AutoCropThreshold),
-            parameter => Scanner?.CroppedImage is not null);
+        AutoCropImage = new RelayCommand<object>(async parameter => Scanner.CroppedImage = await ((BitmapSource)Scanner.CroppedImage).AutoCropImage(Settings.Default.AutoCropThreshold), parameter => Scanner?.CroppedImage is not null);
 
         BlackAndWhiteImage = new RelayCommand<object>(
             parameter =>

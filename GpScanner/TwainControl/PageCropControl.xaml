@@ -232,7 +232,7 @@
                     <ComboBoxItem Content="{local:Loc EVEN}" Tag="1" />
                 </ComboBox>
                 <Separator />
-                <Grid>
+                <Grid IsEnabled="{Binding AutoCropImage, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource ReverseBooleanConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
@@ -289,7 +289,9 @@
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                IsEnabled="{Binding AutoCropImage, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource ReverseBooleanConverter}}"
+                VerticalScrollBarVisibility="Auto">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />

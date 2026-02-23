@@ -53,7 +53,6 @@ using Application = System.Windows.Application;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
-using ColorConverter = System.Windows.Media.ColorConverter;
 using Cursors = System.Windows.Input.Cursors;
 using DragDropEffects = System.Windows.DragDropEffects;
 using DragEventArgs = System.Windows.DragEventArgs;
@@ -340,6 +339,28 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     for (int i = 0; i < count; i++)
                     {
                         await CreateAutoDeskewedImage(GetSelectedImages()[i]);
+                        AllRotateProgressValue = (i + 1) / (double)Scanner.Resimler.Count;
+                    }
+                }
+                finally
+                {
+                    AutoRotateIsWorking = false;
+                }
+            },
+            parameter => GetSelectedImages().Count > 1 && !AutoRotateIsWorking);
+
+        ToolBarAutoCropImage = new RelayCommand<object>(
+            async parameter =>
+            {
+                try
+                {
+                    AutoRotateIsWorking = true;
+                    List<ScannedImage> selected = GetSelectedImages();
+                    int total = selected.Count;
+                    for (int i = 0; i < total; i++)
+                    {
+                        ScannedImage item = selected[i];
+                        item.Resim = BitmapFrame.Create(await item.Resim.AutoCropImage());
                         AllRotateProgressValue = (i + 1) / (double)Scanner.Resimler.Count;
                     }
                 }
@@ -3996,6 +4017,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    public RelayCommand<object> ToolBarAutoCropImage { get; }
+
     public RelayCommand<object> ToolBarAutoDeskewImage { get; }
 
     public RelayCommand<object> ToolBoxManualDeskewImage { get; }
@@ -6066,7 +6089,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         if (Settings.Default.AutoCropImage)
         {
-            evrak = evrak.AutoCropImage(Settings.Default.AutoCropThreshold);
+            evrak = await evrak.AutoCropImage(Settings.Default.AutoCropThreshold);
         }
 
         if (Scanner.InvertImage)

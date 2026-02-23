@@ -1866,14 +1866,31 @@
                                             Source="/TwainControl;component/Icons/save.png" />
                                     </Button>
                                     <Button local:Policy.PolicyName="AddActiveVisibleContentImage" Command="{Binding AddActiveVisibleContentImage}">
-                                        <Image Width="24" Height="24">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="245" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
+                                        <Canvas Width="24" Height="24">
+                                            <Image Width="24"
+                                                Height="24"
+                                                RenderTransformOrigin="0.5,0.5">
+                                                <Image.RenderTransform>
+                                                    <TransformGroup>
+                                                        <RotateTransform Angle="-180" />
+                                                    </TransformGroup>
+                                                </Image.RenderTransform>
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="245" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="134" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Canvas>
                                     </Button>
                                     <Button local:Policy.PolicyName="CycleSelectedDocuments"
                                         Command="{Binding CycleSelectedDocuments}"
@@ -1906,10 +1923,7 @@
                                         Maximum="50"
                                         Minimum="1"
                                         Value="{Binding Scanner.VerticalLineThreshold, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Button Width="24"
-                                        Height="24"
-                                        AutomationProperties.Name="{local:Loc DELETE}"
-                                        Command="{Binding RemoveVerticalLines}">
+                                    <Button AutomationProperties.Name="{local:Loc DELETE}" Command="{Binding RemoveVerticalLines}">
                                         <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
                                         <Button.ToolTip>
                                             <ToolTip>
@@ -1923,13 +1937,21 @@
                                         </Button.ToolTip>
                                     </Button>
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                    <Button Width="24"
-                                        Height="24"
-                                        Command="{Binding ToolBarAutoDeskewImage}">
+                                    <Button Command="{Binding ToolBarAutoDeskewImage}">
                                         <Extensions:AngleGauge Width="18"
                                             Height="18"
                                             Margin="1"
                                             Angle="90" />
+                                    </Button>
+                                    <Button Command="{Binding ToolBarAutoCropImage}">
+                                        <Image Width="24" Height="24">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="245" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
                                     </Button>
                                 </WrapPanel>
                                 <Separator Grid.Row="1" />
