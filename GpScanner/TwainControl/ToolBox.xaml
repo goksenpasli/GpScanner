@@ -26,6 +26,7 @@
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
+            <Extensions:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
             <Converter:FontSizeConverter x:Key="FontSizeConverter" />
             <Style BasedOn="{StaticResource Slider}" TargetType="Slider" />
             <Style BasedOn="{StaticResource NumericUpDownStyle}" TargetType="Extensions:NumericUpDown" />
@@ -225,9 +226,12 @@
                                 local:Policy.PolicyName="LoadCroppedImage"
                                 AutomationProperties.Name="{local:Loc PREVIEWFILE}"
                                 Background="Green"
+                                BorderBrush="Cyan"
                                 Command="{Binding LoadCroppedImage}">
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Width="32" Height="32">
+                                    <Image Width="32"
+                                        Height="32"
+                                        Visibility="{Binding SeçiliResim, Converter={StaticResource NullToVisibilityConverter}}">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                 <Binding Source="Shell32.dll" />
@@ -235,7 +239,11 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc PREVIEWFILE}" />
+                                    <TextBlock VerticalAlignment="Center">
+                                        <Run Text="{local:Loc FILE}" />
+                                        <LineBreak />
+                                        <Run Text="{local:Loc LOAD}" />
+                                    </TextBlock>
                                 </StackPanel>
                             </Button>
                         </UniformGrid>

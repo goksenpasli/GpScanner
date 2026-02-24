@@ -70,7 +70,7 @@ using Viewer = PdfViewer.PdfViewer;
 
 namespace TwainControl;
 
-public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposable
+public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposable, IDataErrorInfo
 {
     public const double Inch = 2.54d;
     public static readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
@@ -347,7 +347,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     AutoRotateIsWorking = false;
                 }
             },
-            parameter => GetSelectedImages().Count > 1 && !AutoRotateIsWorking);
+            parameter => GetSelectedImages().Count > 0 && !AutoRotateIsWorking);
 
         ToolBarAutoCropImage = new RelayCommand<object>(
             async parameter =>
@@ -369,7 +369,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     AutoRotateIsWorking = false;
                 }
             },
-            parameter => GetSelectedImages().Count > 1 && !AutoRotateIsWorking);
+            parameter => GetSelectedImages().Count > 0 && !AutoRotateIsWorking);
 
         ToolBoxManualDeskewImage = new RelayCommand<object>(
             async parameter =>
@@ -1028,13 +1028,33 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter => true);
 
         LoadCroppedImage = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
-                Scanner.CroppedImage = SeçiliResim.Resim;
-                Scanner.CroppedImageIndex = SeçiliResim.Index;
-                Scanner.CopyCroppedImage = Scanner.CroppedImage;
+                bool altpressed = Keyboard.Modifiers == ModifierKeys.Alt;
+                if (!altpressed && SeçiliResim is not null)
+                {
+                    Scanner.CroppedImage = SeçiliResim.Resim;
+                    Scanner.CroppedImageIndex = SeçiliResim.Index;
+                    Scanner.CopyCroppedImage = Scanner.CroppedImage;
+                    return;
+                }
+                OpenFileDialog openFileDialog = new() { Filter = "Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.bmp;*.heic)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.bmp;*.heic", Multiselect = false };
+                if (openFileDialog.ShowDialog() == false)
+                {
+                    return;
+                }
+                ILoadFileHandler loadFileHandler = new ImageFileHandler();
+                BitmapFrame bitmapframe = await loadFileHandler.LoadImageAsync(openFileDialog.FileName);
+                bitmapframe?.Freeze();
+                if (bitmapframe is null)
+                {
+                    return;
+                }
+                Scanner.CroppedImage = bitmapframe;
+                Scanner.CopyCroppedImage = bitmapframe;
+                Scanner.CroppedImageIndex = -1;
             },
-            parameter => SeçiliResim is not null);
+            parameter => true);
 
         InsertFileNamePlaceHolder = new RelayCommand<object>(
             parameter =>
@@ -2935,6 +2955,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    public bool CropAutoCropChecked
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(CropAutoCropChecked));
+            }
+        }
+    } = Settings.Default.AutoCropImage || Settings.Default.CropScan;
+
     public int CropBottomMargin
     {
         get;
@@ -3153,6 +3186,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     }
+
+    public string Error => string.Empty;
 
     public ICommand ExploreFile { get; }
 
@@ -4113,6 +4148,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> XpsDosyasındanResimYükle { get; }
 
+    public string this[string columnName] => columnName switch
+    {
+        "CropAutoCropChecked" when Settings.Default.AutoCropImage || Settings.Default.CropScan => "TRIMIMAGE",
+        _ => null
+    };
+
     public static async Task ArrangeFileAsync(string loadfilename, string savefilename, int start, int end)
     {
         await Task.Run(
@@ -4956,6 +4997,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         else if (e.PropertyName is "AutoCropImage" && Settings.Default.AutoCropImage)
         {
             Settings.Default.CropScan = false;
+        }
+
+        if (e.PropertyName is "CropScan" or "AutoCropImage")
+        {
+            CropAutoCropChecked = Settings.Default.AutoCropImage || Settings.Default.CropScan;
         }
 
         if (e.PropertyName is "AutoRotateBasedText" && Settings.Default.AutoRotateBasedText && !TesseractOrientationFileExists)
