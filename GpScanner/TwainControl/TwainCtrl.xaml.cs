@@ -1052,7 +1052,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
                 Scanner.CroppedImage = bitmapframe;
                 Scanner.CopyCroppedImage = bitmapframe;
-                Scanner.CroppedImageIndex = -1;
+                Scanner.CroppedImageIndex = 0;
             },
             parameter => true);
 
