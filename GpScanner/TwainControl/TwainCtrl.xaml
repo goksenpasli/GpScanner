@@ -681,6 +681,7 @@
                                         <ColumnDefinition />
                                         <ColumnDefinition />
                                         <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <ToggleButton d:IsChecked="True"
@@ -853,7 +854,7 @@
                                             </Border>
                                         </Extensions:SplitButton.InternalContent>
                                     </Extensions:SplitButton>
-                                    <Extensions:SplitButton Grid.Column="2"
+                                    <Button Grid.Column="2"
                                         local:Policy.PolicyName="FastScanImage"
                                         AutomationProperties.Name="{local:Loc FASTSCAN}"
                                         BorderBrush="Cyan"
@@ -894,7 +895,9 @@
                                                 Text="{local:Loc FASTSCAN}"
                                                 TextWrapping="Wrap" />
                                         </StackPanel>
-                                        <Extensions:SplitButton.InternalContent>
+                                    </Button>
+                                    <Extensions:ContentToggleButton Grid.Column="3">
+                                        <Extensions:ContentToggleButton.OverContent>
                                             <Border Background="{StaticResource BorderBackground}"
                                                 BorderBrush="{StaticResource GroupBoxBackGround}"
                                                 BorderThickness="1">
@@ -932,8 +935,21 @@
                                                     </MenuItem>
                                                     <MenuItem AutomationProperties.Name="{local:Loc AUTOROTATE}"
                                                         IsCheckable="True"
-                                                        IsChecked="{Binding Path=AutoRotateBasedText, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                        IsEnabled="{Binding TesseractOrientationFileExists}">
+                                                        IsChecked="{Binding Path=AutoRotateBasedText, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                        <MenuItem.Style>
+                                                            <Style TargetType="MenuItem">
+                                                                <Setter Property="IsEnabled" Value="False" />
+                                                                <Style.Triggers>
+                                                                    <MultiDataTrigger>
+                                                                        <MultiDataTrigger.Conditions>
+                                                                            <Condition Binding="{Binding TesseractOrientationFileExists}" Value="True" />
+                                                                            <Condition Binding="{Binding Scanner.ArayüzEtkin}" Value="True" />
+                                                                        </MultiDataTrigger.Conditions>
+                                                                        <Setter Property="IsEnabled" Value="True" />
+                                                                    </MultiDataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </MenuItem.Style>
                                                         <MenuItem.Header>
                                                             <TextBlock>
                                                                 <Run AutomationProperties.Name="{local:Loc DOCUMENT}"
@@ -971,13 +987,13 @@
                                                         </MenuItem.Icon>
                                                     </MenuItem>
                                                     <Separator />
-                                                    <local:ScanProfilesView />
+                                                    <local:ScanProfilesView IsEnabled="{Binding Scanner.ArayüzEtkin}" />
                                                 </StackPanel>
                                             </Border>
-                                        </Extensions:SplitButton.InternalContent>
-                                    </Extensions:SplitButton>
+                                        </Extensions:ContentToggleButton.OverContent>
+                                    </Extensions:ContentToggleButton>
                                     <Button x:Name="AutoScanPathBtn"
-                                        Grid.Column="3"
+                                        Grid.Column="4"
                                         local:Policy.PolicyName="KayıtYoluBelirle"
                                         AutomationProperties.Name="{local:Loc AUTOPATH}"
                                         Command="{Binding KayıtYoluBelirle}"
