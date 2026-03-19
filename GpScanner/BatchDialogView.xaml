@@ -147,7 +147,10 @@
                                                 <Image Width="16"
                                                     Height="16"
                                                     Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc MERGE}" />
+                                                <TextBlock VerticalAlignment="Center">
+                                                    <sys:String>PDF</sys:String>
+                                                    <Run Text="{twainctrl:Loc MERGE}" />
+                                                </TextBlock>
                                             </StackPanel>
                                         </Button>
                                     </UniformGrid>

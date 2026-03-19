@@ -1623,7 +1623,7 @@ namespace TwainControl
                     }
                 }
 
-            //----- next packet
+                //----- next packet
             nextPacket:
                 do
                 {
@@ -1832,7 +1832,7 @@ namespace TwainControl
                                 {
                                     if ((cc = coeff[0]) != 0 && !touched[0])
                                     {
-                                        if (cc is 1 or (-1))
+                                        if (cc is 1 or -1)
                                         {
                                             all = 0;
                                             if (x > cb.x0)
@@ -2826,7 +2826,8 @@ namespace TwainControl
                         if (dst == null)
                         {
                             n = new InternalNode(depth + 1);
-                        } ((InternalNode)(n ?? dst)).append(c);
+                        }
+                        ((InternalNode)(n ?? dst)).append(c);
                     }
                     if (n != null && dst != null)
                     {
@@ -3637,7 +3638,7 @@ namespace TwainControl
                 genReg.setParameters(this, isMMR, hdpHeight,
                         (grayMax + 1) * hdpWidth, hdTemplate, gbAtX, gbAtY);
                 JB2Bmp colBmp = genReg.getRegBmp();
-                patterns = new List<JB2Bmp>(grayMax + 1);               // 3)
+                patterns = [with(grayMax + 1)];               // 3)
                 for (int gray = 0; gray <= grayMax; gray++)
                 {           // 4)
                     Rectangle roi = new(hdpWidth * gray, 0, hdpWidth, hdpHeight);
@@ -3898,7 +3899,7 @@ namespace TwainControl
             }
             private void setExportedSymbols(int[] toExportFlags)
             {
-                expSymbols = new List<JB2Bmp>(amtExpSymb);
+                expSymbols = [with(amtExpSymb)];
                 for (int i = 0; i < amtImpSymb + amtNewSymb; i++)
                 {
                     if (toExportFlags[i] == 1)

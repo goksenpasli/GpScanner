@@ -67,18 +67,16 @@ namespace PdfViewer
                 if (frameworkElement is ListBox listBox)
                 {
                     ScrollViewer scrollViewer = listBox.GetFirstVisualChild<ScrollViewer>();
-                    if (scrollViewer is not null)
+                    scrollViewer?.ScrollChanged +=
+                async (sender, args) =>
+                {
+                    if (scrollViewer.ScrollableHeight > 0)
                     {
-                        scrollViewer.ScrollChanged += async (sender, args) =>
-                                                      {
-                                                          if (scrollViewer.ScrollableHeight > 0)
-                                                          {
-                                                              double index = scrollViewer.ContentVerticalOffset / scrollViewer.ScrollableHeight * listBox.Items.Count;
-                                                              await GenerateThumb(listBox, (int)index);
-                                                              await CloseToolTip(listBox);
-                                                          }
-                                                      };
+                        double index = scrollViewer.ContentVerticalOffset / scrollViewer.ScrollableHeight * listBox.Items.Count;
+                        await GenerateThumb(listBox, (int)index);
+                        await CloseToolTip(listBox);
                     }
+                };
                 }
             }
         }

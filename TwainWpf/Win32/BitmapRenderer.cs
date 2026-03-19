@@ -36,7 +36,7 @@ namespace TwainWpf.Win32
             int pixelInfoPointer = _bitmapInfo.ClrUsed;
             if (pixelInfoPointer == 0 && _bitmapInfo.BitCount <= 8)
             {
-                pixelInfoPointer = 1 << (_bitmapInfo.BitCount);
+                pixelInfoPointer = 1 << _bitmapInfo.BitCount;
             }
             pixelInfoPointer = (pixelInfoPointer * 4) + _bitmapInfo.Size + _bitmapPointer.ToInt32();
 

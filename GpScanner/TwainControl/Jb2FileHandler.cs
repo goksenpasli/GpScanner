@@ -2,6 +2,8 @@
 using PdfiumViewer;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
@@ -36,8 +38,8 @@ namespace TwainControl
                 () =>
                 {
                     PBoxJBig2 pBoxJBig2 = new(File.ReadAllBytes(filename), null);
-                    using System.Drawing.Image image = pBoxJBig2.decodeImage();
-                    BitmapImage bitmapimage = image.ToBitmapImage(System.Drawing.Imaging.ImageFormat.Tiff);
+                    using Image image = pBoxJBig2.decodeImage();
+                    BitmapImage bitmapimage = image.ToBitmapImage(ImageFormat.Tiff);
                     BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(bitmapimage.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(bitmapimage);
                     bitmapFrame.Freeze();
                     return bitmapFrame;
@@ -62,10 +64,10 @@ namespace TwainControl
                     BitmapFrame bitmapFrame = await Task.Run(
                         () =>
                         {
-                            using System.Drawing.Image image = pBoxJBig2.decodeImage(i + 1);
+                            using Image image = pBoxJBig2.decodeImage(i + 1);
                             if (image != null)
                             {
-                                BitmapImage bitmapimage = image.ToBitmapImage(System.Drawing.Imaging.ImageFormat.Tiff);
+                                BitmapImage bitmapimage = image.ToBitmapImage(ImageFormat.Tiff);
                                 BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(bitmapimage.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(bitmapimage);
                                 bitmapFrame.Freeze();
                                 return bitmapFrame;

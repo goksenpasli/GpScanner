@@ -4,7 +4,6 @@ using GpScanner.ViewModel;
 using Ocr;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -306,7 +305,7 @@ public partial class MainWindow : Window
 
             if (e.PropertyName is "DataBaseTextDataCompleted" && TwainCtrl?.DataBaseTextDataCompleted == true && TwainCtrl?.DataBaseTextData is not null)
             {
-                ViewModel.ScannedText = new ObservableCollection<OcrData>(TwainCtrl.DataBaseTextData.SelectMany(z => z));
+                ViewModel.ScannedText = [ with(TwainCtrl.DataBaseTextData.SelectMany(z => z)) ];
                 using (AppDbContext context = new())
                 {
                     _ = context.Data.Add(new Data { FileName = TwainCtrl?.Scanner?.PdfFilePath, FileContent = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text)), QrData = TwainCtrl?.Scanner?.BarcodeContent });

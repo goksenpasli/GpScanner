@@ -81,7 +81,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private readonly Brush defaultsaveprogressforegroundcolor = (Brush)new BrushConverter().ConvertFromString("#FF06B025");
     private readonly string[] imagefileextensions = [ ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp" ];
     private readonly Stack<DeletedImageEntry> invertundoStack = new();
-    private readonly Rectangle selectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeThickness = 2, StrokeDashArray = new DoubleCollection([ 1 ]) };
+    private readonly Rectangle selectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeThickness = 2, StrokeDashArray = [ with([ 1 ]) ] };
     private readonly Stack<DeletedImageEntry> undoStack = new();
     private int cropAllMaximumWidth;
     private bool disposedValue;
@@ -112,7 +112,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         SelectedPaper = Settings.Default.LockSelectedPaper ? Papers.FirstOrDefault(z => z.PaperType == Settings.Default.DefaultPaper) : Papers.FirstOrDefault(z => z.PaperType == "A4");
         OnPropertyChanged(nameof(TesseractOrientationFileExists));
         DependencyPropertyDescriptor.FromProperty(MediaViewer.MediaPositionProperty, typeof(MediaViewer))?.AddValueChanged(mediaViewer, OnMediaPositionChanged);
-        Loaded += TwainCtrl_Loaded;     
+        Loaded += TwainCtrl_Loaded;
 
         ScanImage = new RelayCommand<object>(
             async parameter =>
@@ -4326,7 +4326,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public static void SavePageRotated(string savepath, PdfDocument inputDocument, int angle, int pageindex)
     {
         PdfPage page = inputDocument?.Pages[pageindex];
-        if (page?.Rotate is > 360 or < (-360))
+        if (page?.Rotate is > 360 or < -360)
         {
             page.Rotate = 0;
         }
@@ -6072,7 +6072,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             throw new ArgumentException("At least one split index is required.");
         }
         Array.Sort(indices);
-        List<T[]> parts = new(indices.Length + 1);
+        List<T[]> parts = [ with(indices.Length + 1) ];
         for (int i = 0; i < indices.Length; i++)
         {
             int startIndex = i == 0 ? 0 : indices[i - 1];

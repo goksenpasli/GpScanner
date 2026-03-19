@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using GpScanner.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -61,8 +62,8 @@ namespace GpScanner.ViewModel
 
         public void SaveToSettings()
         {
-            Properties.Settings.Default.BatchImageExtensions = string.Join("|", BatchImageFileExtensions.Where(x => x.Checked).Select(x => x.Name));
-            Properties.Settings.Default.Save();
+            Settings.Default.BatchImageExtensions = string.Join("|", BatchImageFileExtensions.Where(x => x.Checked).Select(x => x.Name));
+            Settings.Default.Save();
         }
 
         private void AttachAutoSave()
@@ -86,7 +87,7 @@ namespace GpScanner.ViewModel
 
         private void LoadFromSettings()
         {
-            string saved = Properties.Settings.Default.BatchImageExtensions;
+            string saved = Settings.Default.BatchImageExtensions;
             if (!string.IsNullOrWhiteSpace(saved))
             {
                 HashSet<string> enabledExts = [ .. saved.Split([ '|' ], StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLowerInvariant()) ];

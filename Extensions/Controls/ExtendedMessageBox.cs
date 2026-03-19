@@ -115,10 +115,7 @@ namespace Extensions
                 _yesButton.Click += YesButton_Click;
                 _ = _yesButton.Focus();
             }
-            if (_noButton is not null)
-            {
-                _noButton.Click += NoButton_Click;
-            }
+            _noButton?.Click += NoButton_Click;
             MouseDown += OnMouseDown;
             MouseMove += OnMouseMove;
             MouseUp += OnMouseUp;
@@ -218,15 +215,9 @@ namespace Extensions
             MouseDown -= OnMouseDown;
             MouseMove -= OnMouseMove;
             MouseUp -= OnMouseUp;
-            if (_yesButton is not null)
-            {
-                _yesButton.Click -= YesButton_Click;
-            }
+            _yesButton?.Click -= YesButton_Click;
 
-            if (_noButton is not null)
-            {
-                _noButton.Click -= NoButton_Click;
-            }
+            _noButton?.Click -= NoButton_Click;
         }
 
         private void NoButton_Click(object sender, RoutedEventArgs e)

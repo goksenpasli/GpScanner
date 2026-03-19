@@ -1,6 +1,8 @@
 ﻿using Extensions;
 using System;
 using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,8 +56,8 @@ public class Jb2ImageViewer : ImageViewer
             try
             {
                 PBoxJBig2 pBoxJBig2 = new(File.ReadAllBytes(ImageFilePath), null);
-                using System.Drawing.Image image = pBoxJBig2.decodeImage(Sayfa);
-                BitmapImage bitmapimage = image.ToBitmapImage(System.Drawing.Imaging.ImageFormat.Tiff);
+                using Image image = pBoxJBig2.decodeImage(Sayfa);
+                BitmapImage bitmapimage = image.ToBitmapImage(ImageFormat.Tiff);
                 BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(bitmapimage.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(bitmapimage);
                 bitmapFrame.Freeze();
                 Source = bitmapFrame;

@@ -36,10 +36,10 @@ namespace TwainControl;
 /// </summary>
 public partial class PdfImportViewerControl : UserControl, INotifyPropertyChanged
 {
-    private readonly Ellipse ellipseselectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection([ 1 ]), };
-    private readonly Line linebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection([ 1 ]) };
-    private readonly Rectangle rectangleselectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection([ 1 ]) };
-    private readonly Line reverselinebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection([ 1 ]) };
+    private readonly Ellipse ellipseselectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = [ with([ 1 ]) ], };
+    private readonly Line linebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = [ with([ 1 ]) ] };
+    private readonly Rectangle rectangleselectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = [ with([ 1 ]) ] };
+    private readonly Line reverselinebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = [ with([ 1 ]) ] };
     private Brush combinedLinearBrush;
     private bool isDrawMouseDown;
     private bool isMouseDown;
@@ -1050,7 +1050,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         switch (page.Orientation)
         {
             case PageOrientation.Portrait:
-                if (page.Rotate is 180 or (-180))
+                if (page.Rotate is 180 or -180)
                 {
                     rectX = page.Width - (coordx * widthmultiply) - (width * widthmultiply);
                     rectY = page.Height - (coordy * heightmultiply) - (height * heightmultiply);
@@ -1064,7 +1064,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 rectHeight = height * heightmultiply;
                 break;
             case PageOrientation.Landscape:
-                if (page.Rotate is 270 or (-90))
+                if (page.Rotate is 270 or -90)
                 {
                     rectX = page.Height - (coordy * widthmultiply) - (height * heightmultiply);
                     rectY = (coordx * heightmultiply) - (page.Width - page.Height);

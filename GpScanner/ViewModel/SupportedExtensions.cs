@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using GpScanner.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -120,7 +121,7 @@ namespace GpScanner.ViewModel
 
         public void LoadFromSettings()
         {
-            string data = Properties.Settings.Default.SupportedExtensions;
+            string data = Settings.Default.SupportedExtensions;
 
             if (string.IsNullOrWhiteSpace(data))
             {
@@ -178,8 +179,8 @@ namespace GpScanner.ViewModel
                 _ = sb.Append('|');
             }
 
-            Properties.Settings.Default.SupportedExtensions = sb.ToString();
-            Properties.Settings.Default.Save();
+            Settings.Default.SupportedExtensions = sb.ToString();
+            Settings.Default.Save();
         }
 
         private void AttachAutoSave()

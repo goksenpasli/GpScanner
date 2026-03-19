@@ -242,15 +242,9 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         base.OnApplyTemplate();
         _popup = GetTemplateChild("PART_Popup") as Popup;
         _listBox = GetTemplateChild("PART_ListBox") as ListBox;
-        if (_listBox is not null)
-        {
-            _listBox.MouseLeftButtonUp += ListBox_MouseLeftButtonUp;
-        }
+        _listBox?.MouseLeftButtonUp += ListBox_MouseLeftButtonUp;
         Window window = Window.GetWindow(this);
-        if (window is not null)
-        {
-            window.PreviewMouseDown += OnPreviewMouseDownOutside;
-        }
+        window?.PreviewMouseDown += OnPreviewMouseDownOutside;
     }
 
     protected override void OnLostFocus(RoutedEventArgs e)
@@ -289,10 +283,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     {
         base.OnVisualParentChanged(oldParent);
         Window window = Window.GetWindow(this);
-        if (window is not null)
-        {
-            window.PreviewMouseDown -= OnPreviewMouseDownOutside;
-        }
+        window?.PreviewMouseDown -= OnPreviewMouseDownOutside;
     }
 
     private static void OnSelectedItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

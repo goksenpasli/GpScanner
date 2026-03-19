@@ -110,7 +110,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         .ToList();
                     });
 
-                Dosyalar = new ObservableCollection<Scanner>(data);
+                Dosyalar = [with(data)];
                 OnPropertyChanged(nameof(AramaMetni));
                 FileLoadProgress = 1;
                 SearchProgressIndeterminate = false;
@@ -781,74 +781,77 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         StartPdfBatch = new RelayCommand<object>(
             async parameter =>
             {
-                if (Filesavetask?.IsCompleted == false)
+                try
                 {
-                    ExtendedMessageBox extendedMessageBox = new();
-                    extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), Translation.GetResStringValue("TASKSRUNNING"), AppName);
-                    return;
-                }
-                BatchFolderProcessedFileList = [];
-                InitializeBatchFiles(out List<string> files, out int slicecount, out Scanner scanner, out List<Task> Tasks);
-                GC.Collect();
-                foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
-                {
-                    BatchTxtOcr batchTxtOcr = new();
-                    Paper paper = ToolBox.Paper;
-                    Task task = Task.Run(
-                        async () =>
-                        {
-                            for (int i = 0; i < item.Count; i++)
+                    if (Filesavetask?.IsCompleted == false)
+                    {
+                        ExtendedMessageBox extendedMessageBox = new();
+                        extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), Translation.GetResStringValue("TASKSRUNNING"), AppName);
+                        return;
+                    }
+                    BatchFolderProcessedFileList = [];
+                    ConcurrentBag<TessFiles> tempResults = [];
+                    InitializeBatchFiles(out List<string> files, out int slicecount, out Scanner scanner, out List<Task> Tasks);
+                    GC.Collect();
+                    foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
+                    {
+                        BatchTxtOcr batchTxtOcr = new();
+                        Paper paper = ToolBox.Paper;
+                        Task task = Task.Run(
+                            async () =>
                             {
-                                try
+                                for (int i = 0; i < item.Count; i++)
                                 {
-                                    if (ocrcancellationToken?.IsCancellationRequested == false)
+                                    try
                                     {
-                                        string pdffile = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
-                                        ObservableCollection<OcrData> scannedText = scanner?.ApplyPdfSaveOcr == true ? item.ElementAtOrDefault(i).GetOcrData(Settings.Default.DefaultTtsLang) : null;
+                                        if (ocrcancellationToken?.IsCancellationRequested == false)
+                                        {
+                                            string pdffile = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
+                                            ObservableCollection<OcrData> scannedText = scanner?.ApplyPdfSaveOcr == true ? item.ElementAtOrDefault(i).GetOcrData(Settings.Default.DefaultTtsLang) : null;
 
-                                        batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
-                                        batchTxtOcr.FilePath = Path.GetFileName(item.ElementAtOrDefault(i));
-                                        if (Settings.Default.PdfBatchCompress)
-                                        {
-                                            BitmapFrame bitmapframe = BitmapFrame.Create(new Uri(item.ElementAtOrDefault(i)));
-                                            bitmapframe?.Freeze();
-                                            using PdfDocument pdfdocument = bitmapframe?.GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution);
-                                            pdfdocument.Save(pdffile);
-                                        }
-                                        else
-                                        {
-                                            using PdfDocument pdfdocument = item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText);
-                                            pdfdocument.Save(pdffile);
-                                        }
-                                        await Application.Current?.Dispatcher?.InvokeAsync(
-                                        () =>
-                                        {
+                                            batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
+                                            batchTxtOcr.FilePath = Path.GetFileName(item.ElementAtOrDefault(i));
+                                            if (Settings.Default.PdfBatchCompress)
+                                            {
+                                                BitmapFrame bitmapframe = BitmapFrame.Create(new Uri(item.ElementAtOrDefault(i)));
+                                                bitmapframe?.Freeze();
+                                                using PdfDocument pdfdocument = bitmapframe?.GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution);
+                                                pdfdocument.Save(pdffile);
+                                            }
+                                            else
+                                            {
+                                                using PdfDocument pdfdocument = item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText);
+                                                pdfdocument.Save(pdffile);
+                                            }
                                             string file = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
-                                            BatchFolderProcessedFileList.Add(new TessFiles() { Name = file });
-                                        });
-                                        scanner.PdfSaveProgressValue = (BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count) ?? 0;
+                                            tempResults.Add(new TessFiles() { Name = file });
+                                            scanner.PdfSaveProgressValue = (BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count) ?? 0;
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        await LogErrorAsync(ex);
                                     }
                                 }
-                                catch (Exception ex)
-                                {
-                                    await LogErrorAsync(ex);
-                                }
-                            }
-                        },
-                        ocrcancellationToken.Token);
-                    BatchTxtOcrs.Add(batchTxtOcr);
-                    Tasks.Add(task);
-                }
+                            },
+                            ocrcancellationToken.Token);
+                        BatchTxtOcrs.Add(batchTxtOcr);
+                        Tasks.Add(task);
+                    }
 
-                BatchDialogOpen = true;
-                Filesavetask = Task.WhenAll(Tasks);
-                await Filesavetask;
-                BatchFolderProcessedFileList = OrderBatchFiles(BatchFolderProcessedFileList);
-                scanner.PdfSaveProgressValue = 0;
-                BatchTxtOcrs?.Clear();
-                if (Filesavetask?.IsCompleted == true && Shutdown)
+                    BatchDialogOpen = true;
+                    Filesavetask = Task.WhenAll(Tasks);
+                    await Filesavetask;
+                    BatchFolderProcessedFileList = OrderBatchFiles([.. tempResults]);
+                    scanner.PdfSaveProgressValue = 0;
+                    BatchTxtOcrs?.Clear();
+                }
+                finally
                 {
-                    TwainControl.Shutdown.DoExitWin(TwainControl.Shutdown.EWX_SHUTDOWN);
+                    if (Filesavetask?.IsCompleted == true && Shutdown)
+                    {
+                        TwainControl.Shutdown.DoExitWin(TwainControl.Shutdown.EWX_SHUTDOWN);
+                    }
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(BatchFolder) && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
@@ -880,55 +883,61 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         StartTxtBatch = new RelayCommand<object>(
             async parameter =>
             {
-                if (Filesavetask?.IsCompleted == false)
+                try
                 {
-                    ExtendedMessageBox extendedMessageBox = new();
-                    extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), Translation.GetResStringValue("TASKSRUNNING"), AppName);
-                    return;
-                }
+                    if (Filesavetask?.IsCompleted == false)
+                    {
+                        ExtendedMessageBox extendedMessageBox = new();
+                        extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), Translation.GetResStringValue("TASKSRUNNING"), AppName);
+                        return;
+                    }
 
-                InitializeBatchFiles(out List<string> files, out int slicecount, out Scanner scanner, out List<Task> Tasks);
-                GC.Collect();
-                foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
-                {
-                    BatchTxtOcr batchTxtOcr = new();
-                    Task task = Task.Run(
-                        async () =>
-                        {
-                            for (int i = 0; i < item.Count; i++)
+                    InitializeBatchFiles(out List<string> files, out int slicecount, out Scanner scanner, out List<Task> Tasks);
+                    GC.Collect();
+                    foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
+                    {
+                        BatchTxtOcr batchTxtOcr = new();
+                        Task task = Task.Run(
+                            async () =>
                             {
-                                try
+                                for (int i = 0; i < item.Count; i++)
                                 {
-                                    if (ocrcancellationToken?.IsCancellationRequested == false)
+                                    try
                                     {
-                                        string image = item[i];
-                                        string txtfile = Path.ChangeExtension(image, ".txt");
-                                        string content = string.Join(" ", image.GetOcrData(Settings.Default.DefaultTtsLang).Select(z => z.Text));
-                                        File.WriteAllText(txtfile, content);
-                                        batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
-                                        scanner.PdfSaveProgressValue = (BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count) ?? 0;
-                                        batchTxtOcr.FilePath = Path.GetFileName(image);
+                                        if (ocrcancellationToken?.IsCancellationRequested == false)
+                                        {
+                                            string image = item[i];
+                                            string txtfile = Path.ChangeExtension(image, ".txt");
+                                            string content = string.Join(" ", image.GetOcrData(Settings.Default.DefaultTtsLang).Select(z => z.Text));
+                                            File.WriteAllText(txtfile, content);
+                                            batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
+                                            scanner.PdfSaveProgressValue = (BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count) ?? 0;
+                                            batchTxtOcr.FilePath = Path.GetFileName(image);
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        await LogErrorAsync(ex);
                                     }
                                 }
-                                catch (Exception ex)
-                                {
-                                    await LogErrorAsync(ex);
-                                }
-                            }
-                        },
-                        ocrcancellationToken.Token);
-                    BatchTxtOcrs.Add(batchTxtOcr);
-                    Tasks.Add(task);
-                }
+                            },
+                            ocrcancellationToken.Token);
+                        BatchTxtOcrs.Add(batchTxtOcr);
+                        Tasks.Add(task);
+                    }
 
-                BatchDialogOpen = true;
-                Filesavetask = Task.WhenAll(Tasks);
-                await Filesavetask;
-                scanner.PdfSaveProgressValue = 0;
-                BatchTxtOcrs?.Clear();
-                if (Filesavetask?.IsCompleted == true && Shutdown)
+                    BatchDialogOpen = true;
+                    Filesavetask = Task.WhenAll(Tasks);
+                    await Filesavetask;
+                    scanner.PdfSaveProgressValue = 0;
+                    BatchTxtOcrs?.Clear();
+                }
+                finally
                 {
-                    TwainControl.Shutdown.DoExitWin(TwainControl.Shutdown.EWX_SHUTDOWN);
+                    if (Filesavetask?.IsCompleted == true && Shutdown)
+                    {
+                        TwainControl.Shutdown.DoExitWin(TwainControl.Shutdown.EWX_SHUTDOWN);
+                    }
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(BatchFolder) && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));

@@ -2,6 +2,8 @@
 using PdfiumViewer;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
@@ -31,8 +33,8 @@ namespace TwainControl
                    : await Task.Run(
                 () =>
                 {
-                    using System.Drawing.Image image = new XPdfJpx(File.ReadAllBytes(filename)).decodeImage();
-                    BitmapImage bitmapimage = image.ToBitmapImage(System.Drawing.Imaging.ImageFormat.Jpeg);
+                    using Image image = new XPdfJpx(File.ReadAllBytes(filename)).decodeImage();
+                    BitmapImage bitmapimage = image.ToBitmapImage(ImageFormat.Jpeg);
                     BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(bitmapimage.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(bitmapimage);
                     bitmapFrame.Freeze();
                     return bitmapFrame;

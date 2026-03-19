@@ -210,7 +210,7 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     }
                     _cachedPageCount = pdfDocument.PageCount;
                 }
-                PdfAllPagesContent = new ObservableCollection<Dictionary<int, string>>(_cachedPdfPages);
+                PdfAllPagesContent = [ with(_cachedPdfPages) ];
             },
             parameter => File.Exists(PdfFilePath));
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -51,7 +52,7 @@ public class AngleGauge : Control
             if (bigpoints)
             {
                 string text = $"{i}°";
-                FormattedText ft = new(text, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), size * 0.06, Brushes.Black, VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                FormattedText ft = new(text, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), size * 0.06, Brushes.Black, VisualTreeHelper.GetDpi(this).PixelsPerDip);
 
                 Point pos = PointOnCircle(center, radius * 0.63, i);
                 pos.Offset(-ft.Width / 2, -ft.Height / 2);
@@ -73,7 +74,7 @@ public class AngleGauge : Control
         dc.DrawEllipse(Brushes.White, new Pen(Brushes.Black, 2), center, radius * 0.08, radius * 0.08);
 
         string big = $"{Angle:0}°";
-        FormattedText bigFt = new(big, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI Semibold"), size * 0.10, Brushes.DarkBlue, VisualTreeHelper.GetDpi(this).PixelsPerDip);
+        FormattedText bigFt = new(big, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI Semibold"), size * 0.10, Brushes.DarkBlue, VisualTreeHelper.GetDpi(this).PixelsPerDip);
 
         dc.DrawText(bigFt, new Point(center.X - (bigFt.Width / 2), center.Y - (radius * 0.45)));
     }
