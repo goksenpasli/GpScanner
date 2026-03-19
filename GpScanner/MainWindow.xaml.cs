@@ -395,6 +395,7 @@ public partial class MainWindow : Window
 
     private async void Window_Closing(object sender, CancelEventArgs e)
     {
+        TwainCtrl.SaveSettings();
         if (TwainCtrl.FileSaveTask?.IsCompleted == false || (DataContext as GpScannerViewModel)?.Filesavetask?.IsCompleted == false)
         {
             ShowExtendedMessageBox(Translation.GetResStringValue("TASKSRUNNING"), false);

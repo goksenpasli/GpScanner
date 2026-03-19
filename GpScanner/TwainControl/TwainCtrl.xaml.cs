@@ -112,7 +112,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         SelectedPaper = Settings.Default.LockSelectedPaper ? Papers.FirstOrDefault(z => z.PaperType == Settings.Default.DefaultPaper) : Papers.FirstOrDefault(z => z.PaperType == "A4");
         OnPropertyChanged(nameof(TesseractOrientationFileExists));
         DependencyPropertyDescriptor.FromProperty(MediaViewer.MediaPositionProperty, typeof(MediaViewer))?.AddValueChanged(mediaViewer, OnMediaPositionChanged);
-        Loaded += TwainCtrl_Loaded;
+        Loaded += TwainCtrl_Loaded;     
 
         ScanImage = new RelayCommand<object>(
             async parameter =>
@@ -5013,8 +5013,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             Scanner.ApplyPdfSaveOcr = false;
         }
-
-        Settings.Default.Save();
     }
 
     private async Task DefaultScanAsync()

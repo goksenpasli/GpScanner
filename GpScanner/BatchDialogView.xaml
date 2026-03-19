@@ -120,7 +120,10 @@
                                                     <Image Width="16"
                                                         Height="16"
                                                         Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc START}" />
+                                                    <TextBlock VerticalAlignment="Center">
+                                                        <sys:String>PDF</sys:String>
+                                                        <Run Text="{twainctrl:Loc START}" />
+                                                    </TextBlock>
                                                 </StackPanel>
                                             </Button.Content>
                                         </Button>
@@ -132,7 +135,10 @@
                                                     <Image Width="16"
                                                         Height="16"
                                                         Source="{Binding Source='.txt', Converter={StaticResource FilePathToIconConverter}}" />
-                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc START}" />
+                                                    <TextBlock VerticalAlignment="Center">
+                                                        <sys:String>TXT</sys:String>
+                                                        <Run Text="{twainctrl:Loc START}" />
+                                                    </TextBlock>
                                                 </StackPanel>
                                             </Button.Content>
                                         </Button>
@@ -210,6 +216,7 @@
                                                 AutomationProperties.Name="{twainctrl:Loc OCR}"
                                                 IsChecked="{Binding TwainCtrl.Scanner.ApplyPdfSaveOcr}"
                                                 IsEnabled="{Binding Path=TwainCtrl.Scanner.SelectedTtsLanguage, Converter={StaticResource StringNullableToBooleanConverter}, ValidatesOnDataErrors=True}"
+                                                ToolTipService.IsEnabled="{Binding TwainCtrl.Scanner.ApplyPdfSaveOcr, Converter={StaticResource ReverseBooleanConverter}}"
                                                 Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
                                                 <ToggleButton.Content>
                                                     <StackPanel Orientation="Horizontal">
@@ -227,6 +234,31 @@
                                                         </TextBlock>
                                                     </StackPanel>
                                                 </ToggleButton.Content>
+                                                <ToggleButton.ToolTip>
+                                                    <StackPanel>
+                                                        <TextBlock Text="{twainctrl:Loc SETTİNGS}" />
+                                                        <Separator />
+                                                        <Grid>
+                                                            <CheckBox Margin="3,3,0,0" IsChecked="True">
+                                                                <CheckBox.Content>
+                                                                    <TextBlock TextWrapping="Wrap">
+                                                                        <Run AutomationProperties.Name="{twainctrl:Loc FILE}" Text="{twainctrl:Loc FILE}" />
+                                                                        <Run Text="{twainctrl:Loc OCR}" />
+                                                                        <Run AutomationProperties.Name="{twainctrl:Loc OCRTIME}"
+                                                                            FontWeight="Bold"
+                                                                            Foreground="Red"
+                                                                            Text="{twainctrl:Loc OCRTIME}" />
+                                                                    </TextBlock>
+                                                                </CheckBox.Content>
+                                                            </CheckBox>
+                                                            <Ellipse Width="20"
+                                                                Height="20"
+                                                                HorizontalAlignment="Left"
+                                                                VerticalAlignment="Center"
+                                                                Stroke="Red" />
+                                                        </Grid>
+                                                    </StackPanel>
+                                                </ToggleButton.ToolTip>
                                             </ToggleButton>
                                             <ToggleButton AutomationProperties.Name="{twainctrl:Loc CLOSECOMP}" IsChecked="{Binding Shutdown}">
                                                 <Canvas Width="32" Height="32">
