@@ -104,9 +104,12 @@
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
-                                            <TextBlock VerticalAlignment="Center"
-                                                Text="{twainctrl:Loc SRC}"
-                                                TextWrapping="Wrap" />
+                                            <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
+                                                <Run Text="{twainctrl:Loc SRC}" />
+                                                <LineBreak />
+                                                <Run d:Text="0" Text="{Binding BatchFolderFileCount, Mode=OneWay}" />
+                                                <Run Text="{twainctrl:Loc FILE}" />
+                                            </TextBlock>
                                         </StackPanel>
                                     </Button>
                                     <UniformGrid Grid.RowSpan="2"

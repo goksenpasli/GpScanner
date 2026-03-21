@@ -597,6 +597,7 @@
                                         d:SelectedValue="200"
                                         local:Policy.PolicyName="Çözünürlük"
                                         FontWeight="Bold"
+                                        Foreground="{Binding Mode=OneWay, Path=SelectedItem.Tag, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}"
                                         SelectedValue="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
                                         SelectedValuePath="Tag">
                                         <ComboBoxItem Content="72 DPI" Tag="72" />

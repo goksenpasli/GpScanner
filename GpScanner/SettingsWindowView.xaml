@@ -511,6 +511,7 @@
                                         </TextBlock>
                                         <ComboBox VerticalContentAlignment="Center"
                                             twainctrl:Policy.PolicyName="DefaultPictureResizeRatio"
+                                            Foreground="{Binding Mode=OneWay, Path=SelectedItem, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}"
                                             ItemStringFormat="{}{0}%"
                                             ItemsSource="{Binding SettingsPagePictureResizeList}"
                                             SelectedItem="{Binding DefaultPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
@@ -551,6 +552,7 @@
                                         </CheckBox>
                                         <ComboBox VerticalContentAlignment="Center"
                                             twainctrl:Policy.PolicyName="DefaultThumbPictureResizeRatio"
+                                            Foreground="{Binding Mode=OneWay, Path=SelectedItem, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}"
                                             IsEnabled="{Binding DefaultThumbPictureAutoResize, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource ReverseBooleanConverter}}"
                                             ItemStringFormat="{}{0}%"
                                             ItemsSource="{Binding SettingsPagePictureResizeList}"
@@ -575,6 +577,7 @@
                                         </TextBlock>
                                         <ComboBox VerticalContentAlignment="Center"
                                             twainctrl:Policy.PolicyName="DefaultThumbNailDpi"
+                                            Foreground="{Binding Mode=OneWay, Path=SelectedItem, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}"
                                             ItemStringFormat="{}{0} Dpi"
                                             ItemsSource="{Binding SettingsPagePdfDpiList}"
                                             SelectedItem="{Binding DefaultThumbNailDpi, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">

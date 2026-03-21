@@ -707,6 +707,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 if (!string.IsNullOrEmpty(path))
                 {
                     BatchFolder = path;
+                    BatchFolderFileCount = FastFileSearch.EnumerateFilepaths(BatchFolder).Count(file => BatchSupportedExtensions?.BatchImageFileExtensions.Any(z => z.Checked && z.Name == Path.GetExtension(file).ToLowerInvariant()) == true);
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
@@ -1596,6 +1597,32 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
+    public int BatchFolderFileCount
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(BatchFolderFileCount));
+            }
+        }
+    }
+
+    public double BatchPdfSaveProgressValue
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(BatchPdfSaveProgressValue));
+            }
+        }
+    }
+
     public ObservableCollection<TessFiles> BatchFolderProcessedFileList
     {
         get;
@@ -2254,20 +2281,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     } = PdfViewer.FitImageOrientation.Width;
 
-    public bool PdfBatchRunning
-    {
-        get;
-
-        set
-        {
-            if (field != value)
-            {
-                field = value;
-                OnPropertyChanged(nameof(PdfBatchRunning));
-            }
-        }
-    }
-
     public ICommand PdfBirleştir { get; }
 
     public bool PdfCompressorItemToggle
@@ -2843,11 +2856,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             return;
         }
         FileSystemWatcherProcessedFileList = [];
+        IProgress<double> progress = new Progress<double>(value => BatchPdfSaveProgressValue = value);
         FileSystemWatcher watcher = new(batchfolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.*", IncludeSubdirectories = true, EnableRaisingEvents = true };
         watcher.Created += async (s, e) =>
                            {
                                string currentfilepath = e.FullPath;
                                string currentfilename = e.Name;
+                               int filecount = FastFileSearch.EnumerateFilepaths(batchfolder).Count(file => BatchSupportedExtensions?.BatchImageFileExtensions.Any(z => z.Checked && z.Name == Path.GetExtension(file).ToLowerInvariant()) == true);
                                bool isFileLocked = IsFileLocked(currentfilepath);
                                while (isFileLocked)
                                {
@@ -2865,12 +2880,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                        {
                                            string item = $"{batchsavefolder}\\{Path.ChangeExtension(currentfilename, ".pdf")}";
                                            FileSystemWatcherProcessedFileList?.Add(item);
+                                           progress.Report((double)FileSystemWatcherProcessedFileList.Count / filecount);
                                        });
                                    }
                                }
                                catch (Exception ex)
                                {
-                                   throw new ArgumentException(ex?.Message);
+                                   await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex?.Message);
                                }
                            };
     }
@@ -3074,6 +3090,18 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             RunIdleIndexOperation();
         }
 
+        if (!string.IsNullOrEmpty(Settings.Default.BatchFolder) && !Directory.Exists(Settings.Default.BatchFolder))
+        {
+            Settings.Default.BatchFolder = string.Empty;
+            Settings.Default.RegisterBatchWatcher = false;
+        }
+
+        if (!string.IsNullOrEmpty(Settings.Default.BatchSaveFolder) && !Directory.Exists(Settings.Default.BatchSaveFolder))
+        {
+            Settings.Default.BatchSaveFolder = string.Empty;
+            Settings.Default.RegisterBatchWatcher = false;
+        }
+
         Settings.Default.Save();
     }
 
@@ -3115,35 +3143,43 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         try
         {
-            ObservableCollection<OcrData> scannedText;
-            if (string.Equals(Path.GetExtension(currentfilepath), ".webp", StringComparison.OrdinalIgnoreCase))
+            ObservableCollection<OcrData> scannedText = null;
+            ILoadFileHandler webpHandler = new WebpFileHandler();
+            ILoadFileHandler imageHandler = new ImageFileHandler();
+            ILoadFileHandler jb2Handler = new Jb2FileHandler();
+            byte[] imageBytes = null;
+
+            if (webpHandler.IsValidFile(currentfilename))
             {
-                byte[] webpfile = currentfilepath.WebpDecode(true, Twainsettings.Settings.Default.ImgLoadResolution).ToTiffJpegByteArray(Format.Jpg);
-                scannedText = await webpfile.OcrAsync(Settings.Default.DefaultTtsLang);
-                webpfile = null;
+                imageBytes = (await webpHandler.LoadWebpImage(96, currentfilepath, true)).ToTiffJpegByteArray(Format.Jpg);
             }
-            else
+            else if (imageHandler.IsValidFile(currentfilename))
             {
-                scannedText = await currentfilepath?.OcrAsync(Settings.Default.DefaultTtsLang);
+                scannedText = await currentfilepath.OcrAsync(Settings.Default.DefaultTtsLang);
             }
-            await Task.Run(
-                () =>
-                {
-                    PdfBatchRunning = true;
-                    using (PdfDocument pdfdocument = Settings.Default.PdfBatchCompress
-                                                     ? BitmapFrame.Create(new Uri(currentfilepath)).GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution)
-                                                     : currentfilepath.GeneratePdf(paper, scannedText))
-                    {
-                        string pdfFileName = Path.ChangeExtension(currentfilename, ".pdf");
-                        string pdfFilePath = Path.Combine(batchsavefolder, pdfFileName);
-                        pdfdocument.Save(pdfFilePath);
-                    }
-                    PdfBatchRunning = false;
-                });
+            else if (jb2Handler.IsValidFile(currentfilename))
+            {
+                imageBytes = (await jb2Handler.LoadImageAsync(currentfilepath)).ToTiffJpegByteArray(Format.Jpg);
+            }
+            if (imageBytes is not null)
+            {
+                scannedText = await imageBytes.OcrAsync(Settings.Default.DefaultTtsLang);
+                imageBytes = null;
+            }
+            string pdfFileName = Path.ChangeExtension(currentfilename, ".pdf");
+            string pdfFilePath = Path.Combine(batchsavefolder, pdfFileName);
+            await Task.Run(() =>
+            {
+                using PdfDocument pdfdocument = Settings.Default.PdfBatchCompress ?
+                BitmapFrame.Create(new Uri(currentfilepath)).GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution) :
+                currentfilepath.GeneratePdf(paper, scannedText);
+                pdfdocument.Save(pdfFilePath);
+            });
+
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(ex?.Message);
+            await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex?.Message);
         }
     }
 

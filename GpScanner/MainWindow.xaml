@@ -769,6 +769,7 @@
                                 <ComboBox VerticalContentAlignment="Center"
                                     d:SelectedValue="330,530"
                                     twainctrl:Policy.PolicyName="SelectedSize"
+                                    Foreground="{Binding Mode=OneWay, RelativeSource={RelativeSource Mode=Self}, Path=SelectedItem.Tag.Width, Converter={StaticResource ComboBoxSizeToColorConverter}}"
                                     SelectedValue="{Binding SelectedSize}"
                                     SelectedValuePath="Tag">
                                     <ComboBoxItem AutomationProperties.Name="{twainctrl:Loc SMALLEST}" Content="{twainctrl:Loc SMALLEST}">
@@ -1495,16 +1496,6 @@
                             <Run Text="{Binding TotalFileSize, Mode=OneWay, StringFormat={}{0} MB}" />
                         </TextBlock>
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                        <Image Width="16"
-                            Height="16"
-                            Visibility="{Binding PdfBatchRunning, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <Image.Source>
-                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                    <Binding Source="Shell32.dll" />
-                                    <Binding Source="20" />
-                                </MultiBinding>
-                            </Image.Source>
-                        </Image>
                         <Extensions:ContentToggleButton Background="{x:Null}" BorderBrush="{x:Null}">
                             <Extensions:ContentToggleButton.Style>
                                 <Style BasedOn="{StaticResource {x:Type Extensions:ContentToggleButton}}" TargetType="{x:Type Extensions:ContentToggleButton}">
@@ -1667,20 +1658,31 @@
                             AutomationProperties.Name="{twainctrl:Loc BATCH}"
                             Background="{x:Null}"
                             BorderBrush="{x:Null}"
-                            Content="{twainctrl:Loc BATCH}"
                             IsChecked="{Binding BatchDialogOpen}"
                             StaysOpen="True"
                             TopMost="False">
-                            <Extensions:ContentToggleButton.Style>
-                                <Style TargetType="Extensions:ContentToggleButton">
-                                    <Setter Property="Foreground" Value="White" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding RegisterBatchWatcher, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="true">
-                                            <Setter Property="Foreground" Value="GreenYellow" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Extensions:ContentToggleButton.Style>
+                            <Extensions:ContentToggleButton.Content>
+                                <Grid>
+                                    <ProgressBar Background="{x:Null}"
+                                        BorderBrush="{x:Null}"
+                                        Maximum="1"
+                                        Minimum="0"
+                                        Value="{Binding BatchPdfSaveProgressValue}" />
+                                    <TextBlock Text="{twainctrl:Loc BATCH}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="White" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding RegisterBatchWatcher, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="true">
+                                                        <Setter Property="Foreground" Value="GreenYellow" />
+                                                        <Setter Property="FontWeight" Value="Bold" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                            </Extensions:ContentToggleButton.Content>
                             <Extensions:ContentToggleButton.OverContent>
                                 <local:BatchDialogView />
                             </Extensions:ContentToggleButton.OverContent>
