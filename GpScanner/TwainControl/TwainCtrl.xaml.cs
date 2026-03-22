@@ -6041,9 +6041,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             Scanner.PaperBackScan = false;
         }
 
-        if (e.PropertyName is "ApplyPdfSaveOcr" && Settings.Default.UsePdfInternalTextData)
+        if (e.PropertyName is "ApplyPdfSaveOcr" && Scanner.ApplyPdfSaveOcr && Settings.Default.UsePdfInternalTextData)
         {
             Scanner.ApplyPdfSaveOcr = false;
+            MessageBox.Show($"{Translation.GetResStringValue("PDFINTERNAL")}\n{Translation.GetResStringValue("RESET")}", AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
     }
 

@@ -2583,6 +2583,19 @@
                                 </local:PdfSettings>
                             </ScrollViewer>
                         </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Certmgr.dll" />
+                                            <Binding Source="9" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </TabItem.Header>
+                            <local:PdfDecryptEncryptView />
+                        </TabItem>
                     </TabControl>
                 </GroupBox>
                 <ProgressBar Grid.Row="2"

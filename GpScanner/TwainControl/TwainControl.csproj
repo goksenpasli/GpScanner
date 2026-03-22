@@ -174,12 +174,16 @@
     <Compile Include="PdfCollection.cs" />
     <Compile Include="PdfCompressor.cs" />
     <Compile Include="PdfData.cs" />
+    <Compile Include="PdfDecryptEncryptView.xaml.cs">
+      <DependentUpon>PdfDecryptEncryptView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PdfFileHandler.cs" />
     <Compile Include="PdfGeneration.cs" />
     <Compile Include="PdfImportViewerControl.xaml.cs">
       <DependentUpon>PdfImportViewerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="PdfPageLayout.cs" />
+    <Compile Include="PdfSecurityViewModel.cs" />
     <Compile Include="PdfSettings.xaml.cs">
       <DependentUpon>PdfSettings.xaml</DependentUpon>
     </Compile>
@@ -385,6 +389,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PageCropControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PdfDecryptEncryptView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
