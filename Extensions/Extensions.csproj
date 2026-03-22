@@ -125,6 +125,7 @@
     <Compile Include="FolderDialog.cs" />
     <Compile Include="HyperlinkTextBlock.cs" />
     <Compile Include="IgnoreMouseWheelBehavior.cs" />
+    <Compile Include="ModernFolderDialog.cs" />
     <Compile Include="ProgressBarExtensions.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -52,6 +52,10 @@ namespace Extensions
             }
             finally
             {
+                if (Buffer != IntPtr.Zero)
+                {
+                    Marshal.FreeHGlobal(Buffer);
+                }
                 if (pidl != IntPtr.Zero)
                 {
                     Marshal.FreeCoTaskMem(pidl);
@@ -87,7 +91,10 @@ namespace Extensions
             switch (msg)
             {
                 case BFFM_INITIALIZED:
-                    _ = SendMessage(hWnd, BFFM_SETEXPANDED, IntPtr.Zero, lpData);
+                    if (lpData != IntPtr.Zero)
+                    {
+                        _ = SendMessage(hWnd, BFFM_SETEXPANDED, IntPtr.Zero, lpData);
+                    }
                     break;
             }
 
