@@ -75,6 +75,10 @@ namespace TwainControl
                 () =>
                 {
                     string pdffolder = FolderDialog.SelectFolder($"PDF {Translation.GetResStringValue("SRC")}", null, null);
+                    if (string.IsNullOrEmpty(pdffolder))
+                    {
+                        return;
+                    }
                     foreach (string file in Directory.EnumerateFiles(pdffolder, "*.pdf", SearchOption.AllDirectories))
                     {
                         PdfFileItem item = new() { InputPath = file, OutputPath = Path.Combine(Path.GetDirectoryName(file), $"{Path.GetFileNameWithoutExtension(file)}_decrypted.pdf") };
