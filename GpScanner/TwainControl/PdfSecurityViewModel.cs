@@ -15,22 +15,41 @@ namespace TwainControl
             DecryptCommand = new RelayCommand<object>(
                 parameter =>
                 {
-                    if (!PdfSecurityService.ValidatePaths(InputPath, OutputPath, out string validationError))
+                    string outputpath = Path.Combine(Path.GetDirectoryName(InputPath), $"{Path.GetFileNameWithoutExtension(InputPath)}_decrypted.pdf");
+                    if (!PdfSecurityService.ValidatePaths(InputPath, outputpath, out string validationError))
                     {
                         Status = validationError;
                         IsSuccess = false;
                         return;
                     }
-
-                    bool result = PdfSecurityService.Decrypt(InputPath, OutputPath, UserPassword, out string error);
+                    bool result = PdfSecurityService.Decrypt(InputPath, outputpath, UserPassword, out string error);
 
                     Status = result ? Translation.GetResStringValue("SUCCESS") : error;
+                    IsSuccess = result;
+                },
+                parameter => !string.IsNullOrWhiteSpace(UserPassword) && File.Exists(InputPath));
+
+            EncryptCommand = new RelayCommand<object>(
+                parameter =>
+                {
+                    string outputpath = Path.Combine(Path.GetDirectoryName(InputPath), $"{Path.GetFileNameWithoutExtension(InputPath)}_encrypted.pdf");
+                    if (!PdfSecurityService.ValidatePaths(InputPath, outputpath, out string validationError))
+                    {
+                        Status = validationError;
+                        IsSuccess = false;
+                        return;
+                    }
+                    bool result = PdfSecurityService.Encrypt(InputPath, outputpath, null, UserPassword, out string error);
+
+                    Status = result ? $"{Translation.GetResStringValue("ENCRYPT")} {Translation.GetResStringValue("SUCCESS")}" : error;
                     IsSuccess = result;
                 },
                 parameter => !string.IsNullOrWhiteSpace(UserPassword) && File.Exists(InputPath));
         }
 
         public ICommand DecryptCommand { get; }
+
+        public ICommand EncryptCommand { get; }
 
         public string InputPath { get; set; }
 
@@ -43,8 +62,6 @@ namespace TwainControl
                 OnPropertyChanged();
             }
         }
-
-        public string OutputPath { get; set; }
 
         public string Status
         {
@@ -81,7 +98,7 @@ namespace TwainControl
                     }
                     foreach (string file in Directory.EnumerateFiles(pdffolder, "*.pdf", SearchOption.AllDirectories))
                     {
-                        PdfFileItem item = new() { InputPath = file, OutputPath = Path.Combine(Path.GetDirectoryName(file), $"{Path.GetFileNameWithoutExtension(file)}_decrypted.pdf") };
+                        PdfFileItem item = new() { InputPath = file };
                         Files.Add(item);
                     }
                 });
@@ -116,6 +133,33 @@ namespace TwainControl
             {
                 error = ex.Message;
                 return false;
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+                return false;
+            }
+        }
+
+        internal static bool Encrypt(string inputPath, string outputPath, string userPassword, string ownerPassword, out string error)
+        {
+            error = null;
+
+            try
+            {
+                using PdfDocument document = PdfReader.Open(inputPath, PdfDocumentOpenMode.Modify);
+                document.SecuritySettings.UserPassword = userPassword ?? string.Empty;
+                document.SecuritySettings.OwnerPassword = ownerPassword ?? string.Empty;
+                document.SecuritySettings.PermitAccessibilityExtractContent = false;
+                document.SecuritySettings.PermitAnnotations = false;
+                document.SecuritySettings.PermitAssembleDocument = false;
+                document.SecuritySettings.PermitExtractContent = false;
+                document.SecuritySettings.PermitFormsFill = false;
+                document.SecuritySettings.PermitFullQualityPrint = false;
+                document.SecuritySettings.PermitModifyDocument = false;
+                document.SecuritySettings.PermitPrint = false;
+                document.Save(outputPath);
+                return true;
             }
             catch (Exception ex)
             {

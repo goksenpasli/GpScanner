@@ -80,21 +80,35 @@
                                     ResetButtonVisibility="Collapsed"
                                     Text="{Binding UserPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Watermark="{local:Loc PASSWORD}" />
-                                <Button Width="96" Command="{Binding DecryptCommand}">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="104" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Button>
+                                <UniformGrid Columns="2">
+                                    <Button Width="48" Command="{Binding DecryptCommand}">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="104" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
+                                    <Button Width="48" Command="{Binding EncryptCommand}">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="47" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
+                                </UniformGrid>
                             </StackPanel>
-                            <TextBlock VerticalAlignment="Center"
+                            <TextBlock Width="120"
+                                VerticalAlignment="Center"
                                 FontWeight="Bold"
                                 Foreground="{Binding ElementName=Bd, Path=BorderBrush}"
-                                Text="{Binding Status}" />
+                                Text="{Binding Status}"
+                                TextWrapping="Wrap" />
                         </StackPanel>
                     </Border>
                 </DataTemplate>
