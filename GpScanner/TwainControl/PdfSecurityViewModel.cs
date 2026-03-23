@@ -58,8 +58,11 @@ namespace TwainControl
             get;
             set
             {
-                field = value;
-                OnPropertyChanged();
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(IsSuccess));
+                }
             }
         }
 
@@ -68,8 +71,11 @@ namespace TwainControl
             get;
             set
             {
-                field = value;
-                OnPropertyChanged();
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(Status));
+                }
             }
         }
 
@@ -78,8 +84,11 @@ namespace TwainControl
             get;
             set
             {
-                field = value;
-                OnPropertyChanged();
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(UserPassword));
+                }
             }
         }
     }
@@ -106,7 +115,18 @@ namespace TwainControl
 
         public RelayCommand BrowseCommand { get; }
 
-        public ObservableCollection<PdfFileItem> Files { get; set; } = [];
+        public ObservableCollection<PdfFileItem> Files
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(Files));
+                }
+            }
+        } = [];
     }
 
     internal static class PdfSecurityService

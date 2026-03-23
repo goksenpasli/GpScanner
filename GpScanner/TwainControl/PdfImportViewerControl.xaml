@@ -1277,6 +1277,20 @@
                 Orientation="Vertical"
                 Value="{Binding PdfImportControlProgressValue}" />
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+            <Button local:Policy.PolicyName="EncryptPdfFile"
+                Command="{Binding EncryptPdfFile}"
+                CommandParameter="{Binding Mode=OneWay}"
+                IsEnabled="{Binding PdfToolBarControlIsEnabled}">
+                <Image Width="16" Height="16">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="Certmgr.dll" />
+                            <Binding Source="9" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+            </Button>
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             <Button local:Policy.PolicyName="ClosePdfFile"
                 Command="{Binding ClosePdfFile}"
                 CommandParameter="{Binding ElementName=PdfViewer}"

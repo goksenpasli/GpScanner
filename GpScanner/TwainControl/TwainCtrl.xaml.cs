@@ -1781,6 +1781,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => parameter is EypPdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
+        EncryptPdfFile = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is TwainCtrl twainctrl && File.Exists(twainctrl.PdfImportViewer.PdfViewer.PdfFilePath))
+                {
+                    if (twainctrl.PdfDecryptEncryptView.DataContext is PdfSecurityViewModel pdfSecurityViewModel)
+                    {
+                        pdfSecurityViewModel.Files.Add(new PdfFileItem() { InputPath = twainctrl.PdfImportViewer.PdfViewer.PdfFilePath });
+                        SelectedSettingsTabIndex = 2;
+                    }
+                }
+            },
+            parameter => true);
+
         ReverseData = new RelayCommand<object>(
             parameter =>
             {
@@ -3187,6 +3201,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    public RelayCommand<object> EncryptPdfFile { get; }
+
     public string Error => string.Empty;
 
     public ICommand ExploreFile { get; }
@@ -3969,6 +3985,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     } = PageRotation.NONE;
+
+    public int SelectedSettingsTabIndex
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(SelectedSettingsTabIndex));
+            }
+        }
+    }
 
     public int SelectedTabIndex
     {
@@ -6044,7 +6073,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         if (e.PropertyName is "ApplyPdfSaveOcr" && Scanner.ApplyPdfSaveOcr && Settings.Default.UsePdfInternalTextData)
         {
             Scanner.ApplyPdfSaveOcr = false;
-            MessageBox.Show($"{Translation.GetResStringValue("PDFINTERNAL")}\n{Translation.GetResStringValue("RESET")}", AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            _ = MessageBox.Show($"{Translation.GetResStringValue("PDFINTERNAL")}\n{Translation.GetResStringValue("RESET")}", AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
     }
 

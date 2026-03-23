@@ -1587,7 +1587,7 @@
                     </ScrollViewer>
                 </Expander>
                 <GroupBox Grid.Row="1">
-                    <TabControl Background="{DynamicResource BorderBackground}">
+                    <TabControl Background="{DynamicResource BorderBackground}" SelectedIndex="{Binding SelectedSettingsTabIndex}">
                         <TabItem>
                             <TabItem.Header>
                                 <Image Width="16" Height="16">
@@ -2594,7 +2594,7 @@
                                     </Image.Source>
                                 </Image>
                             </TabItem.Header>
-                            <local:PdfDecryptEncryptView />
+                            <local:PdfDecryptEncryptView x:Name="PdfDecryptEncryptView" x:FieldModifier="public" />
                         </TabItem>
                     </TabControl>
                 </GroupBox>
