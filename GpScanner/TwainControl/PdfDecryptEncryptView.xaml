@@ -22,6 +22,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Button Command="{Binding BrowseCommand}">
@@ -32,7 +33,59 @@
                 <TextBlock Text="{local:Loc SRC}" />
             </StackPanel>
         </Button>
-        <ItemsControl Grid.Row="1"
+        <UniformGrid Grid.Row="1"
+            Columns="3"
+            Rows="2">
+            <Button Command="{Binding CheckAllCommand}">
+                <Image Width="24"
+                    Height="24"
+                    Source="/TwainControl;component/Icons/selectall.png" />
+            </Button>
+            <Button Command="{Binding CheckNoneCommand}">
+                <Image Width="24"
+                    Height="24"
+                    Source="/TwainControl;component/Icons/none.png" />
+            </Button>
+            <Button Command="{Binding CheckReverseCommand}">
+                <Image Width="24"
+                    Height="24"
+                    Source="/TwainControl;component/Icons/inverse.png" />
+            </Button>
+            <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                CopyButtonVisibility="Collapsed"
+                OpenButtonVisibility="Collapsed"
+                PasteButtonVisibility="Collapsed"
+                ResetButtonVisibility="Collapsed"
+                Text="{Binding UserCommonPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Watermark="{local:Loc PASSWORD}" />
+            <Button Command="{Binding DecryptAllCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="24" Height="24">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="104" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                    <TextBlock VerticalAlignment="Center" Text="{local:Loc ALL}" />
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding EncryptAllCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="24" Height="24">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="47" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                    <TextBlock VerticalAlignment="Center" Text="{local:Loc ALL}" />
+                </StackPanel>
+            </Button>
+        </UniformGrid>
+        <ItemsControl Grid.Row="2"
             HorizontalContentAlignment="Stretch"
             d:ItemsSource="{d:SampleData ItemCount=5}"
             ItemsSource="{Binding Files}"
@@ -66,50 +119,52 @@
                                 </Style.Triggers>
                             </Style>
                         </Border.Style>
-                        <StackPanel Margin="1" Orientation="Horizontal">
-                            <Image Width="32"
-                                Height="32"
-                                Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                            <TextBlock Margin="0,0,10,0"
-                                VerticalAlignment="Center"
-                                Text="{Binding InputPath, Converter={StaticResource FilePathToFileNameConverter}}" />
-                            <StackPanel>
-                                <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed"
-                                    OpenButtonVisibility="Collapsed"
-                                    PasteButtonVisibility="Collapsed"
-                                    ResetButtonVisibility="Collapsed"
-                                    Text="{Binding UserPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Watermark="{local:Loc PASSWORD}" />
-                                <UniformGrid Columns="2">
-                                    <Button Width="48" Command="{Binding DecryptCommand}">
-                                        <Image Width="32" Height="32">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="104" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </Button>
-                                    <Button Width="48" Command="{Binding EncryptCommand}">
-                                        <Image Width="32" Height="32">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="47" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </Button>
-                                </UniformGrid>
+                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding IsChecked}">
+                            <StackPanel Margin="1" Orientation="Horizontal">
+                                <Image Width="32"
+                                    Height="32"
+                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                <TextBlock Margin="0,0,10,0"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding InputPath, Converter={StaticResource FilePathToFileNameConverter}}" />
+                                <StackPanel>
+                                    <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed"
+                                        OpenButtonVisibility="Collapsed"
+                                        PasteButtonVisibility="Collapsed"
+                                        ResetButtonVisibility="Collapsed"
+                                        Text="{Binding UserPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Watermark="{local:Loc PASSWORD}" />
+                                    <UniformGrid Columns="2">
+                                        <Button Width="48" Command="{Binding DecryptCommand}">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="104" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Button>
+                                        <Button Width="48" Command="{Binding EncryptCommand}">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="47" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Button>
+                                    </UniformGrid>
+                                </StackPanel>
+                                <TextBlock Width="120"
+                                    VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Foreground="{Binding ElementName=Bd, Path=BorderBrush}"
+                                    Text="{Binding Status}"
+                                    TextWrapping="Wrap" />
                             </StackPanel>
-                            <TextBlock Width="120"
-                                VerticalAlignment="Center"
-                                FontWeight="Bold"
-                                Foreground="{Binding ElementName=Bd, Path=BorderBrush}"
-                                Text="{Binding Status}"
-                                TextWrapping="Wrap" />
-                        </StackPanel>
+                        </CheckBox>
                     </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

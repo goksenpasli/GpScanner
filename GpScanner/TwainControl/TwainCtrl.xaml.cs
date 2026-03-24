@@ -5288,7 +5288,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             return;
         }
-        if (isRightMouseDown && SeçiliResim.Resim is not null)
+        if (isRightMouseDown && SeçiliResim?.Resim is not null)
         {
             Point mousemovecoord = e.GetPosition(scrollviewer);
             double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
@@ -5314,12 +5314,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 croppedbitmap.Freeze();
                 Scanner.SourceColor = Color.FromRgb(pixels[2], pixels[1], pixels[0]).ToString();
                 Scanner.AutoCropColor = Color.FromRgb(pixels[2], pixels[1], pixels[0]).ToString();
-            }
-
-            if (e.RightButton == MouseButtonState.Released)
-            {
-                isRightMouseDown = false;
-                Cursor = Cursors.Arrow;
             }
         }
 
@@ -5361,12 +5355,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 ScannedImage item = new() { Resim = bitmapframe };
                 Scanner.Resimler.Add(item);
             }
-
-            mousedowncoord.X = mousedowncoord.Y = 0;
-            isMouseDown = false;
-            Cursor = Cursors.Arrow;
-            ImgData = null;
         }
+        mousedowncoord.X = mousedowncoord.Y = 0;
+        isMouseDown = false;
+        Cursor = Cursors.Arrow;
+        ImgData = null;
+        isRightMouseDown = false;
     }
 
     private void ImgViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)

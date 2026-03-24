@@ -4,6 +4,7 @@ using PdfSharp.Pdf.IO;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Windows.Input;
 
 namespace TwainControl
@@ -53,6 +54,19 @@ namespace TwainControl
 
         public string InputPath { get; set; }
 
+        public bool IsChecked
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(IsChecked));
+                }
+            }
+        }
+
         public bool? IsSuccess
         {
             get;
@@ -97,8 +111,8 @@ namespace TwainControl
     {
         public PdfSecurityViewModel()
         {
-            BrowseCommand = new RelayCommand(
-                () =>
+            BrowseCommand = new RelayCommand<object>(
+                parameter =>
                 {
                     string pdffolder = FolderDialog.SelectFolder($"PDF {Translation.GetResStringValue("SRC")}", null, null);
                     if (string.IsNullOrEmpty(pdffolder))
@@ -111,9 +125,74 @@ namespace TwainControl
                         Files.Add(item);
                     }
                 });
+
+            CheckAllCommand = new RelayCommand<object>(
+                parameter =>
+                {
+                    foreach (PdfFileItem item in Files)
+                    {
+                        item.IsChecked = true;
+                    }
+                },
+                parameter => Files?.Any() == true);
+
+            CheckNoneCommand = new RelayCommand<object>(
+                parameter =>
+                {
+                    foreach (PdfFileItem item in Files)
+                    {
+                        item.IsChecked = false;
+                    }
+
+                },
+                parameter => Files?.Any() == true);
+
+            CheckReverseCommand = new RelayCommand<object>(
+                parameter =>
+                {
+                    foreach (PdfFileItem item in Files)
+                    {
+                        item.IsChecked = !item.IsChecked;
+                    }
+                },
+                parameter => Files?.Any() == true);
+
+            DecryptAllCommand = new RelayCommand<object>(
+                parameter =>
+                {
+                    foreach (PdfFileItem item in Files.Where(z => z.IsChecked))
+                    {
+                        bool result = PdfSecurityService.Decrypt(item.InputPath, Path.Combine(Path.GetDirectoryName(item.InputPath), $"{Path.GetFileNameWithoutExtension(item.InputPath)}_decrypted.pdf"), UserCommonPassword, out string error);
+                        item.Status = result ? Translation.GetResStringValue("SUCCESS") : error;
+                        item.IsSuccess = result;
+                    }
+                },
+                parameter => Files?.Any() == true && !string.IsNullOrWhiteSpace(UserCommonPassword));
+
+            EncryptAllCommand = new RelayCommand<object>(
+                parameter =>
+                {
+                    foreach (PdfFileItem item in Files.Where(z => z.IsChecked))
+                    {
+                        bool result = PdfSecurityService.Encrypt(item.InputPath, Path.Combine(Path.GetDirectoryName(item.InputPath), $"{Path.GetFileNameWithoutExtension(item.InputPath)}_encrypted.pdf"), null, UserCommonPassword, out string error);
+                        item.Status = result ? Translation.GetResStringValue("SUCCESS") : error;
+                        item.IsSuccess = result;
+                    }
+                },
+                parameter => Files?.Any() == true && !string.IsNullOrWhiteSpace(UserCommonPassword));
         }
 
-        public RelayCommand BrowseCommand { get; }
+        public RelayCommand<object> BrowseCommand { get; }
+
+        public RelayCommand<object> CheckAllCommand { get; }
+
+        public RelayCommand<object> CheckNoneCommand { get; }
+
+        public RelayCommand<object> CheckReverseCommand { get; }
+
+        public RelayCommand<object> DecryptAllCommand { get; }
+
+        public RelayCommand<object> EncryptAllCommand { get; }
 
         public ObservableCollection<PdfFileItem> Files
         {
@@ -127,6 +206,19 @@ namespace TwainControl
                 }
             }
         } = [];
+
+        public string UserCommonPassword
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(UserCommonPassword));
+                }
+            }
+        }
     }
 
     internal static class PdfSecurityService
