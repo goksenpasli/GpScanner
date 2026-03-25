@@ -257,6 +257,11 @@
                 <Run AutomationProperties.Name="{local:Loc SETTİNGS}" Text="{local:Loc SETTİNGS}" />
             </TextBlock>
             <UniformGrid Columns="2">
+                <UniformGrid.Resources>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Foreground" Value="{Binding Mode=OneWay, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}" />
+                    </Style>
+                </UniformGrid.Resources>
                 <TextBlock VerticalAlignment="Center">
                     <Run AutomationProperties.Name="{local:Loc BW}" Text="{local:Loc BW}" />
                     <Run AutomationProperties.Name="{local:Loc SATURATION}" Text="{local:Loc SATURATION}" />
@@ -303,19 +308,18 @@
                     </InlineUIContainer>
                 </TextBlock>
                 <ComboBox AutomationProperties.Name="{local:Loc BW}"
+                    FontWeight="Bold"
+                    Foreground="{Binding Mode=OneWay, Path=SelectedItem, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}"
                     ItemsSource="{Binding Jb2SaturationValues}"
-                    SelectedItem="{Binding Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=Jb2Saturation, Source={x:Static properties:Settings.Default}}">
-                    <ComboBox.ItemContainerStyle>
-                        <Style TargetType="ComboBoxItem">
-                            <Setter Property="Foreground" Value="{Binding Mode=OneWay, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}" />
-                        </Style>
-                    </ComboBox.ItemContainerStyle>
-                </ComboBox>
+                    SelectedItem="{Binding Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=Jb2Saturation, Source={x:Static properties:Settings.Default}}" />
                 <TextBlock VerticalAlignment="Center">
                     <Run Text="{local:Loc BW}" />
                     <Run AutomationProperties.Name="{local:Loc THRESHOLD}" Text="{local:Loc THRESHOLD}" />
                 </TextBlock>
-                <ComboBox ItemsSource="{Binding Jb2ThresholdValues}" SelectedItem="{Binding Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=Jb2Threshold, Source={x:Static properties:Settings.Default}}" />
+                <ComboBox FontWeight="Bold"
+                    Foreground="{Binding Mode=OneWay, Path=SelectedItem, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}"
+                    ItemsSource="{Binding Jb2ThresholdValues}"
+                    SelectedItem="{Binding Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=Jb2Threshold, Source={x:Static properties:Settings.Default}}" />
             </UniformGrid>
             <Separator />
         </StackPanel>
