@@ -71,7 +71,7 @@
                     <TextBlock VerticalAlignment="Center" Text="{local:Loc ALL}" />
                 </StackPanel>
             </Button>
-            <Button Command="{Binding EncryptAllCommand}">
+            <Extensions:SplitButton Command="{Binding EncryptAllCommand}">
                 <StackPanel Orientation="Horizontal">
                     <Image Width="24" Height="24">
                         <Image.Source>
@@ -83,7 +83,49 @@
                     </Image>
                     <TextBlock VerticalAlignment="Center" Text="{local:Loc ALL}" />
                 </StackPanel>
-            </Button>
+                <Extensions:SplitButton.InternalContent>
+                    <Border Background="{StaticResource BorderBackground}"
+                        BorderBrush="{StaticResource GroupBoxBackGround}"
+                        BorderThickness="1">
+                        <StackPanel>
+                            <StackPanel.Resources>
+                                <Style TargetType="MenuItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                </Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Height" Value="16" />
+                                    <Setter Property="Width" Value="16" />
+                                </Style>
+                            </StackPanel.Resources>
+                            <MenuItem Header="Permit Accessibility Extract Content"
+                                IsCheckable="True"
+                                IsChecked="{Binding PermitAccessibilityExtractContent}" />
+                            <MenuItem Header="Permit Annotations"
+                                IsCheckable="True"
+                                IsChecked="{Binding PermitAnnotations}" />
+                            <MenuItem Header="Permit Assemble Document"
+                                IsCheckable="True"
+                                IsChecked="{Binding PermitAssembleDocument}" />
+                            <MenuItem Header="Permit Extract Content"
+                                IsCheckable="True"
+                                IsChecked="{Binding PermitExtractContent}" />
+                            <MenuItem Header="Permit Forms Fill"
+                                IsCheckable="True"
+                                IsChecked="{Binding PermitFormsFill}" />
+                            <MenuItem Header="Permit Full Quality Print"
+                                IsCheckable="True"
+                                IsChecked="{Binding PermitFullQualityPrint}" />
+                            <MenuItem Header="Permit Modify Document"
+                                IsCheckable="True"
+                                IsChecked="{Binding PermitModifyDocument}" />
+                            <MenuItem Header="Permit Print"
+                                IsCheckable="True"
+                                IsChecked="{Binding PermitPrint}" />
+                        </StackPanel>
+                    </Border>
+                </Extensions:SplitButton.InternalContent>
+            </Extensions:SplitButton>
         </UniformGrid>
         <ItemsControl Grid.Row="2"
             HorizontalContentAlignment="Stretch"

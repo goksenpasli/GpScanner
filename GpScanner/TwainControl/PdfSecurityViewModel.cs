@@ -114,15 +114,22 @@ namespace TwainControl
             BrowseCommand = new RelayCommand<object>(
                 parameter =>
                 {
-                    string pdffolder = FolderDialog.SelectFolder($"PDF {Translation.GetResStringValue("SRC")}", null, null);
-                    if (string.IsNullOrEmpty(pdffolder))
+                    try
                     {
-                        return;
+                        string pdffolder = FolderDialog.SelectFolder($"PDF {Translation.GetResStringValue("SRC")}", null, null);
+                        if (string.IsNullOrEmpty(pdffolder))
+                        {
+                            return;
+                        }
+                        foreach (string file in Directory.EnumerateFiles(pdffolder, "*.pdf", SearchOption.AllDirectories))
+                        {
+                            PdfFileItem item = new() { InputPath = file };
+                            Files.Add(item);
+                        }
                     }
-                    foreach (string file in Directory.EnumerateFiles(pdffolder, "*.pdf", SearchOption.AllDirectories))
+                    catch (Exception)
                     {
-                        PdfFileItem item = new() { InputPath = file };
-                        Files.Add(item);
+
                     }
                 });
 
@@ -167,19 +174,32 @@ namespace TwainControl
                         item.IsSuccess = result;
                     }
                 },
-                parameter => Files?.Any() == true && !string.IsNullOrWhiteSpace(UserCommonPassword));
+                parameter => Files?.Any(z => z.IsChecked) == true && !string.IsNullOrWhiteSpace(UserCommonPassword));
 
             EncryptAllCommand = new RelayCommand<object>(
                 parameter =>
                 {
                     foreach (PdfFileItem item in Files.Where(z => z.IsChecked))
                     {
-                        bool result = PdfSecurityService.Encrypt(item.InputPath, Path.Combine(Path.GetDirectoryName(item.InputPath), $"{Path.GetFileNameWithoutExtension(item.InputPath)}_encrypted.pdf"), null, UserCommonPassword, out string error);
+                        bool result = PdfSecurityService.Encrypt(
+                            item.InputPath,
+                            Path.Combine(Path.GetDirectoryName(item.InputPath), $"{Path.GetFileNameWithoutExtension(item.InputPath)}_encrypted.pdf"),
+                            null,
+                            UserCommonPassword,
+                            out string error,
+                            PermitAccessibilityExtractContent,
+                            PermitAnnotations,
+                            PermitAssembleDocument,
+                            PermitExtractContent,
+                            PermitFormsFill,
+                            PermitFullQualityPrint,
+                            PermitModifyDocument,
+                            PermitPrint);
                         item.Status = result ? Translation.GetResStringValue("SUCCESS") : error;
                         item.IsSuccess = result;
                     }
                 },
-                parameter => Files?.Any() == true && !string.IsNullOrWhiteSpace(UserCommonPassword));
+                parameter => Files?.Any(z => z.IsChecked) == true && !string.IsNullOrWhiteSpace(UserCommonPassword));
         }
 
         public RelayCommand<object> BrowseCommand { get; }
@@ -206,6 +226,110 @@ namespace TwainControl
                 }
             }
         } = [];
+
+        public bool PermitAccessibilityExtractContent
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(PermitAccessibilityExtractContent));
+                }
+            }
+        }
+
+        public bool PermitAnnotations
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(PermitAnnotations));
+                }
+            }
+        }
+
+        public bool PermitAssembleDocument
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(PermitAssembleDocument));
+                }
+            }
+        }
+
+        public bool PermitExtractContent
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(PermitExtractContent));
+                }
+            }
+        }
+
+        public bool PermitFormsFill
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(PermitFormsFill));
+                }
+            }
+        }
+
+        public bool PermitFullQualityPrint
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(PermitFullQualityPrint));
+                }
+            }
+        }
+
+        public bool PermitModifyDocument
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(PermitModifyDocument));
+                }
+            }
+        }
+
+        public bool PermitPrint
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(PermitPrint));
+                }
+            }
+        }
 
         public string UserCommonPassword
         {
@@ -253,7 +377,19 @@ namespace TwainControl
             }
         }
 
-        internal static bool Encrypt(string inputPath, string outputPath, string userPassword, string ownerPassword, out string error)
+        internal static bool Encrypt(string inputPath,
+                                     string outputPath,
+                                     string userPassword,
+                                     string ownerPassword,
+                                     out string error,
+                                     bool PermitAccessibilityExtractContent = false,
+                                     bool PermitAnnotations = false,
+                                     bool PermitAssembleDocument = false,
+                                     bool PermitExtractContent = false,
+                                     bool PermitFormsFill = false,
+                                     bool PermitFullQualityPrint = false,
+                                     bool PermitModifyDocument = false,
+                                     bool PermitPrint = false)
         {
             error = null;
 
@@ -262,14 +398,14 @@ namespace TwainControl
                 using PdfDocument document = PdfReader.Open(inputPath, PdfDocumentOpenMode.Modify);
                 document.SecuritySettings.UserPassword = userPassword ?? string.Empty;
                 document.SecuritySettings.OwnerPassword = ownerPassword ?? string.Empty;
-                document.SecuritySettings.PermitAccessibilityExtractContent = false;
-                document.SecuritySettings.PermitAnnotations = false;
-                document.SecuritySettings.PermitAssembleDocument = false;
-                document.SecuritySettings.PermitExtractContent = false;
-                document.SecuritySettings.PermitFormsFill = false;
-                document.SecuritySettings.PermitFullQualityPrint = false;
-                document.SecuritySettings.PermitModifyDocument = false;
-                document.SecuritySettings.PermitPrint = false;
+                document.SecuritySettings.PermitAccessibilityExtractContent = PermitAccessibilityExtractContent;
+                document.SecuritySettings.PermitAnnotations = PermitAnnotations;
+                document.SecuritySettings.PermitAssembleDocument = PermitAssembleDocument;
+                document.SecuritySettings.PermitExtractContent = PermitExtractContent;
+                document.SecuritySettings.PermitFormsFill = PermitFormsFill;
+                document.SecuritySettings.PermitFullQualityPrint = PermitFullQualityPrint;
+                document.SecuritySettings.PermitModifyDocument = PermitModifyDocument;
+                document.SecuritySettings.PermitPrint = PermitPrint;
                 document.Save(outputPath);
                 return true;
             }
