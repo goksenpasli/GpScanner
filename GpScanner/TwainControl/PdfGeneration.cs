@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using Extensions;
+using Microsoft.VisualBasic;
 using Microsoft.Win32;
 using MozJpeg;
 using Ocr;
@@ -16,6 +17,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -96,6 +98,18 @@ public static class PdfGeneration
         doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
         doc.Options.NoCompression = false;
         doc.Options.EnableCcittCompressionForBilevelImages = true;
+    }
+
+    public static void ApplyPdfSecurity(this PdfDocument document)
+    {
+        PdfSecuritySettings securitySettings = document.SecuritySettings;
+        if (!string.IsNullOrWhiteSpace(Scanner.PdfPassword))
+        {
+            securitySettings.OwnerPassword = Scanner.PdfPassword;
+            securitySettings.PermitModifyDocument = Scanner.AllowEdit;
+            securitySettings.PermitPrint = Scanner.AllowPrint;
+            securitySettings.PermitExtractContent = Scanner.AllowCopy;
+        }
     }
 
     public static PdfDocument ArrangePdfPages(this string filename, int oldindex, int newindex)
@@ -250,6 +264,73 @@ public static class PdfGeneration
         using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
         gfx.DrawImage(XImage.FromBitmapSource(bitmapSource), 0, 0, page.Width, page.Height);
         return pdfdocument;
+    }
+
+    public static async Task<PdfDocument> GenerateOcredPdfPage(this MemoryStream stream,
+                                                               int dpi,
+                                                               string ocrLang,
+                                                               Action<double> progressCallback = null,
+                                                               bool processFirstPageOnly = false,
+                                                               int parallelcount = 4,
+                                                               CancellationToken cancellationToken = default)
+    {
+        using PdfDocument document = PdfReader.Open(stream, PdfDocumentOpenMode.Modify);
+
+        int totalPages = document.PageCount;
+        int endPage = processFirstPageOnly ? 1 : totalPages;
+        double progressStep = 1.0 / endPage;
+        (BitmapImage Image, ObservableCollection<OcrData> OcrData)[] results = new (BitmapImage Image, ObservableCollection<OcrData> OcrData)[endPage];
+        object progressLock = new();
+        int completed = 0;
+
+        using SemaphoreSlim semaphore = new(parallelcount);
+        IEnumerable<Task> tasks = Enumerable.Range(0, endPage)
+        .Select(
+            async i =>
+            {
+                await semaphore.WaitAsync();
+                try
+                {
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        progressCallback?.Invoke(0);
+                        return;
+                    }
+                    stream.Position = 0;
+                    byte[] buffer = new byte[stream.Length];
+                    stream.Read(buffer, 0, buffer.Length);
+                    using var localStream = new MemoryStream(buffer);
+                    BitmapImage scannedImage = await PdfViewer.PdfViewer.ConvertToImgAsync(localStream, i + 1, dpi);
+                    byte[] jpegData = scannedImage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+                    ObservableCollection<OcrData> ocrData = await jpegData.OcrAsync(ocrLang);
+                    results[i] = (scannedImage, ocrData);
+
+                    lock (progressLock)
+                    {
+                        completed++;
+                        progressCallback?.Invoke(completed * progressStep);
+                    }
+                }
+                finally
+                {
+                    _ = semaphore.Release();
+                }
+            });
+
+        await Task.WhenAll(tasks);
+
+        for (int i = 0; i < endPage; i++)
+        {
+            (BitmapImage image, ObservableCollection<OcrData> ocrData) = results[i];
+            if (ocrData?.Count > 0)
+            {
+                PdfPage page = document.Pages[i];
+                using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Prepend);
+                AddTextContentIfNeeded(image, ocrData, page, gfx);
+            }
+        }
+        stream = null;
+        return document;
     }
 
     public static PdfDocument GeneratePdf(this string imagefile, Paper paper, ObservableCollection<OcrData> ScannedText = null)
@@ -619,18 +700,6 @@ public static class PdfGeneration
     }
 
     private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust) => new(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust);
-
-    private static void ApplyPdfSecurity(this PdfDocument document)
-    {
-        PdfSecuritySettings securitySettings = document.SecuritySettings;
-        if (!string.IsNullOrWhiteSpace(Scanner.PdfPassword))
-        {
-            securitySettings.OwnerPassword = Scanner.PdfPassword;
-            securitySettings.PermitModifyDocument = Scanner.AllowEdit;
-            securitySettings.PermitPrint = Scanner.AllowPrint;
-            securitySettings.PermitExtractContent = Scanner.AllowCopy;
-        }
-    }
 
     private static void DrawImageOnPage(XGraphics gfx, XImage xImage, PdfPage page, XSize size)
     {

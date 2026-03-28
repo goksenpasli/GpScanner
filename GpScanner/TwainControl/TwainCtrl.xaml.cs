@@ -441,7 +441,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     if (EncodeAsJb2)
                     {
                         List<ScannedImage> image = [ scannedImage ];
-                        File.WriteAllBytes(saveFileDialog.FileName, image.CreateMultipagePdfWithJbig2Images().AddPdfPassword_PdfSharp().ToArray());
+                        if (Scanner.ApplyPdfSaveOcr && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
+                        {
+                            Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
+                            using PdfDocument document = await image.CreateMultipagePdfWithJbig2Images().GenerateOcredPdfPage(Settings.Default.ImgLoadResolution, Scanner.SelectedTtsLanguage);
+                            document.ApplyPdfSecurity();
+                            document.Save(saveFileDialog.FileName);
+                        }
+                        else
+                        {
+                            File.WriteAllBytes(saveFileDialog.FileName, image.CreateMultipagePdfWithJbig2Images().AddPdfPassword_PdfSharp().ToArray());
+                        }
                     }
                     else
                     {
@@ -741,7 +751,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             if (EncodeAsJb2)
                             {
                                 Progress<double> progress = new(percent => Scanner.PdfSaveProgressValue = percent);
-                                File.WriteAllBytes(fileName, seçiliresimler.CreateMultipagePdfWithJbig2Images(progress).AddPdfPassword_PdfSharp().ToArray());
+                                if (Scanner.ApplyPdfSaveOcr && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
+                                {
+                                    Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
+                                    using PdfDocument document = await seçiliresimler.CreateMultipagePdfWithJbig2Images(progress).GenerateOcredPdfPage(Settings.Default.ImgLoadResolution, Scanner.SelectedTtsLanguage, progress => Scanner.PdfSaveProgressValue = progress);
+                                    document.ApplyPdfSecurity();
+                                    document.Save(saveFileDialog.FileName);
+                                }
+                                else
+                                {
+                                    File.WriteAllBytes(fileName, seçiliresimler.CreateMultipagePdfWithJbig2Images(progress).AddPdfPassword_PdfSharp().ToArray());
+                                }
                                 Scanner.PdfSaveProgressValue = 0;
                             }
                             else

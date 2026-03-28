@@ -529,6 +529,48 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
+    public static async Task<BitmapImage> ConvertToImgAsync(Stream stream, int page, int dpi = 72)
+    {
+        if (stream is null)
+        {
+            throw new ArgumentException("Invalid PDF file", nameof(stream));
+        }
+        try
+        {
+            return await Task.Run(
+                () =>
+                {
+                    using PdfDocument pdfDoc = PdfDocument.Load(stream);
+                    if (pdfDoc?.PageCount < page)
+                    {
+                        return null;
+                    }
+                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
+                    using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
+                    BitmapImage bitmapImage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
+                    if (bitmapImage is null)
+                    {
+                        return null;
+                    }
+                    bitmapImage.Freeze();
+                    try
+                    {
+                        CharacterInformations = pdfDoc.GetCharacterInformation(page - 1);
+                    }
+                    catch
+                    {
+                    }
+                    return bitmapImage;
+                })
+            .ConfigureAwait(false);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
     public static Task<BitmapSource> ConvertToImgAsync(PdfDocument pdfDoc, int dpi, int page, int width, int height)
     {
         return Task.Run(
