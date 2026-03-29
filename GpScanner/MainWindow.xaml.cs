@@ -358,7 +358,7 @@ public partial class MainWindow : Window
             if (e.PropertyName is "RefreshDocumentList" && TwainCtrl?.RefreshDocumentList == true)
             {
                 string closedfile = TwainCtrl.ClosedPdfFilePath;
-                ViewModel.RefreshItems<Scanner>(
+                ViewModel.RefreshItems(
                     ViewModel.Dosyalar,
                     item => item.FileName == closedfile,
                     item =>

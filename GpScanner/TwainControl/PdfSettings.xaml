@@ -9,8 +9,6 @@
     xmlns:properties="clr-namespace:TwainControl.Properties"
     xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="440"
-    d:DesignWidth="550"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">

@@ -31,7 +31,7 @@ namespace GpScanner.ViewModel
                 {
                     item.FileName = newFullPath;
                 }
-                gpScannerViewModel.RefreshItems<Scanner>(gpScannerViewModel.Dosyalar, item => item.FileName == oldFullPath, item => item.FileName = newFullPath);
+                gpScannerViewModel.RefreshItems(gpScannerViewModel.Dosyalar, item => item.FileName == oldFullPath, item => item.FileName = newFullPath);
                 _ = context.SaveChanges();
             }
             catch (Exception ex)

@@ -443,8 +443,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         List<ScannedImage> image = [ scannedImage ];
                         if (Scanner.ApplyPdfSaveOcr && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
                         {
+                            using var  memoryStream = image.CreateMultipagePdfWithJbig2Images();
                             Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
-                            using PdfDocument document = await image.CreateMultipagePdfWithJbig2Images().GenerateOcredPdfPage(Settings.Default.ImgLoadResolution, Scanner.SelectedTtsLanguage);
+                            using PdfDocument document =await memoryStream.GenerateOcredPdfPage(Settings.Default.ImgLoadResolution, Scanner.SelectedTtsLanguage);
                             document.ApplyPdfSecurity();
                             document.Save(saveFileDialog.FileName);
                         }
@@ -458,6 +459,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         await SavePdfImageAsync([ scannedImage ], saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true, Settings.Default.ImgLoadResolution);
                     }
                     Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    Scanner.SaveProgressBarForegroundBrush = defaultsaveprogressforegroundcolor;
                     OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
@@ -753,8 +755,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 Progress<double> progress = new(percent => Scanner.PdfSaveProgressValue = percent);
                                 if (Scanner.ApplyPdfSaveOcr && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
                                 {
+                                    using var memoryStream = seçiliresimler.CreateMultipagePdfWithJbig2Images(progress);
                                     Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
-                                    using PdfDocument document = await seçiliresimler.CreateMultipagePdfWithJbig2Images(progress).GenerateOcredPdfPage(Settings.Default.ImgLoadResolution, Scanner.SelectedTtsLanguage, progress => Scanner.PdfSaveProgressValue = progress);
+                                    using PdfDocument document = await memoryStream.GenerateOcredPdfPage(Settings.Default.ImgLoadResolution, Scanner.SelectedTtsLanguage, progress => Scanner.PdfSaveProgressValue = progress);
                                     document.ApplyPdfSecurity();
                                     document.Save(saveFileDialog.FileName);
                                 }
@@ -771,6 +774,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         });
                     await RemoveProcessedImages();
                     Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    Scanner.SaveProgressBarForegroundBrush = defaultsaveprogressforegroundcolor;
                     OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
