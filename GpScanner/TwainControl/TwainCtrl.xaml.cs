@@ -4718,7 +4718,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private static async Task CreateAutoDeskewedImage(ScannedImage item, double? angle = null)
     {
-        BitmapFrame bitmapFrame = BitmapFrame.Create(await item.Resim.RotateImageAsync(angle ?? Deskew.GetDeskewAngle(item.Resim), Brushes.White));
+        BitmapFrame bitmapFrame = BitmapFrame.Create((await item.Resim.RotateImageAsync(angle ?? Deskew.GetDeskewAngle(item.Resim), Brushes.White)).ToBitmapImage());
         bitmapFrame?.Freeze();
         item.Resim = bitmapFrame;
         item.DeskewAngle = Deskew.GetDeskewAngle(item.Resim) + 90;
