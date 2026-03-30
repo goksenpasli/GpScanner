@@ -41,7 +41,6 @@ using TwainControl;
 using WebPWrapper;
 using Xceed.Words.NET;
 using static Extensions.ExtensionMethods;
-using static Extensions.FileBreadCrumbControl;
 using static Extensions.ShellIcon;
 using Application = System.Windows.Application;
 using File = System.IO.File;
@@ -63,7 +62,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public CancellationTokenSource ocrcancellationToken;
     public CancellationTokenSource unindexedfileocrcancellation;
     private const string MinimumVcVersion = "14.21.27702";
-    private const int NetFxMinVersion = 528040;
+    private const int NetFxMinVersion = 461808;
     private static readonly SemaphoreSlim LogSemaphore = new(1, 1);
     private static DispatcherTimer flaganimationtimer;
     private static DispatcherTimer timer;
@@ -582,7 +581,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             parameter =>
             {
                 FileVersionInfo version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
-                _ = Process.Start($@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\twux32.exe", $"https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
+                _ = Process.Start($@"{AppDomain.CurrentDomain.BaseDirectory}\twux32.exe", $"https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
                 Settings.Default.LastCheckDate = DateTime.Now;
                 Settings.Default.Save();
             },
@@ -2991,18 +2990,15 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     private void CreateEmptySqliteDatabase()
     {
-        string databaseFilePath = Settings.Default.DatabaseFile;
-        if (!File.Exists(databaseFilePath))
-        {
-            var dbase = $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\Data.db";
-            Settings.Default.DatabaseFile = $@"{ProfileFolder}\Data.db";
-            Directory.CreateDirectory(ProfileFolder);
-            File.Copy(dbase, Settings.Default.DatabaseFile);
-        }
-        if (File.Exists(databaseFilePath))
+        string targetPath = $@"{ProfileFolder}\Data.db";
+        if (File.Exists(targetPath))
         {
             return;
-        }      
+        }
+        _ = Directory.CreateDirectory(ProfileFolder);
+        string sourcePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data.db");
+        File.Copy(sourcePath, targetPath);
+        Settings.Default.DatabaseFile = targetPath;
         Settings.Default.Save();
     }
 
@@ -3202,9 +3198,9 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         FileVersionInfo version = FileVersionInfo.GetVersionInfo(fileName);
         JumpTask update = new()
         {
-            IconResourcePath = $@"{Path.GetDirectoryName(fileName)}\twux32.exe",
+            IconResourcePath = $@"{AppDomain.CurrentDomain.BaseDirectory}\twux32.exe",
             Description = $"GPSCANNER {Translation.GetResStringValue("UPDATE")}",
-            ApplicationPath = $@"{Path.GetDirectoryName(fileName)}\twux32.exe",
+            ApplicationPath = $@"{AppDomain.CurrentDomain.BaseDirectory}\twux32.exe",
             Arguments = $"https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt",
             Title = Translation.GetResStringValue("UPDATE")
         };

@@ -14,7 +14,7 @@
         <FlowDocument>
             <Paragraph>
                 <TextBlock>
-                    <Run BaselineAlignment="Center" Text=".NET Framework 4.8 Installed" />
+                    <Run BaselineAlignment="Center" Text=".NET Framework 4.7.2 Installed" />
                     <InlineUIContainer BaselineAlignment="Center">
                         <Image Width="16" Height="16">
                             <Image.Style>
