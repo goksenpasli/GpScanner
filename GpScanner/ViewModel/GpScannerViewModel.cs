@@ -41,6 +41,7 @@ using TwainControl;
 using WebPWrapper;
 using Xceed.Words.NET;
 using static Extensions.ExtensionMethods;
+using static Extensions.FileBreadCrumbControl;
 using static Extensions.ShellIcon;
 using Application = System.Windows.Application;
 using File = System.IO.File;
@@ -2993,44 +2994,15 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         string databaseFilePath = Settings.Default.DatabaseFile;
         if (!File.Exists(databaseFilePath))
         {
+            var dbase = $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\Data.db";
             Settings.Default.DatabaseFile = $@"{ProfileFolder}\Data.db";
+            Directory.CreateDirectory(ProfileFolder);
+            File.Copy(dbase, Settings.Default.DatabaseFile);
         }
         if (File.Exists(databaseFilePath))
         {
             return;
-        }
-        using AppDbContext context = new();
-        _ = context?.Database?
-        .ExecuteSqlCommand(
-            """
-                CREATE TABLE IF NOT EXISTS "Data" (
-                	"Id"	INTEGER UNIQUE,
-                	"FileName"	TEXT,
-                	"QrData"	TEXT,
-                	"FileContent"	TEXT,
-                	PRIMARY KEY("Id")
-                )
-                """);
-        _ = context?.Database?
-        .ExecuteSqlCommand(
-            """
-                CREATE INDEX IF NOT EXISTS "index" ON "Data" (
-                	"FileContent",
-                	"FileName"	ASC
-                );
-                """);
-        _ = context?.Database?
-        .ExecuteSqlCommand(
-            """
-                CREATE TABLE IF NOT EXISTS "ReminderDatas" (
-                	"Id"	INTEGER UNIQUE,
-                	"Açıklama"	TEXT,
-                	"Seen"	INTEGER,
-                	"Tarih"	INTEGER,
-                	"FileName"	TEXT,
-                	PRIMARY KEY("Id")
-                )
-                """);
+        }      
         Settings.Default.Save();
     }
 
