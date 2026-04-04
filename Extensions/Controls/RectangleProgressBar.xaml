@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Extensions">
+    <Style TargetType="{x:Type local:RectangleProgressBar}">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:RectangleProgressBar}">
+                    <Grid>
+                        <ContentPresenter Margin="{TemplateBinding ContentMargin}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Content="{TemplateBinding Content}" />
+                        <Path x:Name="PART_Path"
+                            ClipToBounds="True"
+                            SnapsToDevicePixels="True"
+                            Stroke="{TemplateBinding ProgressBrush}"
+                            StrokeEndLineCap="Flat"
+                            StrokeLineJoin="Miter"
+                            StrokeStartLineCap="Flat"
+                            StrokeThickness="{TemplateBinding ProgressThickness}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

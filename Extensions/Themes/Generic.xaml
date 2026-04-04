@@ -23,5 +23,6 @@
         <ResourceDictionary Source="/Extensions;component/Controls/BadgeControl.xaml" />
         <ResourceDictionary Source="/Extensions;component/Controls/ExtendedMessageBox.xaml" />
         <ResourceDictionary Source="/Extensions;component/Controls/AngleGauge.xaml" />
+        <ResourceDictionary Source="/Extensions;component/Controls/RectangleProgressBar.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

@@ -72,7 +72,7 @@ public partial class MainWindow : Window
             if (e?.Data?.GetData(typeof(ScannedImage)) is ScannedImage droppedData)
             {
                 int currentPage = pdfviewer.Sayfa;
-                droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
+                droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution).Save(temporarypdf);
                 string[] mergedFiles = Keyboard.Modifiers switch
                 {
                     ModifierKeys.Alt | ModifierKeys.Shift => [ temporarypdf, pdfFilePath ],
