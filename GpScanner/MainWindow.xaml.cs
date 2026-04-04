@@ -2,6 +2,7 @@
 using GpScanner.Properties;
 using GpScanner.ViewModel;
 using Ocr;
+using PdfSharp.Pdf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -72,7 +73,8 @@ public partial class MainWindow : Window
             if (e?.Data?.GetData(typeof(ScannedImage)) is ScannedImage droppedData)
             {
                 int currentPage = pdfviewer.Sayfa;
-                droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution).Save(temporarypdf);
+                using PdfDocument pdfdocument = droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution);
+                pdfdocument.Save(temporarypdf);
                 string[] mergedFiles = Keyboard.Modifiers switch
                 {
                     ModifierKeys.Alt | ModifierKeys.Shift => [ temporarypdf, pdfFilePath ],

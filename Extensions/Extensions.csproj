@@ -114,6 +114,7 @@
     <Compile Include="Converters\ContributionToColorConverter.cs" />
     <Compile Include="Converters\DoubleToThicknessConverter.cs" />
     <Compile Include="Converters\EnumToIntValueConverter.cs" />
+    <Compile Include="Converters\FileExtensionConverter.cs" />
     <Compile Include="Converters\FilePathToFileNameConverter.cs" />
     <Compile Include="Converters\FolderPathToIconConverter.cs" />
     <Compile Include="Converters\FolderPathToLocalizedNameConverter.cs" />

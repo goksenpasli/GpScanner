@@ -21,7 +21,6 @@ namespace Extensions
     [ContentProperty("Content")]
     public class RectangleProgressBar : Control
     {
-
         public static readonly DependencyProperty ContentMarginProperty = DependencyProperty.Register(nameof(ContentMargin), typeof(Thickness), typeof(RectangleProgressBar), new PropertyMetadata(new Thickness(3)));
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(nameof(Value), typeof(double), typeof(RectangleProgressBar), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender, OnValueChanged));
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(nameof(Minimum), typeof(double), typeof(RectangleProgressBar), new PropertyMetadata(0.0));
@@ -88,7 +87,7 @@ namespace Extensions
         private void OnIndeterminateTick(object sender, EventArgs e)
         {
             _indeterminateOffset += 0.02;
-            if (_indeterminateOffset > 1)
+            if (_indeterminateOffset >= 1.0)
             {
                 _indeterminateOffset = 0;
             }
@@ -122,16 +121,16 @@ namespace Extensions
             double w = ActualWidth;
             double h = ActualHeight;
 
-            double perimeter = 2 * (w + h);
+            Point[] corners = [Snap(new Point(0, 0)), Snap(new Point(w, 0)), Snap(new Point(w, h)), Snap(new Point(0, h))];
 
-            double percent = indeterminate ? 0.25 : (Value - Minimum) / (Maximum - Minimum);
+            double perimeter = 2 * (w + h);
+            double offset = indeterminate ? perimeter * _indeterminateOffset : 0;
+
+            double range = Maximum - Minimum;
+            double percent = indeterminate ? 0.25 : (range == 0 ? 0 : (Value - Minimum) / range);
 
             percent = Math.Max(0, Math.Min(1, percent));
-
             double drawLength = perimeter * percent;
-            double offset = indeterminate ? perimeter * _indeterminateOffset % perimeter : 0;
-
-            Point[] corners = { new(0, 0), new(w, 0), new(w, h), new(0, h) };
 
             int startIndex = (int)StartPosition;
 
@@ -146,7 +145,6 @@ namespace Extensions
                 {
                     int from = (startIndex + i) % 4;
                     int to = (from + 1) % 4;
-
                     double edgeLength = (corners[to] - corners[from]).Length;
 
                     if (accumulated + edgeLength >= offset)
@@ -155,15 +153,13 @@ namespace Extensions
                         Vector dir = corners[to] - corners[from];
                         dir.Normalize();
 
-                        startPoint = corners[from] + (dir * local);
+                        startPoint = Snap(corners[from] + (dir * local));
                         currentEdgeIndex = from;
                         break;
                     }
 
                     accumulated += edgeLength;
                 }
-
-                startPoint = Snap(startPoint);
 
                 ctx.BeginFigure(startPoint, false, false);
 
@@ -174,21 +170,22 @@ namespace Extensions
                 {
                     int from = (currentEdgeIndex + i) % 4;
                     int to = (from + 1) % 4;
-
                     Point p1 = corners[from];
                     Point p2 = corners[to];
-
                     Vector dir = p2 - p1;
                     double edgeLength = dir.Length;
                     dir.Normalize();
 
+                    if (i > 0)
+                    {
+                        current = p1;
+                    }
+
                     double alreadyOnEdge = (current - p1).Length;
                     double available = edgeLength - alreadyOnEdge;
-
                     double draw = Math.Min(available, remaining);
 
                     Point next = Snap(current + (dir * draw));
-
                     ctx.LineTo(next, true, false);
 
                     current = next;
@@ -201,4 +198,3 @@ namespace Extensions
         }
     }
 }
-

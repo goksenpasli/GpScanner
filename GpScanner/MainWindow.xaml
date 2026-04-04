@@ -87,6 +87,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:SelectedSizeToCacheLengthConverter x:Key="SelectedSizeToCacheLengthConverter" />
         <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
+        <Extensions:FileExtensionConverter x:Key="FileExtensionConverter" />
         <Converter:CustomSizeToSizeConverter x:Key="CustomSizeToSizeConverter" />
         <TwainConverter:NumberRangeToColorConverter x:Key="ComboBoxSizeToColorConverter"
             MaxNumber="425"
@@ -145,9 +146,13 @@
                         <RemoveStoryboard BeginStoryboardName="Sb" />
                     </DataTrigger.EnterActions>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding DataContext.ListBoxBorderAnimation, RelativeSource={RelativeSource AncestorType=Window}}" Value="true">
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding DataContext.ListBoxBorderAnimation, RelativeSource={RelativeSource AncestorType=Window}}" Value="True" />
+                        <Condition Binding="{Binding FileName, Converter={StaticResource FileExtensionConverter}, ConverterParameter=.pdf}" Value="True" />
+                    </MultiDataTrigger.Conditions>
                     <Setter Property="BorderThickness" Value="2" />
-                    <DataTrigger.EnterActions>
+                    <MultiDataTrigger.EnterActions>
                         <BeginStoryboard x:Name="SbDrag">
                             <Storyboard RepeatBehavior="Forever">
                                 <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color"
@@ -155,14 +160,12 @@
                                     Duration="0:0:1" />
                             </Storyboard>
                         </BeginStoryboard>
-                    </DataTrigger.EnterActions>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding DataContext.ListBoxBorderAnimation, RelativeSource={RelativeSource AncestorType=Window}}" Value="false">
-                    <DataTrigger.EnterActions>
+                    </MultiDataTrigger.EnterActions>
+                    <MultiDataTrigger.ExitActions>
                         <StopStoryboard BeginStoryboardName="SbDrag" />
                         <RemoveStoryboard BeginStoryboardName="SbDrag" />
-                    </DataTrigger.EnterActions>
-                </DataTrigger>
+                    </MultiDataTrigger.ExitActions>
+                </MultiDataTrigger>
             </Style.Triggers>
         </Style>
         <Style x:Key="ContentToggleButtonAnimationStyle" TargetType="{x:Type Extensions:ContentToggleButton}">

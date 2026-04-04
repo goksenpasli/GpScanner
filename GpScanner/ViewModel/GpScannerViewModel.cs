@@ -116,7 +116,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                     result.Add(new Scanner { FileName = file, FolderName = fi.Directory?.Name, FileSize = fi.Length / 1048576f });
                                 });
 
-                            return result.ToList();
+                            return result.OrderBy(x => x.FileName, new StrCmpLogicalComparer()).ToList();
                         });
 
                     Dosyalar = [ with(data) ];
