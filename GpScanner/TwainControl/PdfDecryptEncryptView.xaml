@@ -165,7 +165,13 @@
                             <StackPanel Margin="1" Orientation="Horizontal">
                                 <Image Width="32"
                                     Height="32"
-                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}">
+                                    <Image.ToolTip>
+                                        <ToolTip>
+                                            <ContentControl Content="{Binding InputPath}" ContentTemplate="{StaticResource SimplePdfTemplate}" />
+                                        </ToolTip>
+                                    </Image.ToolTip>
+                                </Image>
                                 <TextBlock Margin="0,0,10,0"
                                     VerticalAlignment="Center"
                                     Text="{Binding InputPath, Converter={StaticResource FilePathToFileNameConverter}}" />
