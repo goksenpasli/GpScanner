@@ -826,4 +826,40 @@ BELGE EKLE</value>
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>Performans İçin İndeksleme Tamamlandıktan Sonra Klasörü Kaldırın. </value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>KIRP</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>GERİ AL</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>KOPYA OLUŞTUR</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>PANO</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>DİKEY</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>GİT</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>SAYFA</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>YAZDIR</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>METİN LİSTESİ OLARAK KAYDET</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>GÖRÜNEN İÇERİĞİ EKLE</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>BELGELER ARASINDA GEZİN</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>DİKEY ÇİZGİLERİ SİL</value>
+  </data>
 </root>

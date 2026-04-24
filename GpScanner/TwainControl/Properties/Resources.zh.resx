@@ -813,4 +813,40 @@
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>为了提高索引完成后的性能，删除文件夹</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>庄稼</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>撤消</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>创建副本</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>控制板</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>垂直的</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>去</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>页</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>打印</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>将列表另存为文本文件</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>添加可见内容</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>在文档之间导航</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>删除垂直线</value>
+  </data>
 </root>

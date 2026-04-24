@@ -813,4 +813,40 @@
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>Для повышения производительности после завершения индексирования удалите папку</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>ОБРЕЗАТЬ</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>ОТМЕНИТЬ</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>СОЗДАТЬ КОПИЮ</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>ПАНЕЛЬ</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>ВЕРТИКАЛЬНЫЙ</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>ИДТИ</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>СТРАНИЦА</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>ПЕЧАТЬ</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>СОХРАНИТЬ КАК СПИСОК ТЕКСТА</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>ДОБАВИТЬ ВИДИМОЕ ИЗОБРАЖЕНИЕ</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>ДОБАВИТЬ ВИДИМОЕ ИЗОБРАЖЕНИЕ</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>УДАЛИТЬ ВЕРТИКАЛЬНЫЕ ЛИНИИ</value>
+  </data>
 </root>

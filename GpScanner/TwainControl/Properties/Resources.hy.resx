@@ -816,4 +816,40 @@
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>Ավարտված թղթապանակը Indexing- ի ցուցիչից հետո կատարման համար</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>ԲՈՒՇԱԴՐՈՒԹՅՈՒՆ</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>ՀԵՏԱՐԿԵԼ</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>ՍՏԵՂԾԵԼ ՊԱՏՃԱՌ</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>ՊԱՆԵԼ</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>ՈՒՂՂԱԶԳԱՅԻՆ</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>ԳՆԱՑԵՔ</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>ԷՋ</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>ՏՊԱԳՐԵԼ</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>ՊԱՀԵԼ ՑԱՆԿԸ ՈՐՊԵՍ ՏԵՔՍՏ ՖԱՅԼ</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>ԱՎԵԼԱՑՆԵԼ ՏԵՍԱՆԵԼԻ ԲՈՎԱՆԴԱԿՈՒԹՅՈՒՆ</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>ՆՎԻԳԱՑԵՔ ՓԱՍՏԱԹՂԹԵՐԻ ՄԻՋԵՎ</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>ՀԵՌԱՑՆԵԼ ՈՒՂՂԱԶԳԱՅԻՆ ԳԾԵՐԸ</value>
+  </data>
 </root>

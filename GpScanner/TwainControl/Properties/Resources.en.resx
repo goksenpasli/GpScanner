@@ -820,4 +820,37 @@ TO FILE</value>
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>For Performance After Indexing Completed Remove Folder</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>CROP</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>UNDO</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>DUPLICATE</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>CLIPBOARD</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>VERTICAL</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>PAGE</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>GO</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>PRINT</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>SAVE LIST AS TEXT FILE</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>ADD VISIBLE IMAGE</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>REMOVE VERTICAL LINES</value>
+  </data>
 </root>

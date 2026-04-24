@@ -816,4 +816,40 @@
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>A teljesítményhez az indexelés után a kitöltött mappa eltávolítása után</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>TERMÉS</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>VISSZA</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>MÁSOLAT LÉTREHOZÁSA</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>PANEL</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>FÜGGŐLEGES</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>MEGY</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>OLDAL</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>NYOMTATÁS</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>LISTA MENTÉSE SZÖVEG FÁJLBA</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>LÁTHATÓ TARTALOM HOZZÁADÁSA</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>NAVIGÁCIÓ A DOKUMENTUMOK KÖZÖTT</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>TÁVOLÍTSA EL A FÜGGŐLEGES VONALOKAT</value>
+  </data>
 </root>

@@ -823,4 +823,40 @@ PDF</value>
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>인덱싱 완료 후 성능을 위해 폴더 제거</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>수확고</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>끄르다</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>사본 만들기</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>패널</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>수직의</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>가다</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>페이지</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>인쇄</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>목록을 텍스트 파일로 저장</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>보이는 콘텐츠 추가</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>문서 간 이동</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>수직선 제거</value>
+  </data>
 </root>

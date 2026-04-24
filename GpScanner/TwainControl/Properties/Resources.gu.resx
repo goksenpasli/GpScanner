@@ -813,4 +813,40 @@
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>અનુક્રમણિકા પૂર્ણ કર્યા પછી કામગીરી માટે ફોલ્ડર દૂર કરો</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>પાક</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>પૂર્વવત્ કરો</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>નકલ બનાવો</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>પેનલ</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>વર્ટિકલ</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>જાઓ</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>પૃષ્ઠ</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>પ્રિન્ટ</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>સૂચિને ટેક્સ્ટ ફાઇલ તરીકે સાચવો</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>દૃશ્યમાન સામગ્રી ઉમેરો</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>દસ્તાવેજો વચ્ચે નેવિગેટ કરો</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>ઊભી રેખાઓ દૂર કરો</value>
+  </data>
 </root>

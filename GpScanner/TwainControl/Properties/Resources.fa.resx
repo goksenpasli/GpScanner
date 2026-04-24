@@ -828,4 +828,40 @@
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>برای عملکرد پس از نمایه سازی تکمیل پوشه حذف</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>محصول</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>لغو</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>ایجاد کپی</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>پانل</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>عمودی</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>برو</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>PAGE</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>چاپ کنید</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>ذخیره لیست به عنوان فایل متنی</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>محتوای قابل مشاهده را اضافه کنید</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>بین اسناد حرکت کنید</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>خطوط عمودی را حذف کنید</value>
+  </data>
 </root>

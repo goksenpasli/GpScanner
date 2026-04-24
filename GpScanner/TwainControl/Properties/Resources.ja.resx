@@ -813,4 +813,40 @@
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>インデックス作成完了後のパフォーマンスを向上させるため、フォルダーを削除します</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>作物</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>元に戻す</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>コピーの作成</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>パネル</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>垂直</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>行く</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>ページ</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>印刷する</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>リストをテキストファイルとして保存</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>表示可能なコンテンツを追加する</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>ドキュメント間を移動する</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>縦線の除去</value>
+  </data>
 </root>

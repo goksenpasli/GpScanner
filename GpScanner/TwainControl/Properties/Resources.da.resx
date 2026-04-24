@@ -816,4 +816,40 @@
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>Til ydeevne efter indeksering af Fjern mappen Fjern Fjern</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>AFGRØDE</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>FORTRYD</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>OPRET KOPI</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>PANEL</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>LODRET</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>SIDE</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>GÅ</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>TRYKKE</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>GEM LISTE SOM TEKSTFIL</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>TILFØJ SYNLIGT INDHOLD</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>NAVIGERE MELLEM DOKUMENTER</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>FJERN VERTIKALE LINIER</value>
+  </data>
 </root>

@@ -816,4 +816,40 @@
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>Pentru performanță după indexarea finalizată, eliminați folderul</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>CULTURĂ</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>ANULA</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>CREAȚI O COPIE</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>PANOU</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>VERTICAL</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>MERGE</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>PAGINĂ</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>IMPRIMARE</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>SALVAȚI LISTA CA FIȘIER TEXT</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>ADĂUGAȚI CONȚINUT VIZIBIL</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>PHAJ MASKAR E DOKUMENTURA</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>ĆHIVEN E VERTIKALNE LINJE</value>
+  </data>
 </root>

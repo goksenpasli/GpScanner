@@ -828,4 +828,40 @@ Resminama goşuň</value>
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>Indeksirlemek tamamlanandan soň ýerine ýetiriş bukjasyny aýyryň</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>GARAŞ</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>UNDO</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>KOPI dörediň</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>PANEL</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>WERTIKAL</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>GIT</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>SAHYPA</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>Çap et</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>Sanawy tekst teksti hökmünde tygşytlaň</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>Görünýän mazmuny goşuň</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>RESMINAMALAR BARADA GÖRÜ ..</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>Wertikal çyzyklary aýyryň</value>
+  </data>
 </root>

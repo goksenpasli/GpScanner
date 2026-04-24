@@ -813,4 +813,40 @@
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>Tamamlanmadan sonra performans üçün qovluğu çıxarın</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>ƏKİL</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>GERİ ALIN</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>NÜSTƏYİ YARAT</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>PANEL</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>VERTİKAL</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>GO</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>SƏHİFƏ</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>ÇAP</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>SİYAHINI MƏTN FAYI KİMİ YAXŞ EDİN</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>GÖRÜNƏN MƏZMUN ƏLAVƏ EDİN</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>SƏNƏDLƏR ARASINDA KEÇİN</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>Şaquli Xətləri SİLİN</value>
+  </data>
 </root>

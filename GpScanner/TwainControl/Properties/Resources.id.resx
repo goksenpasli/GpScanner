@@ -816,4 +816,40 @@
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>Untuk Kinerja Setelah Pengindeksan Selesai Hapus Folder</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>TANAMAN</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>MEMBUKA</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>BUAT SALINAN</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>PANEL</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>VERTIKAL</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>PERGI</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>HALAMAN</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>MENCETAK</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>SIMPAN DAFTAR SEBAGAI FILE TEKS</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>TAMBAHKAN KONTEN YANG TERLIHAT</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>NAVIGASI ANTARA DOKUMEN</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>HAPUS GARIS VERTIKAL</value>
+  </data>
 </root>

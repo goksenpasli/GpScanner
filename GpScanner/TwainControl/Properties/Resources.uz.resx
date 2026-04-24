@@ -828,4 +828,40 @@ Hujjat qo'shing</value>
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>Indekslash tugagandan so'ng ishlash papkani o'chiring</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>KIRISH</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>BERISH</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>NUSHASIYA YARASH</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>PANEL</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>VERTIKAL</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>BOSH</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>PAGE</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>Chop etish</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>RO‘YXATNI MATN FAYL sifatida SAQLASH</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>KO'RINGAN MAZMUNI QO'SHISH</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>HUJJATLAR ORASIDA YOQING</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>Vertikal Chiziqlarni O'chiring</value>
+  </data>
 </root>

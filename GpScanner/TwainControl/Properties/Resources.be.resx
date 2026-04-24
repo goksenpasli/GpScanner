@@ -816,4 +816,40 @@
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>Для прадукцыйнасці пасля завяршэння індэксацыі папкі выдаліць</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>КРОП</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>АДМЕНІЦЬ</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>СТВАРЫЦЬ КОПІЮ</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>ПАНЭЛЬ</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>ВЕРТЫКАЛЬ</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>ІДЗІЦЬ</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>СТАР</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>ДРУКАВАЦЬ</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>ЗАХАВАЦЬ СПІС У ТЭКСТАВЫМ ФАЙЛЕ</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>ДАДАЦЬ БАЧНЫ ЗМЕСТ</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>ПЕРАХОД ПА МІЖ ДАКУМЕНТАМІ</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>ВЫДАЛІЦЬ ВЕРТЫКАЛЬНЫЯ ЛІНІІ</value>
+  </data>
 </root>

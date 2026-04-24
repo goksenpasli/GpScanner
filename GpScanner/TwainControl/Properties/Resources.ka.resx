@@ -823,4 +823,40 @@ PDF</value>
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>შესრულებისთვის დასრულებული ამოღების საქაღალდის ინდექსირების შემდეგ</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>მოსავალი</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>გაუქმება</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>ასლის შექმნა</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>პანელი</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>ვერტიკალური</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>წადი</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>გვერდი</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>PRINT</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>სიის შენახვა ტექსტურ ფაილად</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>ხილული კონტენტის დამატება</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>ნავიგაცია დოკუმენტებს შორის</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>ვერტიკალური ხაზების ამოღება</value>
+  </data>
 </root>

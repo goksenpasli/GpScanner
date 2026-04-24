@@ -648,33 +648,38 @@
                                                     <DataTrigger Binding="{Binding Scanner.Duplex}" Value="true">
                                                         <Setter Property="Content">
                                                             <Setter.Value>
-                                                                <Image Width="24" Height="24">
-                                                                    <Image.Source>
-                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                            <Binding Source="pifmgr.dll" />
-                                                                            <Binding Source="14" />
-                                                                        </MultiBinding>
-                                                                    </Image.Source>
-                                                                </Image>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Image Width="24" Height="24">
+                                                                        <Image.Source>
+                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                <Binding Source="pifmgr.dll" />
+                                                                                <Binding Source="14" />
+                                                                            </MultiBinding>
+                                                                        </Image.Source>
+                                                                    </Image>
+                                                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc TWOSIDE}" />
+                                                                </StackPanel>
                                                             </Setter.Value>
                                                         </Setter>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </ToggleButton.Style>
-
                                     </ToggleButton>
                                     <Extensions:ContentToggleButton Grid.Column="3"
                                         ArrowVisibility="Collapsed"
                                         Tag="{Binding CropAutoCropChecked, ValidatesOnDataErrors=True}">
-                                        <Image Width="24" Height="24">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="245" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="24" Height="24">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="245" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc CROP}" />
+                                        </StackPanel>
                                         <Extensions:ContentToggleButton.OverContent>
                                             <local:PageCropControl />
                                         </Extensions:ContentToggleButton.OverContent>
@@ -1052,7 +1057,7 @@
                                                     <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
                                                 </Viewbox>
                                                 <TextBlock AutomationProperties.Name="{local:Loc DELETE}"
-                                                    Text="{local:Loc DELETE}"
+                                                    Text="{local:Loc REMOVEVERTICALLINES}"
                                                     TextWrapping="Wrap" />
                                             </StackPanel>
                                         </ToolTip>
@@ -1593,14 +1598,17 @@
                     <TabControl Background="{DynamicResource BorderBackground}" SelectedIndex="{Binding SelectedSettingsTabIndex}">
                         <TabItem>
                             <TabItem.Header>
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="1" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="1" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
+                                </StackPanel>
                             </TabItem.Header>
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -1611,14 +1619,17 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <WrapPanel Orientation="Horizontal">
-                                    <Button local:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl}">
+                                    <Button local:Policy.PolicyName="ResimSilGeriAl"
+                                        Command="{Binding ResimSilGeriAl}"
+                                        ToolTip="{local:Loc UNDO}">
                                         <Image Width="24"
                                             Height="24"
                                             Source="/TwainControl;component/Icons/undo.png" />
                                     </Button>
                                     <Button local:Policy.PolicyName="RemoveFiles"
                                         Command="{Binding SeçiliListeTemizle}"
-                                        IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}">
+                                        IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}"
+                                        ToolTip="{local:Loc DELETE}">
                                         <Image Width="24"
                                             Height="24"
                                             Source="/TwainControl;component/Icons/delete.png" />
@@ -1676,7 +1687,8 @@
                                     <Button local:Policy.PolicyName="DuplicateSelectedImage"
                                         BorderBrush="Cyan"
                                         Command="{Binding DuplicateSelectedImage}"
-                                        CommandParameter="{Binding SeçiliResim.Resim}">
+                                        CommandParameter="{Binding SeçiliResim.Resim}"
+                                        ToolTip="{local:Loc DUPLICATE}">
                                         <Image Width="24" Height="24">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -1688,7 +1700,8 @@
                                     </Button>
                                     <Button local:Policy.PolicyName="InsertClipBoardImage"
                                         BorderBrush="Cyan"
-                                        Command="{Binding InsertClipBoardImage}">
+                                        Command="{Binding InsertClipBoardImage}"
+                                        ToolTip="{local:Loc CLIPBOARD}">
                                         <Image Width="24" Height="24">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -1728,7 +1741,9 @@
                                                 BorderBrush="{StaticResource GroupBoxBackGround}"
                                                 BorderThickness="1">
                                                 <UniformGrid Rows="2">
-                                                    <Button local:Policy.PolicyName="TümünüİşaretleDikey" Command="{Binding TümünüİşaretleDikey}">
+                                                    <Button local:Policy.PolicyName="TümünüİşaretleDikey"
+                                                        Command="{Binding TümünüİşaretleDikey}"
+                                                        ToolTip="{local:Loc VERTICAL}">
                                                         <Image Width="24" Height="24">
                                                             <Image.Source>
                                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -1738,7 +1753,9 @@
                                                             </Image.Source>
                                                         </Image>
                                                     </Button>
-                                                    <Button local:Policy.PolicyName="TümünüİşaretleYatay" Command="{Binding TümünüİşaretleYatay}">
+                                                    <Button local:Policy.PolicyName="TümünüİşaretleYatay"
+                                                        Command="{Binding TümünüİşaretleYatay}"
+                                                        ToolTip="{local:Loc HORIZONTAL}">
                                                         <Image Width="24"
                                                             Height="24"
                                                             RenderTransformOrigin="0.5,0.5">
@@ -1762,10 +1779,12 @@
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                     <Extensions:NumericUpDown Maximum="{Binding ElementName=Lb, Path=Items.Count, Mode=OneWay}"
                                         Minimum="1"
+                                        ToolTip="{local:Loc PAGE}"
                                         Value="{Binding PageIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <Button local:Policy.PolicyName="GotoDocumentIndex"
                                         Command="{Binding GotoDocumentIndex}"
-                                        CommandParameter="{Binding ElementName=Lb}">
+                                        CommandParameter="{Binding ElementName=Lb}"
+                                        ToolTip="{local:Loc GO}">
                                         <Image Width="24" Height="24">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -1820,7 +1839,6 @@
                                     <Button local:Policy.PolicyName="TümünüOtomatikDöndür"
                                         Command="{Binding TümünüOtomatikDöndür}"
                                         RenderTransformOrigin="0.5,0.5"
-                                        ToolTipService.IsEnabled="{Binding IsEnabled, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource Mode=Self}}"
                                         ToolTipService.ShowOnDisabled="True">
                                         <Button.ToolTip>
                                             <TextBlock>
@@ -1866,7 +1884,9 @@
                                                 Foreground="Red"
                                                 Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
                                         </Extensions:BadgeControl.BadgeContent>
-                                        <Extensions:SplitButton local:Policy.PolicyName="PrintSelectedDocuments" Command="{Binding PrintSelectedDocuments}">
+                                        <Extensions:SplitButton local:Policy.PolicyName="PrintSelectedDocuments"
+                                            Command="{Binding PrintSelectedDocuments}"
+                                            ToolTip="{local:Loc PRINT}">
                                             <Image Width="24" Height="24">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -1882,12 +1902,16 @@
                                             </Extensions:SplitButton.InternalContent>
                                         </Extensions:SplitButton>
                                     </Extensions:BadgeControl>
-                                    <Button local:Policy.PolicyName="SaveFileList" Command="{Binding SaveFileList}">
+                                    <Button local:Policy.PolicyName="SaveFileList"
+                                        Command="{Binding SaveFileList}"
+                                        ToolTip="{local:Loc SAVETXT}">
                                         <Image Width="24"
                                             Height="24"
                                             Source="/TwainControl;component/Icons/save.png" />
                                     </Button>
-                                    <Button local:Policy.PolicyName="AddActiveVisibleContentImage" Command="{Binding AddActiveVisibleContentImage}">
+                                    <Button local:Policy.PolicyName="AddActiveVisibleContentImage"
+                                        Command="{Binding AddActiveVisibleContentImage}"
+                                        ToolTip="{local:Loc ADDVISIBLE}">
                                         <Canvas Width="24" Height="24">
                                             <Image Width="24"
                                                 Height="24"
@@ -1916,7 +1940,8 @@
                                     </Button>
                                     <Button local:Policy.PolicyName="CycleSelectedDocuments"
                                         Command="{Binding CycleSelectedDocuments}"
-                                        CommandParameter="{Binding ElementName=Lb}">
+                                        CommandParameter="{Binding ElementName=Lb}"
+                                        ToolTip="{local:Loc CYCLEDOC}">
                                         <Image Width="24" Height="24">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -1932,18 +1957,29 @@
                                         Command="{Binding InvertSelectedImage}"
                                         Content="["
                                         FontFamily="Wingdings"
-                                        FontSize="20" />
+                                        FontSize="20"
+                                        ToolTip="{local:Loc INVERTCOLOR}" />
                                     <Extensions:NumericUpDown BorderBrush="Cyan"
                                         Interval="1"
                                         IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}"
                                         Maximum="1"
                                         Minimum="-1"
                                         NumericUpdownTextBoxVisibility="Collapsed"
-                                        Value="{Binding AllImageRotationAngle}" />
+                                        Value="{Binding AllImageRotationAngle}">
+                                        <Extensions:NumericUpDown.ToolTip>
+                                            <TextBlock>
+                                                <Run Text="{local:Loc ALL}" />
+                                                <Run Text="{local:Loc Rotate90}" />
+                                                <Run Text="{local:Loc Rotate180}" />
+                                                <Run Text="{local:Loc Rotate270}" />
+                                            </TextBlock>
+                                        </Extensions:NumericUpDown.ToolTip>
+                                    </Extensions:NumericUpDown>
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                     <Extensions:NumericUpDown Interval="1"
                                         Maximum="50"
                                         Minimum="1"
+                                        ToolTip="{local:Loc THRESHOLD}"
                                         Value="{Binding Scanner.VerticalLineThreshold, UpdateSourceTrigger=PropertyChanged}" />
                                     <Button AutomationProperties.Name="{local:Loc DELETE}" Command="{Binding RemoveVerticalLines}">
                                         <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
@@ -1953,13 +1989,13 @@
                                                     <Viewbox Width="200" Height="100">
                                                         <ContentPresenter ContentTemplate="{StaticResource VerticalLines}" />
                                                     </Viewbox>
-                                                    <TextBlock Text="{local:Loc DELETE}" TextWrapping="Wrap" />
+                                                    <TextBlock Text="{local:Loc REMOVEVERTICALLINES}" TextWrapping="Wrap" />
                                                 </StackPanel>
                                             </ToolTip>
                                         </Button.ToolTip>
                                     </Button>
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                    <Button Command="{Binding ToolBarAutoDeskewImage}">
+                                    <Button Command="{Binding ToolBarAutoDeskewImage}" ToolTip="{local:Loc AUTOROTATE}">
                                         <Extensions:AngleGauge Width="18"
                                             Height="18"
                                             Margin="1"
@@ -1974,10 +2010,18 @@
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
+                                        <Button.ToolTip>
+                                            <TextBlock>
+                                                <Run Text="{local:Loc Auto}" />
+                                                <LineBreak />
+                                                <Run Text="{local:Loc CROP}" />
+                                            </TextBlock>
+                                        </Button.ToolTip>
                                     </Button>
                                     <Extensions:NumericUpDown Interval="1"
                                         Maximum="255"
                                         Minimum="0"
+                                        ToolTip="{local:Loc THRESHOLD}"
                                         Value="{Binding Path=AutoCropThreshold, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 </WrapPanel>
@@ -2488,7 +2532,8 @@
                                         <Extensions:SplitButton Grid.Column="7"
                                             local:Policy.PolicyName="AddSplitListsIndex"
                                             AutomationProperties.Name="{local:Loc SLICE}"
-                                            Command="{Binding AddSplitListsIndex}">
+                                            Command="{Binding AddSplitListsIndex}"
+                                            ToolTip="{local:Loc SLICE}">
                                             <TextBlock FontFamily="Wingdings 2"
                                                 FontSize="16"
                                                 Text="Ë" />
@@ -2563,7 +2608,8 @@
                                         <Button Grid.Column="9"
                                             Background="{x:Null}"
                                             BorderBrush="{x:Null}"
-                                            Command="{Binding ResetPreviewSize}">
+                                            Command="{Binding ResetPreviewSize}"
+                                            ToolTip="{local:Loc RESET}">
                                             <Image Width="16"
                                                 Height="16"
                                                 Source="/TwainControl;component/Icons/delete.png" />
@@ -2574,14 +2620,18 @@
                         </TabItem>
                         <TabItem local:Policy.PolicyName="PdfSettingsPage">
                             <TabItem.Header>
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="21" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="21" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc SETTİNGS}" />
+
+                                </StackPanel>
                             </TabItem.Header>
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <local:PdfSettings d:IsEnabled="true">
@@ -2600,14 +2650,17 @@
                         </TabItem>
                         <TabItem>
                             <TabItem.Header>
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Certmgr.dll" />
-                                            <Binding Source="9" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Certmgr.dll" />
+                                                <Binding Source="9" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc ENCRYPT}" />
+                                </StackPanel>
                             </TabItem.Header>
                             <local:PdfDecryptEncryptView x:Name="PdfDecryptEncryptView" x:FieldModifier="public" />
                         </TabItem>

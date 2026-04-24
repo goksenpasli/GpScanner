@@ -813,4 +813,40 @@
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>Per prestazioni al termine dell'indicizzazione Rimuovi cartella</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>RACCOLTO</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>DISFARE</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>CREA COPIA</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>PANNELLO</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>VERTICALE</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>ANDARE</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>PAGINA</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>STAMPA</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>SALVA LISTA COME FILE DI TESTO</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>AGGIUNGI CONTENUTO VISIBILE</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>NAVIGARE FRA I DOCUMENTI</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>RIMUOVERE LE LINEE VERTICALI</value>
+  </data>
 </root>

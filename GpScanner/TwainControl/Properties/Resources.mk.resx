@@ -828,4 +828,40 @@
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>За перформанси по индексирање завршена папката за отстранување</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>КУЛТУВАЊЕ</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>ВРАТИ</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>КРЕИРАЈ КОПИЈА</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>ПАНЕЛ</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>ВЕРТИКАЛНО</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>ОДИ</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>СТРАНИЦА</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>ПЕЧАТЕЊЕ</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>ЗАЧУВАЈ ЛИСТАТА КАКО ТЕКСТ-ДАТОЈКА</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>ДОДАЈ ВИДЛИВИ СОДРЖИНИ</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>НАВИГИРАЈТЕ ПОМЕЃУ ДОКУМЕНТИ</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>ОТСТРАНИ ГИ ВЕРТИКАЛНИ ЛИНИИ</value>
+  </data>
 </root>

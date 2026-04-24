@@ -813,4 +813,40 @@
   <data name="INDEXREMOVEWARN" xml:space="preserve">
     <value>للحصول على الأداء بعد اكتمال الفهرسة، قم بإزالة المجلد</value>
   </data>
+  <data name="CROP" xml:space="preserve">
+    <value>اقتصاص</value>
+  </data>
+  <data name="UNDO" xml:space="preserve">
+    <value>تراجع</value>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>إنشاء نسخة</value>
+  </data>
+  <data name="CLIPBOARD" xml:space="preserve">
+    <value>لوحة</value>
+  </data>
+  <data name="VERTICAL" xml:space="preserve">
+    <value>رَأسِيّ</value>
+  </data>
+  <data name="GO" xml:space="preserve">
+    <value>يذهب</value>
+  </data>
+  <data name="PAGE" xml:space="preserve">
+    <value>صفحة</value>
+  </data>
+  <data name="PRINT" xml:space="preserve">
+    <value>مطبعة</value>
+  </data>
+  <data name="SAVETXT" xml:space="preserve">
+    <value>حفظ القائمة كملف نصي</value>
+  </data>
+  <data name="ADDVISIBLE" xml:space="preserve">
+    <value>أضف محتوى مرئيًا</value>
+  </data>
+  <data name="CYCLEDOC" xml:space="preserve">
+    <value>التنقل بين المستندات</value>
+  </data>
+  <data name="REMOVEVERTICALLINES" xml:space="preserve">
+    <value>إزالة الخطوط العمودية</value>
+  </data>
 </root>
