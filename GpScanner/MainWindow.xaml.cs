@@ -410,7 +410,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        if (!_dataBaseBackupTaskStarted && Settings.Default.BackUpDatabase)
+        if (!_dataBaseBackupTaskStarted && Settings.Default.BackUpDatabase && !(DataContext as GpScannerViewModel).Shutdown)
         {
             ShowExtendedMessageBox(Translation.GetResStringValue("BACKUPDB"), true);
             _dataBaseBackupTaskStarted = true;
