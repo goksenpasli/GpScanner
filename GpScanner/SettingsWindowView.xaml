@@ -511,6 +511,7 @@
                                         </TextBlock>
                                         <ComboBox VerticalContentAlignment="Center"
                                             twainctrl:Policy.PolicyName="DefaultPictureResizeRatio"
+                                            FontWeight="Bold"
                                             Foreground="{Binding Mode=OneWay, Path=SelectedItem, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}"
                                             ItemStringFormat="{}{0}%"
                                             ItemsSource="{Binding SettingsPagePictureResizeList}"
@@ -552,6 +553,7 @@
                                         </CheckBox>
                                         <ComboBox VerticalContentAlignment="Center"
                                             twainctrl:Policy.PolicyName="DefaultThumbPictureResizeRatio"
+                                            FontWeight="Bold"
                                             Foreground="{Binding Mode=OneWay, Path=SelectedItem, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}"
                                             IsEnabled="{Binding DefaultThumbPictureAutoResize, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource ReverseBooleanConverter}}"
                                             ItemStringFormat="{}{0}%"
@@ -577,6 +579,7 @@
                                         </TextBlock>
                                         <ComboBox VerticalContentAlignment="Center"
                                             twainctrl:Policy.PolicyName="DefaultThumbNailDpi"
+                                            FontWeight="Bold"
                                             Foreground="{Binding Mode=OneWay, Path=SelectedItem, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}"
                                             ItemStringFormat="{}{0} Dpi"
                                             ItemsSource="{Binding SettingsPagePdfDpiList}"
@@ -797,6 +800,16 @@
                                                     Height="16"
                                                     Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
                                             </Canvas>
+                                        </ToggleButton>
+                                        <ToggleButton IsChecked="{Binding Path=RestoreFilesStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="45" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
                                         </ToggleButton>
                                     </StackPanel>
                                 </ScrollViewer>

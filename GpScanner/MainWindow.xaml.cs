@@ -409,6 +409,7 @@ public partial class MainWindow : Window
             e.Cancel = true;
             return;
         }
+        TwainCtrl.RemoveRecoveryFile();
 
         if (!_dataBaseBackupTaskStarted && Settings.Default.BackUpDatabase && !(DataContext as GpScannerViewModel).Shutdown)
         {

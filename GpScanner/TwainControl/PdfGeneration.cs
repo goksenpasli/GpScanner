@@ -298,8 +298,8 @@ public static class PdfGeneration
                     }
                     stream.Position = 0;
                     byte[] buffer = new byte[stream.Length];
-                    stream.Read(buffer, 0, buffer.Length);
-                    using var localStream = new MemoryStream(buffer);
+                    _ = stream.Read(buffer, 0, buffer.Length);
+                    using MemoryStream localStream = new(buffer);
                     BitmapImage scannedImage = await PdfViewer.PdfViewer.ConvertToImgAsync(localStream, i + 1, dpi);
                     byte[] jpegData = scannedImage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
                     ObservableCollection<OcrData> ocrData = await jpegData.OcrAsync(ocrLang);

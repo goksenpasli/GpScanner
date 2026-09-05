@@ -75,7 +75,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public const double Inch = 2.54d;
     public static readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
     public static DispatcherTimer CameraQrCodeTimer;
+    public static Task FileLoadTask;
     public static Task FileSaveTask;
+    private static readonly string RecoveryFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Goksen", "scanned-images.recovery");
     private readonly object _lockObject = new();
     private readonly SolidColorBrush bluesaveprogresscolor = Brushes.DeepSkyBlue;
     private readonly Brush defaultsaveprogressforegroundcolor = (Brush)new BrushConverter().ConvertFromString("#FF06B025");
@@ -113,7 +115,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         OnPropertyChanged(nameof(TesseractOrientationFileExists));
         DependencyPropertyDescriptor.FromProperty(MediaViewer.MediaPositionProperty, typeof(MediaViewer))?.AddValueChanged(mediaViewer, OnMediaPositionChanged);
         Loaded += TwainCtrl_Loaded;
-
         ScanImage = new RelayCommand<object>(
             async parameter =>
             {
@@ -443,9 +444,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         List<ScannedImage> image = [ scannedImage ];
                         if (Scanner.ApplyPdfSaveOcr && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
                         {
-                            using var  memoryStream = image.CreateMultipagePdfWithJbig2Images();
+                            using MemoryStream memoryStream = image.CreateMultipagePdfWithJbig2Images();
                             Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
-                            using PdfDocument document =await memoryStream.GenerateOcredPdfPage(Settings.Default.ImgLoadResolution, Scanner.SelectedTtsLanguage);
+                            using PdfDocument document = await memoryStream.GenerateOcredPdfPage(Settings.Default.ImgLoadResolution, Scanner.SelectedTtsLanguage);
                             document.ApplyPdfSecurity();
                             document.Save(saveFileDialog.FileName);
                         }
@@ -755,7 +756,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 Progress<double> progress = new(percent => Scanner.PdfSaveProgressValue = percent);
                                 if (Scanner.ApplyPdfSaveOcr && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
                                 {
-                                    using var memoryStream = seçiliresimler.CreateMultipagePdfWithJbig2Images(progress);
+                                    using MemoryStream memoryStream = seçiliresimler.CreateMultipagePdfWithJbig2Images(progress);
                                     Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
                                     using PdfDocument document = await memoryStream.GenerateOcredPdfPage(Settings.Default.ImgLoadResolution, Scanner.SelectedTtsLanguage, progress => Scanner.PdfSaveProgressValue = progress);
                                     document.ApplyPdfSecurity();
@@ -3237,19 +3238,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand FastScanImage { get; }
 
-    public Task FileLoadTask
-    {
-        get;
-        set
-        {
-            if (field != value)
-            {
-                field = value;
-                OnPropertyChanged(nameof(FileLoadTask));
-            }
-        }
-    }
-
     public RelayCommand<object> FirstLastGroup { get; }
 
     public RelayCommand<object> FirstLastSortSequenceData { get; }
@@ -4387,6 +4375,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         inputDocument.Save(savepath);
     }
 
+    public static void SaveRecoveryData(IEnumerable<ScannedImage> items)
+    {
+        string directory = Path.GetDirectoryName(RecoveryFile)!;
+        _ = Directory.CreateDirectory(directory);
+        IEnumerable<string> lines = items.Select(x => $"{x.Index}|{x.FilePath}");
+        string tempFile = $"{RecoveryFile}.tmp";
+        File.WriteAllLines(tempFile, lines);
+        File.Copy(tempFile, RecoveryFile, true);
+    }
+
     public Task AddFiles(string[] filenames, int decodeheight, CancellationTokenSource cancellationTokenSource = null)
     {
         if (cancellationTokenSource?.IsCancellationRequested == true)
@@ -4665,6 +4663,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
 
             await Task.Run(() => AddFiles(droppedfiles, DecodeHeight, fileloadcancellationToken));
+        }
+    }
+
+    public void RemoveRecoveryFile()
+    {
+        if (File.Exists(RecoveryFile))
+        {
+            File.Delete(RecoveryFile);
         }
     }
 
@@ -5462,6 +5468,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Settings.Default.PreviewWidth = Math.Max(MinPreviewWidth, Math.Min(MaxPreviewWidth, Settings.Default.PreviewWidth));
     }
 
+    private async void LoadRecoveryData()
+    {
+        if (!File.Exists(RecoveryFile))
+        {
+            return;
+        }
+
+        string[] paths = [ .. File.ReadAllLines(RecoveryFile).Select(x => x.Split('|')[1]).Distinct() ];
+        await AddFiles(paths, DecodeHeight, fileloadcancellationToken);
+    }
+
     private List<T> MixLists<T>(List<T>[] lists)
     {
         int maxLength = lists.Max(list => list.Count);
@@ -6211,6 +6228,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void TwainCtrl_Loaded(object sender, RoutedEventArgs e)
     {
+        if (Settings.Default.RestoreFilesStartup)
+        {
+            LoadRecoveryData();
+        }
         InitializeTwainControl();
         InitializeEsclScannersControl();
 

@@ -54,16 +54,17 @@ public class IndexedObservableCollection<T> : ObservableCollection<T> where T : 
 
     private void SetGroupFileIndicator()
     {
-        if (!Settings.Default.ShowFileGroupIndicator)
-        {
-            return;
-        }
-
         if (typeof(T) != typeof(ScannedImage))
         {
             return;
         }
 
+        TwainCtrl.SaveRecoveryData(Items.Cast<ScannedImage>());
+
+        if (!Settings.Default.ShowFileGroupIndicator)
+        {
+            return;
+        }
         HashSet<string> usedFilePaths = [];
 
         foreach (ScannedImage image in Items.Cast<ScannedImage>())

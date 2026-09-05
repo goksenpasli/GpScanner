@@ -121,7 +121,7 @@ namespace Extensions
             double w = ActualWidth;
             double h = ActualHeight;
 
-            Point[] corners = [Snap(new Point(0, 0)), Snap(new Point(w, 0)), Snap(new Point(w, h)), Snap(new Point(0, h))];
+            Point[] corners = [ Snap(new Point(0, 0)), Snap(new Point(w, 0)), Snap(new Point(w, h)), Snap(new Point(0, h)) ];
 
             double perimeter = 2 * (w + h);
             double offset = indeterminate ? perimeter * _indeterminateOffset : 0;
