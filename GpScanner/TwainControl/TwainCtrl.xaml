@@ -12,8 +12,6 @@
     xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties"
-    xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
-    xmlns:webp="clr-namespace:WebPWrapper;assembly=WebPWrapper"
     x:Name="UserControl"
     d:DataContext="{d:DesignInstance Type={x:Type local:TwainCtrl}}"
     d:DesignHeight="800"
@@ -39,9 +37,7 @@
             <Extensions:FolderPathToIconConverter x:Key="FolderPathToIconConverter" />
             <Converter:BitmapFrameToBitmapFrameConverter x:Key="BitmapFrameToBitmapFrameConverter" />
             <Converter:BitmapFrameToBitmapFrameConverter x:Key="BitmapFrameToBitmapFrameThumbConverter" DecodeHeight="{Binding Mode=OneWay, Source={x:Static SystemParameters.PrimaryScreenHeight}}" />
-            <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
             <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
-            <Extensions:BindingProxy x:Key="Proxy" Data="{Binding}" />
             <Converter:MultiplyConverter x:Key="MultiplyConverter" />
             <Converter:NumberRangeToColorConverter x:Key="ComboBoxNumberRangeToColorConverter"
                 MaxNumber="1200"
@@ -49,10 +45,6 @@
             <Converter:NumberRangeToColorConverter x:Key="RectanglePageSizeComboBoxNumberRangeToColorConverter"
                 MaxNumber="59"
                 MinNumber="14" />
-            <Converter:NumberRangeToColorConverter x:Key="NumericUpDownQualityNumberRangeToColorConverter"
-                MaxNumber="100"
-                MinNumber="0"
-                ReverseColors="True" />
             <DataTemplate x:Key="TimeIcon">
                 <Image Width="16" Height="16">
                     <Image.Source>
@@ -2080,153 +2072,7 @@
                                                                                 <Border Background="{StaticResource BorderBackground}"
                                                                                     BorderBrush="{StaticResource GroupBoxBackGround}"
                                                                                     BorderThickness="1">
-                                                                                    <StackPanel>
-                                                                                        <StackPanel.Resources>
-                                                                                            <Style TargetType="MenuItem">
-                                                                                                <Setter Property="CommandParameter" Value="{Binding Mode=OneWay}" />
-                                                                                                <Setter Property="HorizontalContentAlignment" Value="Left" />
-                                                                                                <Setter Property="VerticalContentAlignment" Value="Center" />
-                                                                                            </Style>
-                                                                                            <Style TargetType="Image">
-                                                                                                <Setter Property="Height" Value="16" />
-                                                                                                <Setter Property="Width" Value="16" />
-                                                                                            </Style>
-                                                                                            <Style BasedOn="{StaticResource NumericUpDownStyle}" TargetType="Extensions:NumericUpDown">
-                                                                                                <Setter Property="FontWeight" Value="Bold" />
-                                                                                            </Style>
-                                                                                        </StackPanel.Resources>
-                                                                                        <MenuItem Command="{Binding Data.SaveSinglePdfFile, Source={StaticResource Proxy}}">
-                                                                                            <MenuItem.Header>
-                                                                                                <StackPanel Orientation="Horizontal">
-                                                                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Source='.pdf', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                                                                    <Extensions:NumericUpDown Foreground="{Binding Path=JpegQuality, Mode=OneWay, Converter={StaticResource NumericUpDownQualityNumberRangeToColorConverter}, Source={x:Static properties:Settings.Default}}"
-                                                                                                        Interval="1"
-                                                                                                        IsReadOnly="True"
-                                                                                                        Maximum="95"
-                                                                                                        Minimum="10"
-                                                                                                        Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                                                                </StackPanel>
-                                                                                            </MenuItem.Header>
-                                                                                            <MenuItem.Icon>
-                                                                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                                                                            </MenuItem.Icon>
-                                                                                        </MenuItem>
-                                                                                        <MenuItem AutomationProperties.Name="{local:Loc BW}" Command="{Binding Data.SaveSingleBwPdfFile, Source={StaticResource Proxy}}">
-                                                                                            <MenuItem.Header>
-                                                                                                <StackPanel Orientation="Horizontal">
-                                                                                                    <TextBlock VerticalAlignment="Center">
-                                                                                                        <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                                                                        <Run Text="{local:Loc BW}" />
-                                                                                                    </TextBlock>
-                                                                                                    <Extensions:NumericUpDown Foreground="{Binding Path=JpegQuality, Mode=OneWay, Converter={StaticResource NumericUpDownQualityNumberRangeToColorConverter}, Source={x:Static properties:Settings.Default}}"
-                                                                                                        Interval="1"
-                                                                                                        IsReadOnly="True"
-                                                                                                        Maximum="95"
-                                                                                                        Minimum="10"
-                                                                                                        Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                                                                    <CheckBox VerticalAlignment="Center"
-                                                                                                        Content="{Binding Source='.jb2', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}"
-                                                                                                        IsChecked="{Binding Data.EncodeAsJb2, Source={StaticResource Proxy}}" />
-                                                                                                </StackPanel>
-                                                                                            </MenuItem.Header>
-                                                                                            <MenuItem.Icon>
-                                                                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                                                                            </MenuItem.Icon>
-                                                                                        </MenuItem>
-                                                                                        <MenuItem Command="{Binding Data.SaveSingleJpgFile, Source={StaticResource Proxy}}">
-                                                                                            <MenuItem.Header>
-                                                                                                <StackPanel Orientation="Horizontal">
-                                                                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Source='.jpg', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                                                                    <Extensions:NumericUpDown Foreground="{Binding Path=JpegQuality, Mode=OneWay, Converter={StaticResource NumericUpDownQualityNumberRangeToColorConverter}, Source={x:Static properties:Settings.Default}}"
-                                                                                                        Interval="1"
-                                                                                                        IsReadOnly="True"
-                                                                                                        Maximum="95"
-                                                                                                        Minimum="10"
-                                                                                                        Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                                                                </StackPanel>
-                                                                                            </MenuItem.Header>
-                                                                                            <MenuItem.Icon>
-                                                                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jpg}" />
-                                                                                            </MenuItem.Icon>
-                                                                                        </MenuItem>
-                                                                                        <MenuItem Command="{Binding Data.SaveSingleTifFile, Source={StaticResource Proxy}}" Header="{Binding Source='.tif', Converter={StaticResource FilePathToFileDescriptionConverter}}">
-                                                                                            <MenuItem.Icon>
-                                                                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.tif}" />
-                                                                                            </MenuItem.Icon>
-                                                                                        </MenuItem>
-                                                                                        <MenuItem AutomationProperties.Name="{local:Loc BW}" Command="{Binding Data.SaveSingleBlackWhiteJb2File, Source={StaticResource Proxy}}">
-                                                                                            <MenuItem.Header>
-                                                                                                <TextBlock VerticalAlignment="Center">
-                                                                                                    <Run Text="{local:Loc BW}" />
-                                                                                                    <Run Text="{Binding Source='.jb2', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                                                                </TextBlock>
-                                                                                            </MenuItem.Header>
-                                                                                            <MenuItem.Icon>
-                                                                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jb2}" />
-                                                                                            </MenuItem.Icon>
-                                                                                        </MenuItem>
-                                                                                        <MenuItem Command="{Binding Data.SaveSingleXpsFile, Source={StaticResource Proxy}}" Header="{Binding Source='.xps', Converter={StaticResource FilePathToFileDescriptionConverter}}">
-                                                                                            <MenuItem.Icon>
-                                                                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xps}" />
-                                                                                            </MenuItem.Icon>
-                                                                                        </MenuItem>
-                                                                                        <MenuItem Command="{Binding Data.SaveSingleWebpFile, Source={StaticResource Proxy}}" IsEnabled="{Binding Source={x:Static webp:WebP.WebpDllExists}}">
-                                                                                            <MenuItem.Header>
-                                                                                                <StackPanel Orientation="Horizontal">
-                                                                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Source='.webp', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                                                                    <Extensions:NumericUpDown Foreground="{Binding Path=WebpQuality, Mode=OneWay, Converter={StaticResource NumericUpDownQualityNumberRangeToColorConverter}, Source={x:Static properties:Settings.Default}}"
-                                                                                                        Interval="1"
-                                                                                                        IsReadOnly="True"
-                                                                                                        Maximum="95"
-                                                                                                        Minimum="10"
-                                                                                                        Value="{Binding Path=WebpQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                                                                </StackPanel>
-                                                                                            </MenuItem.Header>
-                                                                                            <MenuItem.Icon>
-                                                                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.webp}" />
-                                                                                            </MenuItem.Icon>
-                                                                                        </MenuItem>
-                                                                                        <MenuItem Command="{Binding Data.SaveSingleTxtFile, Source={StaticResource Proxy}}"
-                                                                                            Header="{Binding Source='.txt', Converter={StaticResource FilePathToFileDescriptionConverter}}"
-                                                                                            IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
-                                                                                            <MenuItem.Icon>
-                                                                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.txt}" />
-                                                                                            </MenuItem.Icon>
-                                                                                        </MenuItem>
-                                                                                        <Separator />
-                                                                                        <Expander AutomationProperties.Name="{local:Loc DESKEW}" Header="{local:Loc DESKEW}">
-                                                                                            <StackPanel>
-                                                                                                <UniformGrid Columns="2">
-                                                                                                    <Button local:Policy.PolicyName="ResimSilGeriAl"
-                                                                                                        Command="{Binding Data.UndoInvertImage, Source={StaticResource Proxy}}"
-                                                                                                        CommandParameter="{Binding Mode=OneWay}">
-                                                                                                        <Image Width="24"
-                                                                                                            Height="24"
-                                                                                                            Source="/TwainControl;component/Icons/undo.png" />
-                                                                                                    </Button>
-                                                                                                    <Button local:Policy.PolicyName="InvertImage"
-                                                                                                        BorderBrush="Cyan"
-                                                                                                        Command="{Binding Data.InvertImage, Source={StaticResource Proxy}}"
-                                                                                                        CommandParameter="{Binding Mode=OneWay}">
-                                                                                                        <TextBlock FontFamily="Wingdings"
-                                                                                                            FontSize="26"
-                                                                                                            Foreground="Black"
-                                                                                                            Text="[" />
-                                                                                                    </Button>
-                                                                                                </UniformGrid>
-                                                                                                <Extensions:NumericUpDown Width="60"
-                                                                                                    IsReadOnly="True"
-                                                                                                    Maximum="3"
-                                                                                                    Minimum="-3"
-                                                                                                    Value="{Binding Data.CustomDeskewAngle, Source={StaticResource Proxy}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                                                                                <Button local:Policy.PolicyName="ManualDeskewImage"
-                                                                                                    AutomationProperties.Name="{local:Loc DESKEW}"
-                                                                                                    Command="{Binding Data.ManualDeskewImage, Source={StaticResource Proxy}}"
-                                                                                                    CommandParameter="{Binding Mode=OneWay}"
-                                                                                                    Content="{local:Loc DESKEW}" />
-                                                                                            </StackPanel>
-                                                                                        </Expander>
-                                                                                    </StackPanel>
+                                                                                    <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource SingleSaveDataTemplate}" />
                                                                                 </Border>
                                                                             </Extensions:SplitButton.InternalContent>
                                                                         </Extensions:SplitButton>
@@ -2384,7 +2230,8 @@
                                                                                         Height="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, ConverterParameter=8, Converter={StaticResource DivideConverter}}"
                                                                                         HorizontalAlignment="Right"
                                                                                         VerticalAlignment="Bottom"
-                                                                                        Angle="{Binding DeskewAngle, Mode=OneWay}" />
+                                                                                        Angle="{Binding DeskewAngle, Mode=OneWay}"
+                                                                                        Visibility="{Binding Path=UseDeskewAngle, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                                                                 </Grid>
                                                                             </DockPanel>
                                                                         </TextBlock.ToolTip>
@@ -2760,153 +2607,7 @@
                                 <Border Background="{StaticResource BorderBackground}"
                                     BorderBrush="{StaticResource GroupBoxBackGround}"
                                     BorderThickness="1">
-                                    <StackPanel>
-                                        <StackPanel.Resources>
-                                            <Style TargetType="MenuItem">
-                                                <Setter Property="HorizontalContentAlignment" Value="Left" />
-                                                <Setter Property="VerticalContentAlignment" Value="Center" />
-                                            </Style>
-                                            <Style TargetType="Image">
-                                                <Setter Property="Height" Value="16" />
-                                                <Setter Property="Width" Value="16" />
-                                            </Style>
-                                            <Style BasedOn="{StaticResource NumericUpDownStyle}" TargetType="Extensions:NumericUpDown">
-                                                <Setter Property="FontWeight" Value="Bold" />
-                                            </Style>
-                                        </StackPanel.Resources>
-                                        <MenuItem Command="{Binding SaveSelectedFilesPdfFile}">
-                                            <MenuItem.Header>
-                                                <TextBlock>
-                                                    <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                    <InlineUIContainer BaselineAlignment="Center">
-                                                        <Extensions:NumericUpDown Foreground="{Binding Path=JpegQuality, Mode=OneWay, Converter={StaticResource NumericUpDownQualityNumberRangeToColorConverter}, Source={x:Static properties:Settings.Default}}"
-                                                            Interval="1"
-                                                            IsReadOnly="True"
-                                                            Maximum="95"
-                                                            Minimum="10"
-                                                            Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                    </InlineUIContainer>
-                                                </TextBlock>
-                                            </MenuItem.Header>
-                                            <MenuItem.Icon>
-                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                        <MenuItem AutomationProperties.Name="{local:Loc BW}" Command="{Binding SaveSelectedFilesBwPdfFile}">
-                                            <MenuItem.Header>
-                                                <TextBlock>
-                                                    <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                    <Run Text="{local:Loc BW}" />
-                                                    <InlineUIContainer BaselineAlignment="Center">
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <Extensions:NumericUpDown Foreground="{Binding Path=JpegQuality, Mode=OneWay, Converter={StaticResource NumericUpDownQualityNumberRangeToColorConverter}, Source={x:Static properties:Settings.Default}}"
-                                                                Interval="1"
-                                                                IsReadOnly="True"
-                                                                Maximum="95"
-                                                                Minimum="10"
-                                                                Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                            <CheckBox VerticalAlignment="Center"
-                                                                Content="{Binding Source='.jb2', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}"
-                                                                IsChecked="{Binding EncodeAsJb2}" />
-                                                        </StackPanel>
-                                                    </InlineUIContainer>
-                                                </TextBlock>
-                                            </MenuItem.Header>
-                                            <MenuItem.Icon>
-                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                        <MenuItem Command="{Binding SaveSelectedFilesJpgFile}">
-                                            <MenuItem.Header>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Source='.jpg', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                    <Extensions:NumericUpDown Foreground="{Binding Path=JpegQuality, Mode=OneWay, Converter={StaticResource NumericUpDownQualityNumberRangeToColorConverter}, Source={x:Static properties:Settings.Default}}"
-                                                        Interval="1"
-                                                        IsReadOnly="True"
-                                                        Maximum="95"
-                                                        Minimum="10"
-                                                        Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                    <Image Width="16" Height="16">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="12" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                    <Extensions:NumericUpDown Interval="1"
-                                                        IsReadOnly="True"
-                                                        Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
-                                                        Minimum="1"
-                                                        TextBlock.TextAlignment="Center"
-                                                        Value="{Binding WebPJpgFileProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                </StackPanel>
-                                            </MenuItem.Header>
-                                            <MenuItem.Icon>
-                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jpg}" />
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                        <MenuItem Command="{Binding SaveSelectedFilesTifFile}" Header="{Binding Source='.tif', Converter={StaticResource FilePathToFileDescriptionConverter}}">
-                                            <MenuItem.Icon>
-                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.tif}" />
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                        <MenuItem Command="{Binding SaveSelectedFilesZipFile}">
-                                            <MenuItem.Header>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Source='.zip', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                    <StackPanel>
-                                                        <CheckBox VerticalAlignment="Center"
-                                                            Content="{Binding Source='.webp', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}"
-                                                            IsChecked="{Binding EncodeAsWebp}" />
-                                                        <CheckBox VerticalAlignment="Center"
-                                                            Content="{Binding Source='.jb2', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}"
-                                                            IsChecked="{Binding EncodeAsJb2}" />
-                                                    </StackPanel>
-                                                </StackPanel>
-                                            </MenuItem.Header>
-                                            <MenuItem.Icon>
-                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.zip}" />
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                        <MenuItem Command="{Binding SaveSelectedFilesWebpFile}" IsEnabled="{Binding Source={x:Static webp:WebP.WebpDllExists}}">
-                                            <MenuItem.Header>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Source='.webp', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                    <Extensions:NumericUpDown Foreground="{Binding Path=WebpQuality, Mode=OneWay, Converter={StaticResource NumericUpDownQualityNumberRangeToColorConverter}, Source={x:Static properties:Settings.Default}}"
-                                                        Interval="1"
-                                                        IsReadOnly="True"
-                                                        Maximum="95"
-                                                        Minimum="10"
-                                                        Value="{Binding Path=WebpQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                    <Image Width="16" Height="16">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="12" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                    <Extensions:NumericUpDown Interval="1"
-                                                        IsReadOnly="True"
-                                                        Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
-                                                        Minimum="1"
-                                                        TextBlock.TextAlignment="Center"
-                                                        Value="{Binding WebPJpgFileProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                </StackPanel>
-                                            </MenuItem.Header>
-                                            <MenuItem.Icon>
-                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.webp}" />
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                        <MenuItem Command="{Binding SaveSelectedFilesTxtFile}"
-                                            Header="{Binding Source='.txt', Converter={StaticResource FilePathToFileDescriptionConverter}}"
-                                            IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
-                                            <MenuItem.Icon>
-                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.txt}" />
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                    </StackPanel>
+                                    <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource MultipleSaveDataTemplate}" />
                                 </Border>
                             </Extensions:SplitButton.InternalContent>
                         </Extensions:SplitButton>

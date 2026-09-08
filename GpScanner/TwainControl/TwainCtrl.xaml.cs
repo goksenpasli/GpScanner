@@ -5629,6 +5629,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         GC.Collect();
     }
 
+    private void RestoreLastSession()
+    {
+        if (Settings.Default.RestoreFilesStartup)
+        {
+            using Process currentProcess = Process.GetCurrentProcess();
+            bool anotherInstanceExists = Process.GetProcessesByName(currentProcess.ProcessName).Any(process => process.Id != currentProcess.Id);
+            if (!anotherInstanceExists)
+            {
+                LoadRecoveryData();
+            }
+        }
+    }
+
     private async Task ReverseFileAsync(string loadfilename, string savefilename)
     {
         await Task.Run(
@@ -6228,13 +6241,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void TwainCtrl_Loaded(object sender, RoutedEventArgs e)
     {
-        if (Settings.Default.RestoreFilesStartup)
-        {
-            LoadRecoveryData();
-        }
+        RestoreLastSession();
         InitializeTwainControl();
         InitializeEsclScannersControl();
-
     }
 
     private async void TwainCtrl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
