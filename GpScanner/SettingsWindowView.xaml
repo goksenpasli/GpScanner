@@ -753,7 +753,7 @@
                                                         Height="32"
                                                         Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
                                                     <TextBlock VerticalAlignment="Center">
-                                                        <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".eyp|Elektronik Yazışma Paketi|2">
+                                                        <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".eyp|Elektronik Yazışma Paketi|1">
                                                             <Run Text="{twainctrl:Loc EYPOPEN}" />
                                                         </Hyperlink>
                                                     </TextBlock>
@@ -762,10 +762,10 @@
                                         </CheckBox>
                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         <TextBlock VerticalAlignment="Center">
-                                            <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".jb2|Jb2 File|1">
+                                            <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".jb2|Jb2 File|0">
                                                 <Run Text="JB2" />
                                             </Hyperlink>
-                                            <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".jb2zip|JB2Zip File|1">
+                                            <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".jb2zip|JB2Zip File|0">
                                                 <Run Text="JB2ZIP" />
                                             </Hyperlink>
                                         </TextBlock>

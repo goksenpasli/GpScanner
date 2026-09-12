@@ -609,7 +609,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         CheckUpdate = new RelayCommand<object>(
             parameter =>
             {
-                _ = Process.Start($@"{AppDomain.CurrentDomain.BaseDirectory}\twux32.exe", $"https://github.com/goksenpasli/GpScanner/releases/download/5.0/GpScanner-Setup.txt");
+                FileVersionInfo version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
+                _ = Process.Start($@"{AppDomain.CurrentDomain.BaseDirectory}\twux32.exe", $"https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
                 Settings.Default.LastCheckDate = DateTime.Now;
                 Settings.Default.Save();
             },
@@ -1153,11 +1154,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 {
                     if (altkeypressed)
                     {
-                        CreateFileAssociationCurrentUser(association[0], association[1], Process.GetCurrentProcess()?.MainModule?.FileName, association[2], true);
+                        CreateFileAssociationCurrentUser(association[0], association[1], $"{AppDomain.CurrentDomain.BaseDirectory}\\TwainControl.dll", association[2], true);
                     }
                     else
                     {
-                        CreateFileAssociationCurrentUser(association[0], association[1], Process.GetCurrentProcess()?.MainModule?.FileName, association[2]);
+                        CreateFileAssociationCurrentUser(association[0], association[1], $"{AppDomain.CurrentDomain.BaseDirectory}\\TwainControl.dll", association[2]);
                     }
                     NotifyShell();
                 }

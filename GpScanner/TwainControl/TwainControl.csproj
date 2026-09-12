@@ -53,6 +53,9 @@
     <LangVersion>preview</LangVersion>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
+  <PropertyGroup>
+    <Win32Resource>$(ProjectDir)TwainControlResources.res</Win32Resource>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ExcelDataReader, Version=3.7.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ExcelDataReader.3.7.0\lib\net462\ExcelDataReader.dll</HintPath>
@@ -661,6 +664,7 @@
     <Content Include="jbig2enc.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TwainControlResources.res" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
