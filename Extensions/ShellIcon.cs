@@ -13,6 +13,8 @@ namespace Extensions
         public const uint FILE_ATTRIBUTE_NORMAL = 0x00000080;
         public const int ILD_IMAGE = 0x00000020;
         public const int ILD_TRANSPARENT = 0x00000001;
+        public const uint SHCNE_ASSOCCHANGED = 0x08000000;
+        public const uint SHCNF_IDLIST = 0x0000;
         public const uint SHGFI_DISPLAYNAME = 0x000000200;
         public const uint SHGFI_TYPENAME = 0x000000400;
         public const uint SHGFI_USEFILEATTRIBUTES = 0x000000010;
@@ -235,6 +237,8 @@ namespace Extensions
             return bitmapsource;
         }
 
+        public static void NotifyShell() { Win32.SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero); }
+
         [StructLayout(LayoutKind.Sequential)]
         public struct IMAGEINFO
         {
@@ -299,6 +303,9 @@ namespace Extensions
 
             [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
             public static extern IntPtr ExtractIcon(IntPtr hInst, string lpszExeFileName, int nIconIndex);
+
+            [DllImport("shell32.dll")]
+            public static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
 
             [DllImport("shell32.dll")]
             public static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbSizeFileInfo, uint uFlags);

@@ -21,6 +21,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Security.Principal;
 using System.Text;
@@ -82,7 +83,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         WindowService = windowService;
         TwainCtrl = twainService.TwainCtrl;
         ScannerService = scannerService;
-        CreateEmptySqliteDatabase();
+        CreateEmptySqliteDatabaseAsync();
         RegisterSimplePdfFileWatcher();
         TesseractViewModel = new TesseractViewModel(windowService, twainService);
         TranslateViewModel = new TranslateViewModel();
@@ -608,8 +609,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         CheckUpdate = new RelayCommand<object>(
             parameter =>
             {
-                FileVersionInfo version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
-                _ = Process.Start($@"{AppDomain.CurrentDomain.BaseDirectory}\twux32.exe", $"https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
+                _ = Process.Start($@"{AppDomain.CurrentDomain.BaseDirectory}\twux32.exe", $"https://github.com/goksenpasli/GpScanner/releases/download/5.0/GpScanner-Setup.txt");
                 Settings.Default.LastCheckDate = DateTime.Now;
                 Settings.Default.Save();
             },
@@ -1153,12 +1153,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 {
                     if (altkeypressed)
                     {
-                        CreateFileAssociationCurrentUser(association[0], association[1], Process.GetCurrentProcess()?.MainModule?.FileName, 0, true);
+                        CreateFileAssociationCurrentUser(association[0], association[1], Process.GetCurrentProcess()?.MainModule?.FileName, association[2], true);
                     }
                     else
                     {
-                        CreateFileAssociationCurrentUser(association[0], association[1], Process.GetCurrentProcess()?.MainModule?.FileName);
+                        CreateFileAssociationCurrentUser(association[0], association[1], Process.GetCurrentProcess()?.MainModule?.FileName, association[2]);
                     }
+                    NotifyShell();
                 }
             },
             parameter => true);
@@ -3018,21 +3019,47 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     private Version CheckFileVersion(string filepath) => File.Exists(filepath) ? new Version(FileVersionInfo.GetVersionInfo(filepath).FileVersion) : null;
 
-    private void CreateEmptySqliteDatabase()
+    private async void CreateEmptySqliteDatabaseAsync()
     {
-        string targetPath = $@"{ProfileFolder}\Data.db";
-        if (File.Exists(targetPath))
+        try
         {
-            return;
+            string targetPath = Path.Combine(ProfileFolder, "Data.db");
+            if (File.Exists(targetPath))
+            {
+                return;
+            }
+            _ = Directory.CreateDirectory(ProfileFolder);
+            string sourcePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data.db");
+
+            if (File.Exists(sourcePath))
+            {
+                File.Copy(sourcePath, targetPath);
+            }
+            else
+            {
+                const string url = "https://github.com/goksenpasli/GpScanner/raw/refs/heads/GpScanner-5.0/GpScanner/data.db";
+                string tempPath = $"{targetPath}.download";
+                using HttpClient client = new();
+                using HttpResponseMessage response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+                _ = response.EnsureSuccessStatusCode();
+                using Stream input = await response.Content.ReadAsStreamAsync();
+                using (FileStream output = File.Create(tempPath))
+                {
+                    await input.CopyToAsync(output);
+                }
+                File.Move(tempPath, targetPath);
+            }
+
+            Settings.Default.DatabaseFile = targetPath;
+            Settings.Default.Save();
         }
-        _ = Directory.CreateDirectory(ProfileFolder);
-        string sourcePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data.db");
-        File.Copy(sourcePath, targetPath);
-        Settings.Default.DatabaseFile = targetPath;
-        Settings.Default.Save();
+        catch (Exception ex)
+        {
+            _ = MessageBox.Show($"Error occurred while creating SQLite database:\n\n{ex.Message}", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
-    private void CreateFileAssociationCurrentUser(string extension, string fileTypeDescription, string applicationPath, int iconindex = 0, bool delete = false)
+    private void CreateFileAssociationCurrentUser(string extension, string fileTypeDescription, string applicationPath, string iconindex = "0", bool delete = false)
     {
         string extensionKeyPath = $@"Software\Classes\{extension}";
         string fileTypeKeyPath = $@"Software\Classes\{fileTypeDescription}";
@@ -3042,8 +3069,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             using RegistryKey classesKey = Registry.CurrentUser.OpenSubKey("Software\\Classes", true);
             if (classesKey is not null)
             {
-                classesKey.DeleteSubKeyTree(extensionKeyPath, throwOnMissingSubKey: false);
-                classesKey.DeleteSubKeyTree(fileTypeKeyPath, throwOnMissingSubKey: false);
+                classesKey.DeleteSubKeyTree(extension, throwOnMissingSubKey: false);
+                classesKey.DeleteSubKeyTree(fileTypeDescription, throwOnMissingSubKey: false);
             }
         }
         else

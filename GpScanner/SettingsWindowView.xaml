@@ -13,11 +13,11 @@
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
     Title="GPSCANNER"
-    Width="842"
-    Height="520"
+    Width="720"
+    Height="540"
     d:DataContext="{d:DesignInstance Type=viewmodel:GpScannerViewModel}"
-    d:Height="520"
-    d:Width="1024"
+    d:Height="540"
+    d:Width="720"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
     Loaded="Window_Loaded"
     ResizeMode="NoResize"
@@ -99,7 +99,6 @@
                     <Grid Background="{StaticResource BorderBackground}">
                         <Grid.RowDefinitions>
                             <RowDefinition />
-                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="48" />
                         </Grid.RowDefinitions>
@@ -241,10 +240,10 @@
                                 <Grid Grid.Column="1">
                                     <Grid.RowDefinitions>
                                         <RowDefinition />
-                                        <RowDefinition Height="35.2" />
-                                        <RowDefinition Height="105.6" />
-                                        <RowDefinition Height="39.2" />
-                                        <RowDefinition Height="36" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Extensions:ButtonedTextBox VerticalContentAlignment="Top"
                                         AcceptsReturn="True"
@@ -499,11 +498,11 @@
                                 </Grid>
                             </Grid>
                         </GroupBox>
-                        <GroupBox Grid.Row="2">
-                            <StackPanel>
-                                <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                                    Template="{StaticResource HorizontalScrollViewerTemplate}"
-                                    VerticalScrollBarVisibility="Disabled">
+                        <GroupBox Grid.Row="1">
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                Template="{StaticResource HorizontalScrollViewerTemplate}"
+                                VerticalScrollBarVisibility="Disabled">
+                                <StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
                                             <Run AutomationProperties.Name="{twainctrl:Loc FILE}" Text="{twainctrl:Loc FILE}" />
@@ -702,6 +701,75 @@
                                                 </Extensions:ContentToggleButton.OverContent>
                                             </Extensions:ContentToggleButton>
                                         </CheckBox>
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                        <ToggleButton twainctrl:Policy.PolicyName="FastSimplePdfThumbViewer"
+                                            AutomationProperties.Name="{twainctrl:Loc FASTPDFVIEW}"
+                                            IsChecked="{Binding FastSimplePdfThumbViewer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                                            ToolTip="{twainctrl:Loc FASTPDFVIEW}">
+                                            <Canvas Width="32" Height="32">
+                                                <Image Width="32"
+                                                    Height="32"
+                                                    Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                                <Image Canvas.Right="0"
+                                                    Canvas.Bottom="0"
+                                                    Width="16"
+                                                    Height="16"
+                                                    Visibility="{Binding FastSimplePdfThumbViewer, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="20" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Canvas>
+                                        </ToggleButton>
+                                    </StackPanel>
+                                    <Separator />
+                                    <StackPanel Orientation="Horizontal">
+                                        <ToggleButton VerticalAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            twainctrl:Policy.PolicyName="DirectOpenPdfFile"
+                                            AutomationProperties.Name="{twainctrl:Loc PDFOPEN}"
+                                            IsChecked="{Binding DirectOpenPdfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                            <ToggleButton.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="32"
+                                                        Height="32"
+                                                        Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PDFOPEN}" />
+                                                </StackPanel>
+                                            </ToggleButton.Content>
+                                        </ToggleButton>
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                        <CheckBox VerticalAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            twainctrl:Policy.PolicyName="DirectOpenEypFile"
+                                            AutomationProperties.Name="{twainctrl:Loc EYPOPEN}"
+                                            IsChecked="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                            <CheckBox.Content>
+                                                <StackPanel IsEnabled="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" Orientation="Horizontal">
+                                                    <Image Width="32"
+                                                        Height="32"
+                                                        Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
+                                                    <TextBlock VerticalAlignment="Center">
+                                                        <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".eyp|Elektronik Yazışma Paketi|2">
+                                                            <Run Text="{twainctrl:Loc EYPOPEN}" />
+                                                        </Hyperlink>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </CheckBox.Content>
+                                        </CheckBox>
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                        <TextBlock VerticalAlignment="Center">
+                                            <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".jb2|Jb2 File|1">
+                                                <Run Text="JB2" />
+                                            </Hyperlink>
+                                            <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".jb2zip|JB2Zip File|1">
+                                                <Run Text="JB2ZIP" />
+                                            </Hyperlink>
+                                        </TextBlock>
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         <CheckBox VerticalAlignment="Center"
                                             VerticalContentAlignment="Center"
                                             twainctrl:Policy.PolicyName="NotifyCalendar"
@@ -725,35 +793,6 @@
                                                     Value="{Binding NotifyCalendarDateValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                             </Canvas>
                                         </CheckBox>
-                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        <Extensions:NumericUpDown FontWeight="Bold"
-                                            Interval="1"
-                                            IsEnabled="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
-                                            Maximum="10"
-                                            Minimum="1"
-                                            Value="{Binding MagnifyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                        <ToggleButton twainctrl:Policy.PolicyName="ShowMagnifier"
-                                            IsChecked="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
-                                            IsEnabled="{Binding FastSimplePdfThumbViewer, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource ReverseBooleanConverter}}">
-                                            <Canvas Width="32" Height="32">
-                                                <Image Width="32" Height="32">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="1" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <Image Width="32" Height="32">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="22" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                            </Canvas>
-                                        </ToggleButton>
                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         <ToggleButton IsChecked="{Binding Path=SearchInArchiveFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                             <Canvas Width="32" Height="32">
@@ -782,64 +821,6 @@
                                             Minimum="0"
                                             StringFormat="{}{0} MB"
                                             Value="{Binding SearchInArchiveFileLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                        <ToggleButton IsChecked="{Binding ShowDocumentPageCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
-                                            <Canvas Width="16" Height="32">
-                                                <TextBlock Canvas.Top="0"
-                                                    FontSize="10"
-                                                    Text="1" />
-                                                <TextBlock Canvas.Left="4"
-                                                    Canvas.Top="2"
-                                                    FontSize="10"
-                                                    Text="2" />
-                                                <TextBlock Canvas.Left="8"
-                                                    Canvas.Top="4"
-                                                    FontSize="10"
-                                                    Text="3" />
-                                                <Image Canvas.Bottom="0"
-                                                    Width="16"
-                                                    Height="16"
-                                                    Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
-                                            </Canvas>
-                                        </ToggleButton>
-                                        <ToggleButton IsChecked="{Binding Path=RestoreFilesStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
-                                            <Image Width="32" Height="32">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="45" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </ToggleButton>
-                                    </StackPanel>
-                                </ScrollViewer>
-                                <Separator Margin="0,1,0,1" />
-                                <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                                    Template="{StaticResource HorizontalScrollViewerTemplate}"
-                                    VerticalScrollBarVisibility="Disabled">
-                                    <StackPanel Orientation="Horizontal">
-                                        <ToggleButton twainctrl:Policy.PolicyName="FastSimplePdfThumbViewer"
-                                            AutomationProperties.Name="{twainctrl:Loc FASTPDFVIEW}"
-                                            IsChecked="{Binding FastSimplePdfThumbViewer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
-                                            ToolTip="{twainctrl:Loc FASTPDFVIEW}">
-                                            <Canvas Width="32" Height="32">
-                                                <Image Width="32"
-                                                    Height="32"
-                                                    Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                                                <Image Canvas.Right="0"
-                                                    Canvas.Bottom="0"
-                                                    Width="16"
-                                                    Height="16"
-                                                    Visibility="{Binding FastSimplePdfThumbViewer, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="20" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                            </Canvas>
-                                        </ToggleButton>
                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         <ToggleButton twainctrl:Policy.PolicyName="ShowPdfInfo"
                                             AutomationProperties.Name="{twainctrl:Loc PDFINFO}"
@@ -863,107 +844,9 @@
                                                 </Image>
                                             </Canvas>
                                         </ToggleButton>
-                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        <ToggleButton VerticalAlignment="Center"
-                                            VerticalContentAlignment="Center"
-                                            twainctrl:Policy.PolicyName="DirectOpenPdfFile"
-                                            AutomationProperties.Name="{twainctrl:Loc PDFOPEN}"
-                                            IsChecked="{Binding DirectOpenPdfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                            <ToggleButton.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Width="32"
-                                                        Height="32"
-                                                        Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PDFOPEN}" />
-                                                </StackPanel>
-                                            </ToggleButton.Content>
-                                        </ToggleButton>
-                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        <CheckBox VerticalAlignment="Center"
-                                            VerticalContentAlignment="Center"
-                                            twainctrl:Policy.PolicyName="DirectOpenEypFile"
-                                            AutomationProperties.Name="{twainctrl:Loc EYPOPEN}"
-                                            IsChecked="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                            <CheckBox.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Width="32"
-                                                        Height="32"
-                                                        Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
-                                                    <TextBlock VerticalAlignment="Center">
-                                                        <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".eyp|Elektronik Yazışma Paketi">
-                                                            <Run Text="{twainctrl:Loc EYPOPEN}" />
-                                                        </Hyperlink>
-                                                    </TextBlock>
-                                                </StackPanel>
-                                            </CheckBox.Content>
-                                        </CheckBox>
-                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        <StackPanel>
-                                            <TextBlock VerticalAlignment="Center">
-                                                <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".jb2|Jb2 File">
-                                                    <Run Text="JB2" />
-                                                </Hyperlink>
-                                                <LineBreak />
-                                                <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".jb2zip|JB2Zip File">
-                                                    <Run Text="JB2ZIP" />
-                                                </Hyperlink>
-                                            </TextBlock>
-                                        </StackPanel>
-                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        <ToggleButton VerticalAlignment="Center"
-                                            VerticalContentAlignment="Center"
-                                            twainctrl:Policy.PolicyName="ContributionIsImageMode"
-                                            AutomationProperties.Name="{twainctrl:Loc PREVIEWFILE}"
-                                            IsChecked="{Binding ContributionIsImageMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                            <ToggleButton.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Canvas Width="32" Height="32">
-                                                        <Image Width="32" Height="32">
-                                                            <Image.Source>
-                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                    <Binding Source="Shell32.dll" />
-                                                                    <Binding Source="19" />
-                                                                </MultiBinding>
-                                                            </Image.Source>
-                                                        </Image>
-                                                        <TextBlock Canvas.Bottom="2"
-                                                            FontFamily="Webdings"
-                                                            FontSize="26"
-                                                            FontWeight="Bold"
-                                                            Foreground="GreenYellow"
-                                                            Text="" />
-                                                    </Canvas>
-                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
-                                                </StackPanel>
-                                            </ToggleButton.Content>
-                                        </ToggleButton>
-                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        <ToggleButton VerticalAlignment="Center"
-                                            VerticalContentAlignment="Center"
-                                            twainctrl:Policy.PolicyName="ShowArchiveViewerThumbs"
-                                            AutomationProperties.Name="{twainctrl:Loc PREVIEWFILE}"
-                                            IsChecked="{Binding ShowArchiveViewerThumbs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
-                                            <ToggleButton.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Canvas Width="32" Height="32">
-                                                        <Image Width="32" Height="32">
-                                                            <Image.Source>
-                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                    <Binding Source="ZipFldr.dll" />
-                                                                    <Binding Source="0" />
-                                                                </MultiBinding>
-                                                            </Image.Source>
-                                                        </Image>
-                                                        <TextBlock FontFamily="Webdings"
-                                                            FontSize="24"
-                                                            Foreground="Green"
-                                                            Text="N" />
-                                                    </Canvas>
-                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
-                                                </StackPanel>
-                                            </ToggleButton.Content>
-                                        </ToggleButton>
-                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    </StackPanel>
+                                    <Separator />
+                                    <StackPanel Orientation="Horizontal">
                                         <ToggleButton VerticalAlignment="Center"
                                             VerticalContentAlignment="Center"
                                             twainctrl:Policy.PolicyName="UsePdfJpgFiles"
@@ -1133,11 +1016,122 @@
                                                 </Border>
                                             </Extensions:ContentToggleButton.OverContent>
                                         </Extensions:ContentToggleButton>
+                                        <ToggleButton VerticalAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            twainctrl:Policy.PolicyName="ShowArchiveViewerThumbs"
+                                            AutomationProperties.Name="{twainctrl:Loc PREVIEWFILE}"
+                                            IsChecked="{Binding ShowArchiveViewerThumbs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
+                                            <ToggleButton.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Canvas Width="32" Height="32">
+                                                        <Image Width="32" Height="32">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="ZipFldr.dll" />
+                                                                    <Binding Source="0" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                        <TextBlock FontFamily="Webdings"
+                                                            FontSize="24"
+                                                            Foreground="Green"
+                                                            Text="N" />
+                                                    </Canvas>
+                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
+                                                </StackPanel>
+                                            </ToggleButton.Content>
+                                        </ToggleButton>
+
+                                        <ToggleButton VerticalAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            twainctrl:Policy.PolicyName="ContributionIsImageMode"
+                                            AutomationProperties.Name="{twainctrl:Loc PREVIEWFILE}"
+                                            IsChecked="{Binding ContributionIsImageMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                            <ToggleButton.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Canvas Width="32" Height="32">
+                                                        <Image Width="32" Height="32">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="19" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                        <TextBlock Canvas.Bottom="2"
+                                                            FontFamily="Webdings"
+                                                            FontSize="26"
+                                                            FontWeight="Bold"
+                                                            Foreground="GreenYellow"
+                                                            Text="" />
+                                                    </Canvas>
+                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
+                                                </StackPanel>
+                                            </ToggleButton.Content>
+                                        </ToggleButton>
+                                        <Extensions:NumericUpDown FontWeight="Bold"
+                                            Interval="1"
+                                            IsEnabled="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                                            Maximum="10"
+                                            Minimum="1"
+                                            Value="{Binding MagnifyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                        <ToggleButton twainctrl:Policy.PolicyName="ShowMagnifier"
+                                            IsChecked="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                                            IsEnabled="{Binding FastSimplePdfThumbViewer, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource ReverseBooleanConverter}}">
+                                            <Canvas Width="32" Height="32">
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="1" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="22" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Canvas>
+                                        </ToggleButton>
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                        <ToggleButton IsChecked="{Binding ShowDocumentPageCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
+                                            <Canvas Width="16" Height="32">
+                                                <TextBlock Canvas.Top="0"
+                                                    FontSize="10"
+                                                    Text="1" />
+                                                <TextBlock Canvas.Left="4"
+                                                    Canvas.Top="2"
+                                                    FontSize="10"
+                                                    Text="2" />
+                                                <TextBlock Canvas.Left="8"
+                                                    Canvas.Top="4"
+                                                    FontSize="10"
+                                                    Text="3" />
+                                                <Image Canvas.Bottom="0"
+                                                    Width="16"
+                                                    Height="16"
+                                                    Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
+                                            </Canvas>
+                                        </ToggleButton>
+                                        <ToggleButton IsChecked="{Binding Path=RestoreFilesStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="45" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </ToggleButton>
                                     </StackPanel>
-                                </ScrollViewer>
-                            </StackPanel>
+                                </StackPanel>
+                            </ScrollViewer>
                         </GroupBox>
-                        <GroupBox Grid.Row="3">
+                        <GroupBox Grid.Row="2">
                             <ScrollViewer HorizontalScrollBarVisibility="Auto"
                                 Template="{StaticResource HorizontalScrollViewerTemplate}"
                                 VerticalScrollBarVisibility="Disabled">
