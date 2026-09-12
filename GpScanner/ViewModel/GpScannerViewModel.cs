@@ -1154,11 +1154,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 {
                     if (altkeypressed)
                     {
-                        CreateFileAssociationCurrentUser(association[0], association[1], $"{AppDomain.CurrentDomain.BaseDirectory}\\TwainControl.dll", association[2], true);
+                        CreateFileAssociationCurrentUser(association[0], association[1], Process.GetCurrentProcess()?.MainModule?.FileName, $"{AppDomain.CurrentDomain.BaseDirectory}\\TwainControl.dll", association[2], true);
                     }
                     else
                     {
-                        CreateFileAssociationCurrentUser(association[0], association[1], $"{AppDomain.CurrentDomain.BaseDirectory}\\TwainControl.dll", association[2]);
+                        CreateFileAssociationCurrentUser(association[0], association[1], Process.GetCurrentProcess()?.MainModule?.FileName, $"{AppDomain.CurrentDomain.BaseDirectory}\\TwainControl.dll", association[2]);
                     }
                     NotifyShell();
                 }
@@ -3060,7 +3060,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    private void CreateFileAssociationCurrentUser(string extension, string fileTypeDescription, string applicationPath, string iconindex = "0", bool delete = false)
+    private void CreateFileAssociationCurrentUser(string extension, string fileTypeDescription,string exepath, string iconPath, string iconindex = "0", bool delete = false)
     {
         string extensionKeyPath = $@"Software\Classes\{extension}";
         string fileTypeKeyPath = $@"Software\Classes\{fileTypeDescription}";
@@ -3080,9 +3080,9 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             extensionKey?.SetValue(string.Empty, fileTypeDescription);
             using RegistryKey fileTypeKey = Registry.CurrentUser.CreateSubKey(fileTypeKeyPath);
             using RegistryKey iconKey = fileTypeKey?.CreateSubKey("DefaultIcon");
-            iconKey?.SetValue(string.Empty, $"{applicationPath},{iconindex}");
+            iconKey?.SetValue(string.Empty, $"{iconPath},{iconindex}");
             using RegistryKey commandKey = fileTypeKey?.CreateSubKey(@"shell\open\command");
-            commandKey?.SetValue(string.Empty, $@"""{applicationPath}"" ""%1""");
+            commandKey?.SetValue(string.Empty, $@"""{exepath}"" ""%1""");
         }
     }
 
