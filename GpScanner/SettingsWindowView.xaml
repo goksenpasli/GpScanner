@@ -14,9 +14,9 @@
     xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
     Title="GPSCANNER"
     Width="720"
-    Height="540"
+    Height="550"
     d:DataContext="{d:DesignInstance Type=viewmodel:GpScannerViewModel}"
-    d:Height="540"
+    d:Height="550"
     d:Width="720"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
     Loaded="Window_Loaded"
@@ -239,11 +239,11 @@
                                     ToolTip="{twainctrl:Loc STOP}" />
                                 <Grid Grid.Column="1">
                                     <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Extensions:ButtonedTextBox VerticalContentAlignment="Top"
                                         AcceptsReturn="True"
@@ -761,14 +761,19 @@
                                             </CheckBox.Content>
                                         </CheckBox>
                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        <TextBlock VerticalAlignment="Center">
-                                            <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".jb2|Jb2 File|0">
-                                                <Run Text="JB2" />
-                                            </Hyperlink>
-                                            <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".jb2zip|JB2Zip File|0">
-                                                <Run Text="JB2ZIP" />
-                                            </Hyperlink>
-                                        </TextBlock>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="32"
+                                                Height="32"
+                                                Source="{Binding Source='.jb2', Converter={StaticResource FilePathToIconConverter}}" />
+                                            <TextBlock VerticalAlignment="Center">
+                                                <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".jb2|Jb2 File|0">
+                                                    <Run Text="JB2" />
+                                                </Hyperlink>
+                                                <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".jb2zip|JB2Zip File|0">
+                                                    <Run Text="JB2ZIP" />
+                                                </Hyperlink>
+                                            </TextBlock>
+                                        </StackPanel>
                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         <CheckBox VerticalAlignment="Center"
                                             VerticalContentAlignment="Center"
