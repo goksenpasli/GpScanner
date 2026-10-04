@@ -1350,6 +1350,7 @@ public class Scanner : InpcBase, IDataErrorInfo
         "AutoSave" when !AutoSave => "AUTOFOLDER",
         "SelectedTtsLanguage" when string.IsNullOrWhiteSpace(SelectedTtsLanguage) => "TESSLANGSELECT",
         "PasswordProtect" when PasswordProtect => "ENCRYPT",
+        "ArayüzEtkin" when !ArayüzEtkin => "EMPTY",
         _ => null
     };
 

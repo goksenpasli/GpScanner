@@ -396,8 +396,8 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <ComboBox local:Policy.PolicyName="SeçiliTarayıcı"
-                                    IsEnabled="{Binding Scanner.ArayüzEtkin}"
+                                <ComboBox  local:Policy.PolicyName="SeçiliTarayıcı"
+                                    IsEnabled="{Binding Scanner.ArayüzEtkin, ValidatesOnDataErrors=True}"  Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}"
                                     ItemsSource="{Binding Scanner.Tarayıcılar}"
                                     SelectedItem="{Binding SeçiliTarayıcı, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBox.ItemTemplate>
@@ -696,7 +696,7 @@
                                                         <Setter Property="Content">
                                                             <Setter.Value>
                                                                 <StackPanel Orientation="Horizontal">
-                                                                    <Image Height="32"
+                                                                    <Image Height="32" Width="32"
                                                                         Source="/TwainControl;component/Icons/adf.png"
                                                                         Visibility="{Binding Adf, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                                                     <TextBlock VerticalAlignment="Center"
@@ -711,7 +711,7 @@
                                                         <Setter Property="Content">
                                                             <Setter.Value>
                                                                 <StackPanel Orientation="Horizontal">
-                                                                    <Image Height="32" Source="/TwainControl;component/Icons/flatbed.png" />
+                                                                    <Image Width="32" Height="32" Source="/TwainControl;component/Icons/flatbed.png" />
                                                                     <TextBlock VerticalAlignment="Center"
                                                                         AutomationProperties.Name="{local:Loc FLATBED}"
                                                                         Text="{local:Loc FLATBED}"

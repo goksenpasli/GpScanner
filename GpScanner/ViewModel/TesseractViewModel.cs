@@ -81,6 +81,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             {
                 if (parameter is TesseractOcrData ocrData)
                 {
+                    ocrData.IsEnabled = false;
                     string datafile = Path.Combine(Tessdatafolder, ocrData.OcrName);
 
                     ExtendedMessageBox extendedMessageBox = new();
@@ -278,7 +279,6 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         const int bufferSize = 8192;
         byte[] buffer = new byte[bufferSize];
         int bytesRead;
-        ocrData.IsEnabled = false;
         long? contentLength = response.Content.Headers.ContentLength;
         ocrData.OcrFileSize = Math.Round((double)(contentLength / 1_048_576d), 2);
         while ((bytesRead = await contentStream.ReadAsync(buffer, 0, bufferSize)) > 0)
@@ -287,7 +287,6 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             ocrData.ProgressValue = fileStream.Length / (double)contentLength * 100;
         }
         buffer = null;
-        ocrData.IsEnabled = true;
     }
 
     private bool FolderWritable(string folderPath)

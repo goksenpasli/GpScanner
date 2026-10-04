@@ -17,6 +17,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Drawing.Imaging;
+using System.Drawing.Text;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -2631,6 +2632,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public bool TesseractAnyLanguageSelected => TesseractViewModel?.TesseractFiles?.Count(z => z.Checked) > 0;
 
     public bool TesseractOrientationLanguageAvailable => TesseractViewModel?.TesseractFiles?.Any(z => z.Name == "osd") == true;
+    public bool WingDings2FontAvailable => FontExists("Wingdings 2");
+    public bool WingDings3FontAvailable => FontExists("Wingdings 3");
 
     public TesseractViewModel TesseractViewModel
     {
@@ -2644,6 +2647,14 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 OnPropertyChanged(nameof(TesseractViewModel));
             }
         }
+    }
+
+    bool FontExists(string fontName)
+    {
+        using var fonts = new InstalledFontCollection();
+
+        return fonts.Families.Any(f =>
+            string.Equals(f.Name, fontName, StringComparison.OrdinalIgnoreCase));
     }
 
     public bool TesseractVisualCRuntimeInstalled => CheckFileVersion($@"{Environment.SystemDirectory}\msvcp140.dll") > new Version(MinimumVcVersion);
